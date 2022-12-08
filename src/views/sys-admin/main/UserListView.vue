@@ -7,7 +7,7 @@
 
     <el-divider></el-divider>
 
-    <el-table :data="user" border style="width: 80%">
+    <el-table :data="user" border style="width: 100%">
       <el-table-column prop="id" label="用户id" width="80"/>
       <el-table-column prop="username" label="用户名" width="180"/>
       <el-table-column prop="avatar" label="用户头像" align="center" header-align="center" width="100px">

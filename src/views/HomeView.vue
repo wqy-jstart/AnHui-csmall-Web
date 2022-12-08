@@ -1,6 +1,6 @@
 <style>
 .layout-header {
-  background: #1684b0;
+  background: #cd5d2c;
 }
 
 .layout-header h1 {
@@ -18,7 +18,10 @@
 }
 
 .layout-aside {
-  background: #222c32;
+  background: #2f2c2a;
+  font-family: 微软雅黑;
+  font-weight: bolder;
+  color: aliceblue;
 }
 
 .layout-aside i {
@@ -29,7 +32,7 @@
 }
 
 .el-menu-item.is-active {
-  background: #2d3c4d !important;
+  background: #262424 !important;
 }
 </style>
 <template>
@@ -38,7 +41,7 @@
     <el-container>
       <!-- 上半部分：顶栏 -->
       <el-header class="layout-header">
-        <h1>皖派土特产网络超市运营管理平台</h1>
+        <h1 style="font-family: 幼圆;font-size: 28px">皖派土特产网络超市运营管理平台</h1>
       </el-header>
       <!-- 下半部分：容器 -->
       <el-container class="layout-body">
@@ -48,19 +51,19 @@
               router
               :default-active="$router.currentRoute.path"
               class="el-menu-vertical-demo"
-              background-color="#222c32"
+              background-color="#2f2c2a"
               text-color="#fff"
-              active-text-color="#fff">
+              active-text-color="#ba6049">
             <!-- 首页 -->
-            <el-menu-item index="/sys-admin">
-              <i class="el-icon-s-home"></i>
-              <span>首页</span>
+            <el-menu-item index="/">
+              <i class="el-icon-loading"></i>
+              <span style="color: aliceblue;font-size: 18px;font-weight: bold">首页</span>
             </el-menu-item>
-            <!-- 临时页面 -->
+            <!-- 账号管理 -->
             <el-submenu index="2">
               <template slot="title">
-                <i class="el-icon-s-tools"></i>
-                <span>临时页面</span>
+                <i class="el-icon-user"></i>
+                <span>账号管理</span>
               </template>
               <el-menu-item index="/sys-admin/main/admin/add-new">
                 <i class="el-icon-circle-plus"></i>
@@ -78,46 +81,6 @@
                 <i class="el-icon-s-operation"></i>
                 <span>收货地址列表</span>
               </el-menu-item>
-              <el-menu-item index="/sys-admin/main/brand/add-new">
-                <i class="el-icon-circle-plus"></i>
-                <span>添加品牌</span>
-              </el-menu-item>
-              <el-menu-item index="/sys-admin/main/brand/list">
-                <i class="el-icon-s-operation"></i>
-                <span>品牌列表</span>
-              </el-menu-item>
-              <el-menu-item index="/sys-admin/main/category/add-new">
-                <i class="el-icon-circle-plus"></i>
-                <span>添加类别</span>
-              </el-menu-item>
-              <el-menu-item index="/sys-admin/main/category/list">
-                <i class="el-icon-s-operation"></i>
-                <span>类别列表</span>
-              </el-menu-item>
-              <el-menu-item index="/sys-admin/main/album/add-new">
-                <i class="el-icon-circle-plus"></i>
-                <span>添加相册</span>
-              </el-menu-item>
-              <el-menu-item index="/sys-admin/main/album/list">
-                <i class="el-icon-s-operation"></i>
-                <span>相册列表</span>
-              </el-menu-item>
-              <el-menu-item index="/sys-admin/main/attributeTemplate/add-new">
-                <i class="el-icon-circle-plus"></i>
-                <span>添加属性模板</span>
-              </el-menu-item>
-              <el-menu-item index="/sys-admin/main/attributeTemplate/list">
-                <i class="el-icon-s-operation"></i>
-                <span>属性模板列表</span>
-              </el-menu-item>
-              <el-menu-item index="/sys-admin/main/attribute/add-new">
-                <i class="el-icon-circle-plus"></i>
-                <span>添加属性</span>
-              </el-menu-item>
-              <el-menu-item index="/sys-admin/main/attribute/list">
-                <i class="el-icon-s-operation"></i>
-                <span>属性列表</span>
-              </el-menu-item>
             </el-submenu>
             <!-- 商品管理 -->
             <el-submenu index="3">
@@ -133,22 +96,70 @@
                 <i class="el-icon-circle-plus"></i>
                 <span slot="title">新增SPU</span>
               </el-menu-item>
-              <el-menu-item index="3-3">
-                <i class="el-icon-picture"></i>
-                <span slot="title">相册管理</span>
-              </el-menu-item>
-              <el-menu-item index="3-4">
-                <i class="el-icon-s-unfold"></i>
-                <span slot="title">商品类别</span>
-              </el-menu-item>
-              <el-menu-item index="3-5">
-                <i class="el-icon-s-flag"></i>
-                <span slot="title">属性模板</span>
-              </el-menu-item>
-              <el-menu-item index="3-6">
-                <i class="el-icon-s-data"></i>
-                <span slot="title">品牌管理</span>
-              </el-menu-item>
+              <el-submenu index="3-3">
+                <template slot="title">
+                  <i class="el-icon-picture"></i>
+                  <span>相册管理</span>
+                </template>
+                <el-menu-item index="/sys-admin/main/album/add-new">
+                  <i class="el-icon-circle-plus"></i>
+                  <span>添加相册</span>
+                </el-menu-item>
+                <el-menu-item index="/sys-admin/main/album/list">
+                  <i class="el-icon-s-operation"></i>
+                  <span>相册列表</span>
+                </el-menu-item>
+              </el-submenu>
+              <el-submenu index="3-4">
+                <template slot="title">
+                  <i class="el-icon-s-unfold"></i>
+                  <span>商品类别</span>
+                </template>
+                <el-menu-item index="/sys-admin/main/category/add-new">
+                  <i class="el-icon-circle-plus"></i>
+                  <span>添加类别</span>
+                </el-menu-item>
+                <el-menu-item index="/sys-admin/main/category/list">
+                  <i class="el-icon-s-operation"></i>
+                  <span>类别列表</span>
+                </el-menu-item>
+              </el-submenu>
+              <el-submenu index="3-5">
+                <template slot="title">
+                  <i class="el-icon-s-flag"></i>
+                  <span>属性管理</span>
+                </template>
+                <el-menu-item index="/sys-admin/main/attributeTemplate/add-new">
+                  <i class="el-icon-circle-plus"></i>
+                  <span>添加属性模板</span>
+                </el-menu-item>
+                <el-menu-item index="/sys-admin/main/attributeTemplate/list">
+                  <i class="el-icon-s-operation"></i>
+                  <span>属性模板列表</span>
+                </el-menu-item>
+                <el-menu-item index="/sys-admin/main/attribute/add-new">
+                  <i class="el-icon-circle-plus"></i>
+                  <span>添加属性</span>
+                </el-menu-item>
+                <el-menu-item index="/sys-admin/main/attribute/list">
+                  <i class="el-icon-s-operation"></i>
+                  <span>属性列表</span>
+                </el-menu-item>
+              </el-submenu>
+              <el-submenu index="1-4">
+                <template slot="title">
+                  <i class="el-icon-s-data"></i>
+                  <span>品牌管理</span>
+                </template>
+                <el-menu-item index="/sys-admin/main/brand/add-new">
+                  <i class="el-icon-circle-plus"></i>
+                  <span>添加品牌</span>
+                </el-menu-item>
+                <el-menu-item index="/sys-admin/main/brand/list">
+                  <i class="el-icon-s-operation"></i>
+                  <span>品牌列表</span>
+                </el-menu-item>
+              </el-submenu>
             </el-submenu>
             <!-- 订单管理 -->
             <el-submenu index="4">

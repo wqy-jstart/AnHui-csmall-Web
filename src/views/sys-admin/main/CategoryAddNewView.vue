@@ -7,7 +7,7 @@
 
     <el-divider></el-divider>
 
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="130px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" style="width: 800px" label-width="130px" class="demo-ruleForm">
       <el-form-item label="父类级别" prop="parentId">
         <el-input placeholder="请输入父级类别的id,一级类别请填0" v-model="ruleForm.parentId"></el-input>
       </el-form-item>

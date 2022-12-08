@@ -7,7 +7,7 @@
 
     <el-divider></el-divider>
 
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="130px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" style="width: 800px" ref="ruleForm" label-width="130px" class="demo-ruleForm">
       <el-form-item label="名称" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>

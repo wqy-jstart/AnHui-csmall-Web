@@ -13,7 +13,7 @@
 
     <el-divider></el-divider>
 
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="130px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" style="width: 800px" label-width="130px" class="demo-ruleForm">
       <el-form-item label="属性模板" prop="templateId">
         <el-select v-model="ruleForm.templateId" placeholder="请选择">
           <el-option
