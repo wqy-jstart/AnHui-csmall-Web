@@ -17,24 +17,25 @@
       <el-form-item label="关键词列表" prop="keywords">
         <el-input v-model="ruleForm.keywords"></el-input>
       </el-form-item>
-      <el-form-item label="图标" prop="icon">
-        <el-input v-model="ruleForm.icon"></el-input>
-      </el-form-item>
       <el-form-item label="排序序号" prop="sort">
         <el-input v-model="ruleForm.sort"></el-input>
       </el-form-item>
       <el-form-item label="是否启用" prop="enable">
         <el-switch
-            v-model="value1"
+            v-model="ruleForm.enable"
             active-color="#13ce66"
-            inactive-color="#ff4949">
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="0">
         </el-switch>
       </el-form-item>
       <el-form-item label="是否显示在导航栏" prop="isDisplay">
         <el-switch
-            v-model="value2"
+            v-model="ruleForm.isDisplay"
             active-color="#13ce66"
-            inactive-color="#ff4949">
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="0">
         </el-switch>
       </el-form-item>
       <el-form-item>
@@ -54,17 +55,17 @@ export default {
        parentId:'',
         name:'',
         keywords:'',
-        icon:'',
-        sort:'0'
+        sort:'0',
+        enable:'1',
+        isDisplay:'1',
       },
       rules: {
         parentId: [
           {required: true, message: '请输入父类级别的id,一级类别请填0', trigger: 'blur'},
-          {min: 4, max: 35, message: '长度在 4 到 35 个字符', trigger: 'blur'}
         ],
         name: [
-          {required: true, message: '请输入品牌名称', trigger: 'blur'},
-          {min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur'}
+          {required: true, message: '请输入分类名称', trigger: 'blur'},
+          {min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur'}
         ],
       }
     };
@@ -74,7 +75,22 @@ export default {
       // 对表单进行检查
       this.$refs[formName].validate((valid) => {
         if (valid) { // 满足条件则通过验证
-
+          let url = 'http://localhost:9900/categories/insert'
+          console.log('url = ' + url);
+          let formData = this.qs.stringify(this.ruleForm);//将formData对象转换成FormData格式,当后端不添加@RequestBody注解时接收
+          console.log('formData=' + formData);
+          this.axios.post(url, formData).then((response)=>{//箭头函数
+            let responseBody = response.data;
+            if (responseBody.state == 20000){
+              this.$message({
+                message: '添加分类成功！',
+                type: 'success'
+              });
+              this.resetForm(formName);// 调用该函数重置表单中的信息
+            }else {
+              this.$message.error(responseBody.message);
+            }
+          });
         } else { // 否则表单格式有误,不会通过
           console.log('error submit!!');
           return false;

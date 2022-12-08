@@ -16,9 +16,6 @@
       <el-table-column prop="keywords" label="品牌关键字" width="100" align="center"></el-table-column>
       <el-table-column prop="sort" label="品牌排序" width="100" align="center"></el-table-column>
       <el-table-column prop="sales" label="品牌价格" width="80" align="center"></el-table-column>
-      <el-table-column prop="productCount" label="品牌产量" width="80" align="center"></el-table-column>
-      <el-table-column prop="commentCount" label="评论数量" width="80" align="center"></el-table-column>
-      <el-table-column prop="positiveCommentCount" label="好评数量" width="80" align="center"></el-table-column>
       <el-table-column label="是否启用" width="80" align="center">
         <template slot-scope="scope">
           <!-- 1开 0关 -->
@@ -34,10 +31,10 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" circle size="mini"
-                     @click="handleEdit(scope.row)"></el-button>
-          <el-button type="danger" icon="el-icon-delete" circle size="mini"
-                     @click="openDeleteConfirm(scope.row)"></el-button>
+          <el-button type="success" size="mini"
+                     @click="handleEdit(scope.row)">修改</el-button>
+          <el-button type="danger" size="mini"
+                     @click="openDeleteConfirm(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -89,14 +86,10 @@ export default {
   methods: {
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9080/brands/' + this.ruleForm.id + '/update';
+      let url = 'http://localhost:9900/brands/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
-      console.log('formData=' + formData);
-
-      this.axios
-          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-          .post(url, formData).then((response) => {
+      this.axios.post(url, formData).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.$message({
@@ -120,28 +113,27 @@ export default {
       console.log(message);
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9080/brands/' + brand.id + '/select';
+      let url = 'http://localhost:9900/brands/' + brand.id + '/selectById';
       console.log(url);
-      this.axios
-          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-          .get(url).then((response) => {
+      this.axios.get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.ruleForm = responseBody.data;
           this.dialogFormVisible = true;
         } else {
           this.$message.error(responseBody.message);
-          this.loadbrandList();
+          this.loadBrandList();
         }
       })
     },
+    // 修改启用状态
     changeEnable(brand) {
       console.log('brand id=' + brand.id);
       //点击后获取的enable值
       console.log('brand enable=' + brand.enable);
       let enableText = ['禁用', '启用'];
-      let url = 'http://localhost:9080/brands/' + brand.id;
-      if (brand.enable == 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
+      let url = 'http://localhost:9900/brands/' + brand.id;
+      if (brand.enable === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         console.log("启用品牌")
         url += '/enable';
       } else {
@@ -149,15 +141,10 @@ export default {
         url += '/disable';
       }
       console.log('url=' + url)
-      this.axios
-          .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwt')
-            }
-          }).post(url).then((response) => {
+      this.axios.post(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state == 20000) {
-          let message = '将品牌[' + brand.username + ']的启用状态改为[' + enableText[brand.enable] + ']成功!';
+        if (responseBody.state === 20000) {
+          let message = '将品牌[' + brand.name + ']的状态改为[' + enableText[brand.enable] + ']成功!';
           this.$message({
             message: message,
             type: 'success'
@@ -171,14 +158,9 @@ export default {
       })
     },
     handleDelete(brand) {
-      let url = 'http://localhost:9080/brands/' + brand.id + '/delete';
+      let url = 'http://localhost:9900/brands/' + brand.id + '/deleteById';
       console.log('url=' + url);
-      this.axios
-          .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwt')
-            }
-          }).post(url).then((response) => {
+      this.axios.post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
@@ -204,17 +186,11 @@ export default {
         });
       });
     },
-    // 该方法用来请求相册的列表数据
+    // 该方法用来请求品牌的列表数据
     loadBrandList() {
-      console.log('loadBrandList');
-      let url = "http://localhost:9080/brands" // 请求路径
+      let url = "http://localhost:9900/brands/" // 请求路径
       console.log('url=' + url);
-      this.axios
-          .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwt')
-            }
-          }).get(url).then((response) => {// 发送异步请求
+      this.axios.get(url).then((response) => {// 发送异步请求
         let responseBody = response.data;
         this.tableData = responseBody.data;//将获取响应的数据中的data数据赋值给tableData
       })
@@ -222,7 +198,6 @@ export default {
   },
   // 生命周期方法(挂载)
   mounted() {
-    console.log('mounted');
     this.loadBrandList();
   }
 }

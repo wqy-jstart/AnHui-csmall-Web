@@ -23,14 +23,19 @@
       <el-form-item label="关键词列表" prop="keywords">
         <el-input v-model="ruleForm.keywords"></el-input>
       </el-form-item>
+      <el-form-item label="品牌销量" prop="sales">
+        <el-input v-model="ruleForm.sales"></el-input>
+      </el-form-item>
       <el-form-item label="排序序号" prop="sort">
         <el-input v-model="ruleForm.sort"></el-input>
       </el-form-item>
       <el-form-item label="是否启用" prop="enable">
         <el-switch
-            v-model="value"
+            v-model="ruleForm.enable"
             active-color="#13ce66"
-            inactive-color="#ff4949">
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="0">
         </el-switch>
       </el-form-item>
       <el-form-item>
@@ -52,20 +57,26 @@ export default {
         logo: '',
         description: '',
         keywords: '',
-        sort: ''
+        sales:'',
+        sort: '',
+        enable:'1',
       },
       rules: {
         name: [
           {required: true, message: '请输入品牌名称', trigger: 'blur'},
-          {min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur'}
+          {min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur'}
         ],
         pinyin: [
           {required: true, message: '请输入品牌拼音', trigger: 'blur'},
-          {min: 4, max: 35, message: '长度在 4 到 35 个字符', trigger: 'blur'}
+          {min: 2, max: 35, message: '长度在 2 到 35 个字符', trigger: 'blur'}
         ],
         description: [
           {required: true, message: '请输入品牌简介', trigger: 'blur'}
-        ]
+        ],
+        sort: [
+          {required: true, message: '请输入排序序号', trigger: 'blur'},
+          {min: 1, max: 2, message: '长度在 1 到 2 个字符', trigger: 'blur'}
+        ],
       }
     };
   },
@@ -74,7 +85,22 @@ export default {
       // 对表单进行检查
       this.$refs[formName].validate((valid) => {
         if (valid) { // 满足条件则通过验证
-
+          let url = 'http://localhost:9900/brands/insert'
+          console.log('url = ' + url);
+          let formData = this.qs.stringify(this.ruleForm);//将formData对象转换成FormData格式,当后端不添加@RequestBody注解时接收
+          console.log('formData=' + formData);
+          this.axios.post(url, formData).then((response)=>{//箭头函数
+            let responseBody = response.data;
+            if (responseBody.state == 20000){
+              this.$message({
+                message: '添加品牌成功！',
+                type: 'success'
+              });
+              this.resetForm(formName);// 调用该函数重置表单中的信息
+            }else {
+              this.$message.error(responseBody.message);
+            }
+          });
         } else { // 否则表单格式有误,不会通过
           console.log('error submit!!');
           return false;

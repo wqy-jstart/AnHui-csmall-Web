@@ -32,7 +32,7 @@
         <el-form-item label="模板描述" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.pinyin" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="模板备选值列表" :label-width="formLabelWidth">
+        <el-form-item label="模板关键字" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.keywords" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="模板排序" :label-width="formLabelWidth">
