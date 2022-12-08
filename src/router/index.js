@@ -5,22 +5,88 @@ import HomeView from '../views/HomeView.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/login',
-    name: 'about',
-    component: () => import( '../views/LoginView.vue')
-  }
+    {
+        path: '/',
+        component: HomeView,
+        redirect: '/sys-admin',
+        children: [ //嵌套路由,在HomeView里的router里
+            {
+                path: '/sys-admin',
+                component: () => import( '../views/sys-admin/SystemAdminIndex.vue')
+            },
+            {
+                path: '/sys-admin/main/address/list',
+                component: () => import( '../views/sys-admin/main/AddressListView')
+            },
+            {
+                path: '/sys-admin/main/admin/add-new',
+                component: () => import( '../views/sys-admin/main/AdminAddNewView.vue')
+            },
+            {
+                path: '/sys-admin/main/admin/list',
+                component: () => import( '../views/sys-admin/main/AdminListView.vue')
+            },
+            {
+                path: '/sys-admin/main/album/add-new',
+                component: () => import( '../views/sys-admin/main/AlbumAddNewView.vue')
+            },
+            {
+                path: '/sys-admin/main/album/list',
+                component: () => import( '../views/sys-admin/main/AlbumListView.vue')
+            },
+            {
+                path: '/sys-admin/main/attribute/add-new',
+                component: () => import( '../views/sys-admin/main/AttributeAddNewView.vue')
+            },
+            {
+                path: '/sys-admin/main/attribute/list',
+                component: () => import( '../views/sys-admin/main/AttributeListView.vue')
+            },
+            {
+                path: '/sys-admin/main/attributeTemplate/add-new',
+                component: () => import( '../views/sys-admin/main/AttributeTemplateAddNewView.vue')
+            },
+            {
+                path: '/sys-admin/main/attributeTemplate/list',
+                component: () => import( '../views/sys-admin/main/AttributeTemplateListView.vue')
+            },
+            {
+                path: '/sys-admin/main/brand/add-new',
+                component: () => import( '../views/sys-admin/main/BrandAddNewView.vue')
+            },
+            {
+                path: '/sys-admin/main/brand/list',
+                component: () => import( '../views/sys-admin/main/BrandListView.vue')
+            },
+            {
+                path: '/sys-admin/main/category/add-new',
+                component: () => import( '../views/sys-admin/main/CategoryAddNewView.vue')
+            },
+            {
+                path: '/sys-admin/main/category/list',
+                component: () => import( '../views/sys-admin/main/CategoryListView.vue')
+            },
+            {
+                path: '/sys-admin/main/user/list',
+                component: () => import( '../views/sys-admin/main/UserListView')
+            },
+            // --------------------------------------------------------------------
+        ]
+    },
+    {
+        path: '/login',
+        component: () => import( '../views/LoginView.vue')
+    },
+    {
+        path: '/register',
+        component: () => import( '../views/RegisterView.vue')
+    },
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router
