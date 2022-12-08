@@ -13,7 +13,7 @@
     <el-table :data="tableData" border style="width: 100%">
       <!-- prop必须是服务器绑定的属性名 -->
       <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
-      <el-table-column prop="name" label="名称" width="120" align="center"></el-table-column>
+      <el-table-column prop="name" label="名称" width="180" align="center"></el-table-column>
       <el-table-column prop="parentId" label="父级类别id" width="120" align="center"></el-table-column>
       <el-table-column prop="depth" label="深度" width="120" align="center"></el-table-column>
       <el-table-column prop="keywords" label="关键字" width="120" align="center"></el-table-column>
@@ -54,11 +54,11 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" circle size="mini"
-                     @click="handleEdit(scope.row)"></el-button>
-          <el-button type="danger" icon="el-icon-delete" circle size="mini"
+          <el-button type="primary" size="mini"
+                     @click="handleEdit(scope.row)">修改</el-button>
+          <el-button type="danger" size="mini"
                      :disabled="scope.row.isParent == 1"
-                     @click="openDeleteConfirm(scope.row)"></el-button>
+                     @click="openDeleteConfirm(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

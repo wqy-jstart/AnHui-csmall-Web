@@ -35,6 +35,14 @@ const routes = [
                 component: () => import( '../views/sys-admin/main/AlbumListView.vue')
             },
             {
+                path: '/sys-admin/main/picture/add-new',
+                component: () => import( '../views/sys-admin/main/PictureAddNewView.vue')
+            },
+            {
+                path: '/sys-admin/main/picture/list',
+                component: () => import( '../views/sys-admin/main/PictureListView.vue')
+            },
+            {
                 path: '/sys-admin/main/attribute/add-new',
                 component: () => import( '../views/sys-admin/main/AttributeAddNewView.vue')
             },

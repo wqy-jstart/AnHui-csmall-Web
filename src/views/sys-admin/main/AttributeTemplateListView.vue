@@ -9,13 +9,13 @@
 
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
-      <el-table-column prop="name" label="属性模板名称" width="180" align="center"></el-table-column>
-      <el-table-column prop="pinyin" label="属性模板拼音" width="180"></el-table-column>
-      <el-table-column prop="keywords" label="属性模板关键字" width="180" align="center"></el-table-column>
-      <el-table-column prop="sort" label="属性模板排序" width="180" align="center"></el-table-column>
+      <el-table-column prop="name" label="属性模板名称" align="center"></el-table-column>
+      <el-table-column prop="pinyin" label="属性模板拼音" ></el-table-column>
+      <el-table-column prop="keywords" label="属性模板关键字" align="center"></el-table-column>
+      <el-table-column prop="sort" label="属性模板排序"  align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="mini"
+          <el-button type="primary" size="mini"
                      @click="handleEdit(scope.row)">修改</el-button>
           <el-button type="danger" size="mini"
                      @click="openDeleteConfirm(scope.row)">删除</el-button>

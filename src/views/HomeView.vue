@@ -59,6 +59,7 @@
               <i class="el-icon-loading"></i>
               <span style="color: aliceblue;font-size: 18px;font-weight: bold">首页</span>
             </el-menu-item>
+
             <!-- 账号管理 -->
             <el-submenu index="2">
               <template slot="title">
@@ -82,6 +83,7 @@
                 <span>收货地址列表</span>
               </el-menu-item>
             </el-submenu>
+
             <!-- 商品管理 -->
             <el-submenu index="3">
               <template slot="title">
@@ -96,6 +98,7 @@
                 <i class="el-icon-circle-plus"></i>
                 <span slot="title">新增SPU</span>
               </el-menu-item>
+
               <el-submenu index="3-3">
                 <template slot="title">
                   <i class="el-icon-picture"></i>
@@ -109,7 +112,16 @@
                   <i class="el-icon-s-operation"></i>
                   <span>相册列表</span>
                 </el-menu-item>
+                <el-menu-item index="/sys-admin/main/picture/add-new">
+                  <i class="el-icon-circle-plus"></i>
+                  <span>添加图片</span>
+                </el-menu-item>
+                <el-menu-item index="/sys-admin/main/picture/list">
+                  <i class="el-icon-s-operation"></i>
+                  <span>图片列表</span>
+                </el-menu-item>
               </el-submenu>
+
               <el-submenu index="3-4">
                 <template slot="title">
                   <i class="el-icon-s-unfold"></i>
@@ -124,6 +136,7 @@
                   <span>类别列表</span>
                 </el-menu-item>
               </el-submenu>
+
               <el-submenu index="3-5">
                 <template slot="title">
                   <i class="el-icon-s-flag"></i>
@@ -146,6 +159,7 @@
                   <span>属性列表</span>
                 </el-menu-item>
               </el-submenu>
+
               <el-submenu index="1-4">
                 <template slot="title">
                   <i class="el-icon-s-data"></i>
@@ -160,6 +174,7 @@
                   <span>品牌列表</span>
                 </el-menu-item>
               </el-submenu>
+
             </el-submenu>
             <!-- 订单管理 -->
             <el-submenu index="4">

@@ -27,11 +27,11 @@
       <el-table-column prop="name" label="属性名称" width="180" align="center"></el-table-column>
       <el-table-column prop="description" label="属性简介" header-align="center"></el-table-column>
       <el-table-column prop="type" label="属性类型" header-align="center"></el-table-column>
-      <el-table-column prop="unit" label="计量单位" header-align="center"></el-table-column>
+      <el-table-column prop="unit" label="计量单位" header-align="center" align="center"></el-table-column>
       <el-table-column prop="sort" label="排序序号" width="80" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="success"  size="mini"
+          <el-button type="primary"  size="mini"
                      @click="handleEdit(scope.row)">修改</el-button>
           <el-button type="danger" size="mini"
                      @click="openDeleteConfirm(scope.row)">删除</el-button>

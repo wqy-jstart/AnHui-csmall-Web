@@ -31,7 +31,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="mini"
+          <el-button type="primary" size="mini"
                      @click="handleEdit(scope.row)">修改</el-button>
           <el-button type="danger" size="mini"
                      @click="openDeleteConfirm(scope.row)">删除</el-button>
