@@ -15,7 +15,7 @@
       <el-table-column prop="description" label="品牌描述" header-align="center"></el-table-column>
       <el-table-column prop="keywords" label="品牌关键字" width="100" align="center"></el-table-column>
       <el-table-column prop="sort" label="品牌排序" width="100" align="center"></el-table-column>
-      <el-table-column prop="sales" label="品牌价格" width="80" align="center"></el-table-column>
+      <el-table-column prop="sales" label="品牌销量" width="80" align="center"></el-table-column>
       <el-table-column label="是否启用" width="80" align="center">
         <template slot-scope="scope">
           <!-- 1开 0关 -->
@@ -60,7 +60,7 @@
         <el-form-item label="品牌排序" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.sort" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="品牌价格" :label-width="formLabelWidth">
+        <el-form-item label="品牌销量" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.sales" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>

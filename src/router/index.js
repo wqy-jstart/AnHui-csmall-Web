@@ -78,6 +78,14 @@ const routes = [
                 path: '/sys-admin/main/user/list',
                 component: () => import( '../views/sys-admin/main/UserListView')
             },
+            {
+                path: '/sys-admin/main/banner/list',
+                component: () => import( '../views/sys-admin/main/BannerListView.vue')
+            },
+            {
+                path: '/sys-admin/main/banner/add-new',
+                component: () => import( '../views/sys-admin/main/BannerAddNewView.vue')
+            },
             // --------------------------------------------------------------------
         ]
     },
@@ -88,6 +96,10 @@ const routes = [
     {
         path: '/register',
         component: () => import( '../views/RegisterView.vue')
+    },
+    {
+        path: '/index',
+        component: () => import( '../views/IndexView.vue')
     },
 ]
 

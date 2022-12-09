@@ -94,15 +94,6 @@
             <el-radio :label="200">200px</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="是否作为封面:" prop="isCover">
-          <el-switch
-              v-model="ruleForm.isCover"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              active-value="1"
-              inactive-value="0">
-          </el-switch>
-        </el-form-item>
         <el-form-item label="排序序号:" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.sort" autocomplete="off"></el-input>
         </el-form-item>

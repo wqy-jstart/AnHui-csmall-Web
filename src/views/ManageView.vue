@@ -101,6 +101,21 @@
                 <span slot="title">新增SPU</span>
               </el-menu-item>
 
+              <el-submenu index="3-2">
+                <template slot="title">
+                  <i class="el-icon-s-claim"></i>
+                  <span>轮播图管理</span>
+                </template>
+                <el-menu-item index="/sys-admin/main/banner/add-new">
+                  <i class="el-icon-circle-plus"></i>
+                  <span slot="title">添加轮播图</span>
+                </el-menu-item>
+                <el-menu-item index="/sys-admin/main/banner/list">
+                  <i class="el-icon-s-operation"></i>
+                  <span slot="title">轮播图列表</span>
+                </el-menu-item>
+              </el-submenu>
+
               <el-submenu index="3-3">
                 <template slot="title">
                   <i class="el-icon-picture"></i>
