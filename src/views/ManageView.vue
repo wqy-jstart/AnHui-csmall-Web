@@ -41,7 +41,9 @@
     <el-container>
       <!-- 上半部分：顶栏 -->
       <el-header class="layout-header">
-        <h1 style="font-family: 幼圆;font-size: 28px">皖派土特产网络超市运营管理平台</h1>
+        <h1 style="font-family: 幼圆;font-size: 28px">皖派土特产网络超市运营管理平台
+          <span style="float: right;font-size: 24px">欢迎{{nickname}}回来</span>
+        </h1>
       </el-header>
       <!-- 下半部分：容器 -->
       <el-container class="layout-body">
@@ -219,7 +221,25 @@
 export default {
   data(){
     return{
-      activeMenuItemPath:''
+      activeMenuItemPath:'',
+      nickname:'',
+      ruleForm:'',
+    }
+  },
+  methods: {
+    // 加载本地的表单中的数据,存放到roleForm中去
+    loadLocalRuleForm(){
+      let localRuleFormString = localStorage.getItem('ruleForm');
+      if (localRuleFormString){
+        this.ruleForm = JSON.parse(localRuleFormString);
+      }
+    },
+    loadUserNickname(){
+      let url = 'http://localhost:9900/users/selectByUsername?username='+this.ruleForm;
+      this.axios.get(url).then((response)=>{
+        let responseBody = response.data;
+        this.nickname = responseBody.data.nickname;
+      })
     }
   },
   mounted() {
@@ -229,6 +249,8 @@ export default {
     } else {
       this.activeMenuItemPath = path;
     }
+    this.loadLocalRuleForm();
+    this.loadUserNickname();
   }
 }
 </script>

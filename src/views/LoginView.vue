@@ -87,7 +87,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:8888/users/login';
+          let url = 'http://localhost:9900/users/login';
           let formData = this.qs.stringify(this.ruleForm)
           this.axios.post(url, formData).then((response) => {
             let responseBody = response.data;
@@ -95,16 +95,16 @@ export default {
               let ruleFormString = JSON.stringify(this.ruleForm.username);
               localStorage.setItem('ruleForm', ruleFormString);
               location.href = "/";
-              let jwt = responseBody.data;
-              console.log('登陆成功,服务器响应JWT:'+jwt);
-              localStorage.setItem('jwt',jwt);
-              console.log('已经将JWT保存到localStorage中')
+              // let jwt = responseBody.data;
+              // console.log('登陆成功,服务器响应JWT:'+jwt);
+              // localStorage.setItem('jwt',jwt);
+              // console.log('已经将JWT保存到localStorage中')
               this.$message({
-                message: '登录成功!',
+                message: '登录成功,欢迎回来!',
                 type: 'success'
               });
             } else {
-              this.$message.error("登录失败,用户名或密码有误!");
+              this.$message.error(responseBody.message);
             }
           })
         } else {

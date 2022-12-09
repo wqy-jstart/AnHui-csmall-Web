@@ -52,6 +52,9 @@ export default {
         password: '',
       },
       rules: { // 制定规则
+        nickname: [
+          {required: true, message: '请输入昵称', trigger: 'blur'},
+        ],
         username: [
           {required: true, message: '请输入账号', trigger: 'blur'},
           {min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur'}
@@ -64,22 +67,14 @@ export default {
     };
   },
   methods: {
-    submitEdit(){
-
-    },
     // 处理注册事件
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:8888/users/register';
+          let url = 'http://localhost:9900/users/register';
           console.log('url='+url);
           let formData = this.qs.stringify(this.ruleForm);
-          this.axios
-              .create({
-                'headers': {
-                  'Authorization': localStorage.getItem('jwt')
-                }
-              }).post(url,formData).then((response)=>{
+          this.axios.post(url,formData).then((response)=>{
             let responseBody = response.data;
             if (responseBody.state==20000){
               this.$message({
