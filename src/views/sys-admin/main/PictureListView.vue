@@ -5,7 +5,7 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 16px">
       <el-breadcrumb-item :to="{ path: '/' }">后台管理</el-breadcrumb-item>
-      <el-breadcrumb-item>相册列表</el-breadcrumb-item>
+      <el-breadcrumb-item>图片列表</el-breadcrumb-item>
     </el-breadcrumb>
 
     <el-divider></el-divider>

@@ -44,8 +44,8 @@
       </el-table-column>
     </el-table>
 
-    <!-- 弹出的编辑相册的对话框 -->
-    <el-dialog title="修改相册" :visible.sync="dialogFormVisible">
+    <!-- 弹出的编辑轮播图的对话框 -->
+    <el-dialog title="修改轮播图" :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm">
         <el-form-item label="轮播图片" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.url" autocomplete="off"></el-input>
@@ -53,7 +53,7 @@
         <el-form-item label="商品spuId" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.spuId" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="轮播图描述" :label-width="formLabelWidth">
+        <el-form-item label="轮播图简介" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.description" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="排序序号" :label-width="formLabelWidth">
@@ -76,9 +76,8 @@ export default {
       dialogFormVisible: false,
       ruleForm: {
         id: '',
-        name: '',
+        url: '',
         spuId:'',
-        enable:'',
         description: '',
         sort: ''
       },
@@ -88,7 +87,7 @@ export default {
   methods: {
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9900/albums/update';
+      let url = 'http://localhost:9900/banners/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
@@ -97,7 +96,7 @@ export default {
         if (responseBody.state == 20000) {
           this.$message({
             type: 'success',
-            message: '修改相册成功!'
+            message: '修改轮播图成功!'
           });
           this.dialogFormVisible = false;
           this.loadBannerList();
@@ -111,12 +110,10 @@ export default {
       })
     },
     // 处理修改前的数据
-    handleEdit(album) {
-      let message = '您正在尝试编辑【' + album.id + '-' + album.name + '】的相册详情……';
-      console.log(message);
+    handleEdit(banner) {
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9900/albums/' + album.id + '/selectById';
+      let url = 'http://localhost:9900/banners/' + banner.id + '/selectById';
       console.log(url);
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
@@ -125,6 +122,38 @@ export default {
           this.dialogFormVisible = true;
         } else {
           this.$message.error(responseBody.message);
+          this.loadBannerList();
+        }
+      })
+    },
+    // 修改封面状态
+    changeEnable(banner) {
+      console.log('banner id=' + banner.id);
+      //点击后获取的enable值
+      console.log('banner enable=' + banner.enable);
+      let enableText = ['禁用', '启用'];
+      let url = 'http://localhost:9900/banners/' + banner.id;
+      if (banner.enable === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
+        console.log("设置启用")
+        url += '/enable';
+      } else {
+        console.log("设置禁用")
+        url += '/disable';
+      }
+      console.log('url=' + url)
+      this.axios.post(url).then((response) => {
+        let responseBody = response.data;
+        if (responseBody.state === 20000) {
+          let message = '将图片[' + banner.id + ']的状态改为[' + enableText[banner.enable] + ']成功!';
+          this.$message({
+            message: message,
+            type: 'success'
+          });
+        } else { // 否则输出错误信息
+          this.$message.error(responseBody.message);
+          this.loadBannerList();
+        }
+        if (responseBody.state == 40400) { // 数据不存在的时候才刷新
           this.loadBannerList();
         }
       })
@@ -158,7 +187,7 @@ export default {
         });
       });
     },
-    // 该方法用来请求相册的列表数据
+    // 该方法用来请求轮播图的列表数据
     loadBannerList() {
       let url = "http://localhost:9900/banners/" // 请求路径
       console.log('url=' + url);

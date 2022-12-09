@@ -238,7 +238,6 @@ export default {
     return{
       activeMenuItemPath:'',
       nickname:'',
-      ruleForm:'',
     }
   },
   methods: {
@@ -246,11 +245,11 @@ export default {
     loadLocalRuleForm(){
       let localRuleFormString = localStorage.getItem('ruleForm');
       if (localRuleFormString){
-        this.ruleForm = JSON.parse(localRuleFormString);
+        this.nickname = JSON.parse(localRuleFormString);
       }
     },
     loadUserNickname(){
-      let url = 'http://localhost:9900/users/selectByUsername?username='+this.ruleForm;
+      let url = 'http://localhost:9900/users/selectByUsername?username='+this.nickname;
       this.axios.get(url).then((response)=>{
         let responseBody = response.data;
         this.nickname = responseBody.data.nickname;

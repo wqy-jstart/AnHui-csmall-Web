@@ -94,7 +94,11 @@ export default {
             if (responseBody.state == 20000){
               let ruleFormString = JSON.stringify(this.ruleForm.username);
               localStorage.setItem('ruleForm', ruleFormString);
-              location.href = "/";
+              if (this.ruleForm.username == 'admin'){
+                location.href = "/";
+              }else {
+                location.href = "/index";
+              }
               // let jwt = responseBody.data;
               // console.log('登陆成功,服务器响应JWT:'+jwt);
               // localStorage.setItem('jwt',jwt);
