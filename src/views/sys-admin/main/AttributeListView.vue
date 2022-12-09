@@ -10,7 +10,7 @@
 
     <el-form :model="template" ref="ruleForm" label-width="130px" class="demo-ruleForm">
       <el-form-item label="请选择属性模板">
-        <el-select v-model="template.templateId" placeholder="请选择" @change="loadAttributeList()">
+        <el-select v-model="template.templateId" placeholder="请选择" @change="loadAttributeListByATId()">
           <el-option
               v-for="item in attributeTemplateListOptions"
               :key="item.id"
@@ -38,6 +38,10 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-button style="margin-top: 10px;float: right;"
+               v-show="isDisplay"
+               @click="goBack()">返回
+    </el-button>
 
     <!-- 弹出的编辑相册的对话框 -->
     <el-dialog title="修改属性" :visible.sync="dialogFormVisible">
@@ -81,7 +85,8 @@ export default {
         description: '',
         sort: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      isDisplay: false,
     }
   },
   methods: {
@@ -129,11 +134,12 @@ export default {
       })
     },
     // 根据属性模板的id查询属性列表
-    loadAttributeList(){
+    loadAttributeListByATId(){
       let url = 'http://localhost:9900/attributes/'+this.template.templateId+'/listByTemplate';
       this.axios.get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000) {
+          this.isDisplay = true;
           this.tableData = responseBody.data;
         } else {
           this.$message.error(responseBody.message);
@@ -180,11 +186,29 @@ export default {
           this.$message.error(responseBody.message);
         }
       });
+    },
+    // 返回起始列表
+    goBack(){
+      this.loadAttributeList();
+      this.template.templateId = '';
+      this.isDisplay = false;
+    },
+    loadAttributeList(){
+      let url = 'http://localhost:9900/attributes';
+      this.axios.get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.tableData = responseBody.data;
+        }else {
+          this.$message.error(responseBody.message);
+        }
+      })
     }
   },
   // 生命周期方法(挂载)
   mounted() {
     this.loadAttributeTemplateList();
+    this.loadAttributeList();
   }
 }
 </script>
