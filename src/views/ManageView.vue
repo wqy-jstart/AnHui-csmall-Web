@@ -206,6 +206,14 @@
                 <i class="el-icon-s-ticket"></i>
                 <span>营销管理</span>
               </template>
+              <el-menu-item index="/sys-admin/main/spu/listToCheck">
+                <i class="el-icon-s-operation"></i>
+                <span>待审查Spu列表</span>
+              </el-menu-item>
+              <el-menu-item index="/sys-admin/main/spu/listToPublish">
+                <i class="el-icon-s-operation"></i>
+                <span>已上架Spu列表</span>
+              </el-menu-item>
             </el-submenu>
             <!-- 商家管理 -->
             <el-submenu index="6">
@@ -237,19 +245,21 @@ export default {
   data(){
     return{
       activeMenuItemPath:'',
+      username:'',
       nickname:'',
     }
   },
   methods: {
     // 加载本地的表单中的数据,存放到roleForm中去
     loadLocalRuleForm(){
-      let localRuleFormString = localStorage.getItem('ruleForm');
+      let localRuleFormString = localStorage.getItem('ruleFormToName');
       if (localRuleFormString){
-        this.nickname = JSON.parse(localRuleFormString);
+        console.log(localRuleFormString)
+        this.username = JSON.parse(localRuleFormString);
       }
     },
     loadUserNickname(){
-      let url = 'http://localhost:9900/users/selectByUsername?username='+this.nickname;
+      let url = 'http://localhost:9900/users/selectByUsername?username='+this.username;
       this.axios.get(url).then((response)=>{
         let responseBody = response.data;
         this.nickname = responseBody.data.nickname;

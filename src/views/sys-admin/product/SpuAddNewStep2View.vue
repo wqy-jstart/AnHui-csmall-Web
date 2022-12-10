@@ -3,22 +3,44 @@
     <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 16px;">
       <el-breadcrumb-item :to="{ path: '/' }">后台管理</el-breadcrumb-item>
       <el-breadcrumb-item>新增SPU</el-breadcrumb-item>
-      <el-breadcrumb-item>第2步：填写基本信息</el-breadcrumb-item>
+      <el-steps style="width: 1000px;height: 60px;margin-left: 30px" process-status="wait" :active="active" align-center finish-status="success">
+        <el-step title="1.选择类别"></el-step>
+        <el-step title="2.填写基本信息"></el-step>
+        <el-step title="3.选择相册"></el-step>
+        <el-step title="4.确认商品详情"></el-step>
+        <el-step title="5.等待审核..."></el-step>
+      </el-steps>
     </el-breadcrumb>
 
     <el-divider></el-divider>
 
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="130px" class="demo-ruleForm">
-      <el-form-item label="品牌" prop="brandId">
-        <el-select v-model="ruleForm.brandId" placeholder="请选择">
-          <el-option
-              v-for="item in brandListOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-          </el-option>
-        </el-select>
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="品牌" prop="brandId">
+            <el-select v-model="ruleForm.brandId" placeholder="请选择">
+              <el-option
+                  v-for="item in brandListOptions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="属性模板" prop="attributeTemplateId">
+            <el-select v-model="ruleForm.attributeTemplateId" placeholder="请选择">
+              <el-option
+                  v-for="item in attributeTemplateListOptions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-form-item label="商品名称" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
@@ -77,26 +99,33 @@
 export default {
   data() {
     return {
+      active:2,
       brandListOptions: [],
+      attributeTemplateListOptions:[],
       ruleForm: {
         categoryId: '',
         categoryName: '',
         brandId: null,
         brandName: '',
+        attributeTemplateId:'',
+        attributeTemplateName:'',
         name: '阜阳格拉条',
         title: '安徽名吃,阜阳市正宗格拉条,精选面料,弹性十足,口味极佳!',
         description: '【品质美食】珠穆朗玛峰特产小麦制造【No.1火热抢购中】',
-        typeNumber: '100028235472',
+        typeNumber: '',
         unit: '份',
         listPrice: '10',
         stock: '5000',
         stockThreshold: '200',
         keywords: '美食,面条,格拉条',
-        tags: '安徽名吃,阜阳名牌,正宗美味',
+        tags: '安徽名吃,阜阳名牌,正宗美味!',
         sort: '95'
       },
       rules: {
         brandId: [
+          {type: 'number', required: true, message: '请选择品牌', trigger: 'blur'},
+        ],
+        attributeTemplateId: [
           {type: 'number', required: true, message: '请选择品牌', trigger: 'blur'},
         ],
         name: [
@@ -152,9 +181,9 @@ export default {
     backToPreStep() {
       this.$router.push('spu-add-new');
     },
+    // 加载品牌列表
     loadBrandList(){
       let url ='http://localhost:9900/brands';
-      console.log('url='+url);
       this.axios.get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000) {
@@ -164,15 +193,37 @@ export default {
         }
       })
     },
+    // 加载属性模板列表
+    loadAttributeTemplateList(){
+      let url = 'http://localhost:9900/attributeTemplates';
+      this.axios.get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000) {
+          this.attributeTemplateListOptions = responseBody.data;
+        } else {
+          this.$message.error(responseBody.message);
+        }
+      })
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9900/brands/'+this.ruleForm.brandId+'/selectById';
-          console.log('url = ' + url);
-          this.axios.get(url).then((response) => {
+          let urlToBrand = 'http://localhost:9900/brands/'+this.ruleForm.brandId+'/selectById';
+          console.log('urlToBrand = ' + urlToBrand);
+          this.axios.get(urlToBrand).then((response) => {
             let responseBody = response.data;
             if (responseBody.state == 20000) {
               this.ruleForm.brandName = responseBody.data.name;
+            } else {
+              this.$message.error(responseBody.message);
+            }
+          });
+          let urlToAT = 'http://localhost:9900/attributeTemplates/'+this.ruleForm.attributeTemplateId+'/selectById';
+          console.log('urlToAT = ' + urlToAT);
+          this.axios.get(urlToAT).then((response) => {
+            let responseBody = response.data;
+            if (responseBody.state == 20000) {
+              this.ruleForm.attributeTemplateName = responseBody.data.name;
               let ruleFormString = JSON.stringify(this.ruleForm);
               console.log('ruleFormString >>> ' + ruleFormString);
               localStorage.setItem('ruleForm', ruleFormString);
@@ -187,6 +238,9 @@ export default {
         }
       });
     },
+    randomToTypeNumber(){
+      this.ruleForm.typeNumber = "2022"+parseInt(Math.random()*100000000+1);
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
@@ -194,6 +248,8 @@ export default {
   mounted() {
     this.loadBrandList();
     this.loadLocalRuleForm();
+    this.loadAttributeTemplateList();
+    this.randomToTypeNumber();
   }
 }
 </script>

@@ -93,7 +93,7 @@ export default {
             let responseBody = response.data;
             if (responseBody.state == 20000){
               let ruleFormString = JSON.stringify(this.ruleForm.username);
-              localStorage.setItem('ruleForm', ruleFormString);
+              localStorage.setItem('ruleFormToName', ruleFormString);
               if (this.ruleForm.username == 'admin'){
                 location.href = "/";
               }else {
