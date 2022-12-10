@@ -171,7 +171,7 @@ export default {
       this.axios.post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state === 20000) {
-          let message = '将图片[' + picture.id + ']的状态改为[' + enableText[picture.enable] + ']成功!';
+          let message = '将图片[' + picture.id + ']的状态改为[' + enableText[picture.isCover] + ']成功!';
           this.$message({
             message: message,
             type: 'success'
