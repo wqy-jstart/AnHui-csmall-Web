@@ -83,16 +83,16 @@ export default {
         categoryName: '',
         brandId: null,
         brandName: '',
-        name: 'Redmi Note 11 5G',
-        title: 'Redmi Note 11 5G 天玑810 33W Pro快充 5000mAh大电池 6GB +128GB 浅梦星河',
-        description: '【品质好物】天玑810，5000mAh大电池【Note11SE火热抢购中】',
+        name: '阜阳格拉条',
+        title: '安徽名吃,阜阳市正宗格拉条,精选面料,弹性十足,口味极佳!',
+        description: '【品质美食】珠穆朗玛峰特产小麦制造【No.1火热抢购中】',
         typeNumber: '100028235472',
-        unit: '部',
-        listPrice: '1199',
+        unit: '份',
+        listPrice: '10',
         stock: '5000',
-        stockThreshold: '500',
-        keywords: '小米,红米,智能手机',
-        tags: '5G手机,快充手机,大容量电池手机',
+        stockThreshold: '200',
+        keywords: '美食,面条,格拉条',
+        tags: '安徽名吃,阜阳名牌,正宗美味',
         sort: '95'
       },
       rules: {
@@ -153,12 +153,9 @@ export default {
       this.$router.push('spu-add-new');
     },
     loadBrandList(){
-      let url ='http://localhost:9080/brands';
+      let url ='http://localhost:9900/brands';
       console.log('url='+url);
-      this.axios
-      .create(
-          {'headers':{'Authorization':localStorage.getItem('jwt')}}
-      ).get(url).then((response)=>{
+      this.axios.get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.brandListOptions = responseBody.data;
@@ -170,11 +167,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9080/brands/'+this.ruleForm.brandId+'/select';
+          let url = 'http://localhost:9900/brands/'+this.ruleForm.brandId+'/selectById';
           console.log('url = ' + url);
-          this.axios
-              .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-              .get(url).then((response) => {
+          this.axios.get(url).then((response) => {
             let responseBody = response.data;
             if (responseBody.state == 20000) {
               this.ruleForm.brandName = responseBody.data.name;
@@ -202,7 +197,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

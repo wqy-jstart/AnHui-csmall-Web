@@ -35,7 +35,6 @@
       <el-form-item>
         <el-button type="warning" @click="backToPreStep()">上一步</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">完成</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -66,23 +65,19 @@ export default {
     loadLocalRuleForm() {
       let localRuleFormString = localStorage.getItem('ruleForm');
       if (localRuleFormString) {
-        let localRuleForm = JSON.parse(localRuleFormString);
-        this.ruleForm = localRuleForm;
+        this.ruleForm = JSON.parse(localRuleFormString);
       }
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9080/spu/add-New';
+          let url = 'http://localhost:9900/spu/add-New';
           console.log('url='+url);
           this.ruleForm.detail = this.editor.txt.html();
           let formData = this.qs.stringify(this.ruleForm);
           console.log('formData='+formData);
 
-          this.axios.create(
-              {'headers':{'Authorization':localStorage.getItem('jwt')}}
-          )
-          .post(url,formData).then((response)=>{
+          this.axios.post(url,formData).then((response)=>{
             let responseBody = response.data;
             if (responseBody.state == 20000){
               this.$alert('添加SPU成功!', '操作成功', {
@@ -102,9 +97,6 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    }
   },
   mounted() {
     this.initWangEditor();// 初始化富文本编辑器

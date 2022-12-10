@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 16px;">
       <el-breadcrumb-item :to="{ path: '/' }">后台管理</el-breadcrumb-item>
       <el-breadcrumb-item>新增SPU</el-breadcrumb-item>
-      <el-breadcrumb-item>第3步：选择商品图片</el-breadcrumb-item>
+      <el-breadcrumb-item>第3步：选择商品相册</el-breadcrumb-item>
     </el-breadcrumb>
 
 
@@ -62,11 +62,9 @@ export default {
     },
     loadAlbumList() {
       console.log('准备从服务器端加载【相册列表】……');
-      let url = 'http://localhost:9080/albums';
+      let url = 'http://localhost:9900/albums';
       console.log('请求路径：' + url);
-      this.axios
-          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-          .get(url)
+      this.axios.get(url)
           .then((response) => {
             let responseBody = response.data;
             console.log('接收到服务器端响应的结果：');
@@ -77,11 +75,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9080/albums/'+this.ruleForm.albumId+'/select';
+          let url = 'http://localhost:9900/albums/'+this.ruleForm.albumId+'/selectById';
           console.log('url='+url);
-          this.axios
-              .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-              .get(url).then((response) => {
+          this.axios.get(url).then((response) => {
             let responseBody = response.data;
             if (responseBody.state == 20000) {
               this.ruleForm.albumName = responseBody.data.name;
