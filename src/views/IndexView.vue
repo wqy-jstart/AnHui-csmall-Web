@@ -64,7 +64,7 @@ a:active{color: brown}
             <!--v-for循环遍历List中的所有查询分类信息对象  一个index下对应一个分类-->
             <el-menu-item v-for="c in categoryArr" :index="c.id">{{ c.name }}</el-menu-item><!--下标代表当前菜单-->
             <div style="float: right;position: relative;top: 10px"><!--相对+浮动定位(往右浮动)-->
-              <el-input placeholder="请输入搜索内容" v-model="wd">
+              <el-input placeholder="请输入搜索内容:" v-model="wd">
                 <el-button slot="append" icon="el-icon-search" @click="search()"></el-button>
               </el-input>
             </div>
@@ -101,6 +101,28 @@ a:active{color: brown}
                 <el-table-column prop="saleCount" label="销量">
                 </el-table-column>
               </el-table>
+            </el-card>
+          </el-col>
+        </el-row>
+        <!--Spu商品上架的展示-->
+        <el-row gutter="20">
+          <el-col style="margin: 10px 0" span="6" v-for="p in productArr">
+            <el-card>
+              <!--将图片利用超链接进行包裹-->
+              <a :href="'detail.html?id='+p.id" >
+                <img style="width: 200px;height: 150px;" class="p_img" :src="p.url" width="100%" alt="">
+              </a>
+              <div>
+                <p style="font-size: 15px;height: 40px;margin-top: 0">
+                  <a style="text-decoration: none;color: #3f3f3f" :href="'detail.html?id='+p.id" >
+                    {{p.title}}
+                  </a>
+                </p>
+                <p style="font-size: 12px;color: #666">
+                  ￥{{p.listPrice}} &nbsp 浏览量:{{p.views}}
+                  <span style="float: right">销量:{{p.sales}}件</span><!--该标签共占一行,需要浮动定位-->
+                </p>
+              </div>
             </el-card>
           </el-col>
         </el-row>
@@ -171,6 +193,17 @@ export default {
           this.$message.error(responseBody.message);
         }
       })
+    },
+    loadProductList(){
+      let url = 'http://localhost:9900/spu/selectIndexList';
+      this.axios.get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.productArr  = responseBody.data;
+        }else {
+          this.$message.error(responseBody.message);
+        }
+      })
     }
   },
   mounted() {
@@ -178,6 +211,7 @@ export default {
     this.loadBannerList();
     this.loadLocalRuleForm();
     this.loadUserNickname();
+    this.loadProductList();
   }
 }
 </script>

@@ -144,7 +144,7 @@
     </el-table>
 
     <!-- 弹出的编辑相册的对话框 -->
-    <el-dialog title="修改相册" :visible.sync="dialogFormVisible">
+    <el-dialog title="修改商品" :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm">
         <el-form-item label="Spu名称" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.name" autocomplete="off"></el-input>
@@ -165,7 +165,12 @@
           <el-input v-model="ruleForm.sort" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Spu详情" :label-width="formLabelWidth">
-          <el-input v-model="ruleForm.detail" autocomplete="off"></el-input>
+          <el-input
+              type="textarea"
+              rows="2"
+              placeholder="请输入Spu详情内容:"
+              v-model="ruleForm.detail">
+          </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

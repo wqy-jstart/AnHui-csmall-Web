@@ -148,7 +148,7 @@
     </el-table>
 
     <!-- 弹出的编辑相册的对话框 -->
-    <el-dialog title="修改相册" :visible.sync="dialogFormVisible">
+    <el-dialog title="修改商品" :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm">
         <el-form-item label="Spu名称" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.name" autocomplete="off"></el-input>
@@ -169,7 +169,13 @@
           <el-input v-model="ruleForm.sort" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Spu详情" :label-width="formLabelWidth">
-          <el-input v-model="ruleForm.detail" autocomplete="off"></el-input>
+          <el-input
+              type="textarea"
+              rows="2"
+              placeholder="请输入Spu详情内容:"
+              v-model="ruleForm.detail"
+              autocomplete="off">
+          </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -186,7 +192,9 @@ export default {
     return {
       tableData: [],
       dialogFormVisible: false,
-      ruleForm: {},
+      ruleForm: {
+        detail:'',
+      },
       formLabelWidth: '120px'
     }
   },
@@ -216,23 +224,18 @@ export default {
     },
     // 处理修改前的数据
     handleEdit(spu) {
-      let message = '您正在尝试编辑【' + spu.id + '-' + spu.name + '】的相册详情……';
-      console.log(message);
       this.dialogFormVisible = true;
       // this.ruleForm = album;
       let url = 'http://localhost:9900/spu/' + spu.id + '/selectById';
-      console.log(url);
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.ruleForm = responseBody.data;
-          this.dialogFormVisible = true;
         } else {
           this.$message.error(responseBody.message);
           this.loadSpuListToCheck();
         }
       })
-
     },
     // 修改是否上架
     changePublished(spu) {
