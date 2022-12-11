@@ -38,6 +38,11 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="1000">
+    </el-pagination>
 
     <!-- 弹出的编辑相册的对话框 -->
     <el-dialog title="修改相册" :visible.sync="dialogFormVisible">

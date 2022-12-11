@@ -10,11 +10,19 @@ header a {
 }
 
 /*未访问*/
-a:link{color: blue}
+a:link {
+  color: blue
+}
+
 /*悬停*/
-a:hover {color: purple}
+a:hover {
+  color: purple
+}
+
 /*点击*/
-a:active{color: brown}
+a:active {
+  color: brown
+}
 
 .el-table .cell {
   white-space: nowrap; /*设置内容不换行*/
@@ -25,7 +33,12 @@ a:active{color: brown}
   position: relative;
   top: 5px;
   /*设置元素阴影: x偏移值 y偏移值 浓度(值越大越模糊) 范围 颜色*/
-  box-shadow: 0 0 3px 5px #333;
+  box-shadow: 0 0 2px 3px #525050;
+}
+
+.el-footer{
+  height: 60px;
+  background-image: url('../../public/wave.png') !important;
 }
 </style>
 
@@ -49,7 +62,9 @@ a:active{color: brown}
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
           <a href="/login">退出登录</a>
-          <a style="margin-left: 400px;font-size: 20px;font-weight: bold;font-family: 幼圆;color: #952b2b">{{nickname}},欢迎回来!</a>
+          <a style="margin-left: 400px;font-size: 20px;font-weight: bold;font-family: 幼圆;color: #952b2b">{{
+              nickname
+            }}欢迎回来!</a>
         </div>
         <!--导航菜单-->
         <div style="background-color: #cd5d2c">
@@ -73,10 +88,10 @@ a:active{color: brown}
       </el-header>
       <!--中间部分-->
       <el-main style="width: 1200px;margin: 0 auto">
-        <el-row gutter=20>
-          <el-col span=16>
+        <el-row gutter="20">
+          <el-col span="16">
             <!--轮播图开始-->
-            <el-carousel height="300px">
+            <el-carousel height="370px">
               <!--v-for循环遍历所有轮播图对象-->
               <el-carousel-item v-for="b in bannerArr">
                 <img :src="b.url" width="100%" height="100%" alt="">
@@ -84,7 +99,7 @@ a:active{color: brown}
             </el-carousel>
             <!--轮播图结束-->
           </el-col>
-          <el-col span=8>
+          <el-col span="8">
             <el-card>
               <h3>
                 <i style="font-weight: bold"
@@ -96,9 +111,9 @@ a:active{color: brown}
                   style="width: 100%">
                 <el-table-column type="index" label="排名">
                 </el-table-column>
-                <el-table-column prop="title" label="商品标题" width="100">
+                <el-table-column align="center" prop="title" label="商品标题" width="160">
                 </el-table-column>
-                <el-table-column prop="saleCount" label="销量">
+                <el-table-column prop="sales" label="销量">
                 </el-table-column>
               </el-table>
             </el-card>
@@ -109,18 +124,18 @@ a:active{color: brown}
           <el-col style="margin: 10px 0" span="6" v-for="p in productArr">
             <el-card>
               <!--将图片利用超链接进行包裹-->
-              <a :href="'detail.html?id='+p.id" >
+              <a :href="'detail.html?id='+p.id">
                 <img style="width: 200px;height: 150px;" class="p_img" :src="p.url" width="100%" alt="">
               </a>
               <div>
                 <p style="font-size: 15px;height: 40px;margin-top: 0">
-                  <a style="text-decoration: none;color: #3f3f3f" :href="'detail.html?id='+p.id" >
-                    {{p.title}}
+                  <a style="text-decoration: none;color: #3f3f3f" :href="'detail.html?id='+p.id">
+                    {{ p.title }}
                   </a>
                 </p>
                 <p style="font-size: 12px;color: #666">
-                  ￥{{p.listPrice}} &nbsp 浏览量:{{p.views}}
-                  <span style="float: right">销量:{{p.sales}}件</span><!--该标签共占一行,需要浮动定位-->
+                  ￥{{ p.listPrice }} &nbsp 浏览量:{{ p.views }}
+                  <span style="float: right">销量:{{ p.sales }}件</span><!--该标签共占一行,需要浮动定位-->
                 </p>
               </div>
             </el-card>
@@ -128,7 +143,16 @@ a:active{color: brown}
         </el-row>
       </el-main>
       <!--底栏部分-->
-      <el-footer>Footer</el-footer>
+      <el-footer>
+        <div class="el-footer">
+        </div>
+        <div style="background-color: #3f3f3f;padding:30px 0;text-align: center;color: #b1b1b1">
+          <p>Copyright © 安徽信息科技有限公司版权所有 京ICP备12003770号-3 京公网安备 11010802029565号
+          </p>
+          <p>皖智在线WWW.WANZHI.CN 专注于IT网页技能开发</p>
+          <p>涵盖多种开发教研体系，致力于打造权威的IT职业教育平台</p>
+        </div>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -144,21 +168,23 @@ export default {
       wd: "",//文本框双向绑定的变量
       topArr: [],
       productArr: [],
-      nickname:'',
+      username: '',
+      nickname: '',
     }
   },
   methods: {
     // 加载本地的表单中的数据,存放到roleForm中去
-    loadLocalRuleForm(){
-      let localRuleFormString = localStorage.getItem('ruleForm');
-      if (localRuleFormString){
-        this.nickname = JSON.parse(localRuleFormString);
+    loadLocalRuleForm() {
+      let localRuleFormString = localStorage.getItem('ruleFormToUser');
+      if (localRuleFormString) {
+        this.username = JSON.parse(localRuleFormString);
       }
     },
-    loadUserNickname(){
-      let url = 'http://localhost:9900/users/selectByUsername?username='+this.nickname;
-      this.axios.get(url).then((response)=>{
+    loadUserNickname() {
+      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      this.axios.get(url).then((response) => {
         let responseBody = response.data;
+        console.log("接收的信息" + response.data);
         this.nickname = responseBody.data.nickname;
       })
     },
@@ -183,6 +209,17 @@ export default {
         }
       })
     },
+    loadTopToSalesList() {
+      let url = 'http://localhost:9900/spu/selectSortByTitle';
+      this.axios.get(url).then((response) => {
+        let responseBody = response.data;
+        if (responseBody.state == 20000) {
+          this.topArr = responseBody.data;
+        } else {
+          this.$message.error(responseBody.message);
+        }
+      })
+    },
     loadCategoryList() {
       let url = 'http://localhost:9900/categories/selectByParent';
       this.axios.get(url).then((response) => {
@@ -194,13 +231,13 @@ export default {
         }
       })
     },
-    loadProductList(){
+    loadProductList() {
       let url = 'http://localhost:9900/spu/selectIndexList';
-      this.axios.get(url).then((response)=>{
+      this.axios.get(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state == 20000){
-          this.productArr  = responseBody.data;
-        }else {
+        if (responseBody.state == 20000) {
+          this.productArr = responseBody.data;
+        } else {
           this.$message.error(responseBody.message);
         }
       })
@@ -212,6 +249,7 @@ export default {
     this.loadLocalRuleForm();
     this.loadUserNickname();
     this.loadProductList();
+    this.loadTopToSalesList();
   }
 }
 </script>

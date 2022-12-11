@@ -42,7 +42,7 @@
       <!-- 上半部分：顶栏 -->
       <el-header class="layout-header">
         <h1 style="font-family: 幼圆;font-size: 28px">皖派土特产网络超市运营管理平台
-          <span style="float: right;font-size: 24px">欢迎{{nickname}}回来</span>
+          <span style="float: right;font-size: 24px">欢迎{{ nickname }}回来</span>
         </h1>
       </el-header>
       <!-- 下半部分：容器 -->
@@ -242,26 +242,27 @@
 
 <script>
 export default {
-  data(){
-    return{
-      activeMenuItemPath:'',
-      username:'',
-      nickname:'',
+  data() {
+    return {
+      activeMenuItemPath: '',
+      username: '',
+      nickname: '',
     }
   },
   methods: {
     // 加载本地的表单中的数据,存放到roleForm中去
-    loadLocalRuleForm(){
-      let localRuleFormString = localStorage.getItem('ruleFormToName');
-      if (localRuleFormString){
+    loadLocalRuleForm() {
+      let localRuleFormString = localStorage.getItem('ruleFormToAdmin');
+      if (localRuleFormString) {
         console.log(localRuleFormString)
         this.username = JSON.parse(localRuleFormString);
       }
     },
-    loadUserNickname(){
-      let url = 'http://localhost:9900/users/selectByUsername?username='+this.username;
-      this.axios.get(url).then((response)=>{
+    loadUserNickname() {
+      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      this.axios.get(url).then((response) => {
         let responseBody = response.data;
+        console.log("接收的信息" + response.data);
         this.nickname = responseBody.data.nickname;
       })
     }
