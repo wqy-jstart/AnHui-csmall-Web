@@ -18,7 +18,7 @@
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="130px" class="demo-ruleForm">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="品牌" prop="brandId">
+          <el-form-item label="品牌:" prop="brandId">
             <el-select v-model="ruleForm.brandId" placeholder="请选择">
               <el-option
                   v-for="item in brandListOptions"
@@ -30,7 +30,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="属性模板" prop="attributeTemplateId">
+          <el-form-item label="属性模板:" prop="attributeTemplateId">
             <el-select v-model="ruleForm.attributeTemplateId" placeholder="请选择">
               <el-option
                   v-for="item in attributeTemplateListOptions"
@@ -42,49 +42,59 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="商品名称" prop="name">
+      <el-form-item label="商品名称:" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="标题" prop="title">
+      <el-form-item label="标题:" prop="title">
         <el-input v-model="ruleForm.title"></el-input>
       </el-form-item>
-      <el-form-item label="简介" prop="description">
+      <el-form-item label="简介:" prop="description">
         <el-input v-model="ruleForm.description"></el-input>
       </el-form-item>
-      <el-form-item label="货号" prop="typeNumber">
-        <el-input v-model="ruleForm.typeNumber"></el-input>
-      </el-form-item>
+
       <el-row>
         <el-col :span="12">
-          <el-form-item label="计件单位" prop="unit">
-            <el-input v-model="ruleForm.unit"></el-input>
+          <el-form-item label="货号:" prop="typeNumber">
+            <el-input v-model="ruleForm.typeNumber"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="售价" prop="listPrice">
-            <el-input v-model="ruleForm.listPrice"></el-input>
+          <el-form-item label="计件单位:" prop="unit">
+            <el-input v-model="ruleForm.unit"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="库存" prop="stock">
+          <el-form-item label="商品原价:" prop="listPrice">
+            <el-input v-model="ruleForm.listPrice"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="商品现价:" prop="unit">
+            <el-input v-model="ruleForm.indexPrice"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="库存:" prop="stock">
             <el-input v-model="ruleForm.stock"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="库存阈警值" prop="stockThreshold">
+          <el-form-item label="库存阈警值:" prop="stockThreshold">
             <el-input v-model="ruleForm.stockThreshold"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="关键词" prop="keywords">
+      <el-form-item label="关键词:" prop="keywords">
         <el-input v-model="ruleForm.keywords"></el-input>
       </el-form-item>
-      <el-form-item label="标签" prop="tags">
+      <el-form-item label="标签:" prop="tags">
         <el-input v-model="ruleForm.tags"></el-input>
       </el-form-item>
-      <el-form-item label="排序序号" prop="sort">
+      <el-form-item label="排序序号:" prop="sort">
         <el-input v-model="ruleForm.sort"></el-input>
       </el-form-item>
       <el-form-item>
@@ -115,7 +125,8 @@ export default {
         description: '【品质美食】珠穆朗玛峰特产小麦制造【No.1火热抢购中】',
         typeNumber: '',
         unit: '份',
-        listPrice: '10',
+        listPrice: '40',
+        indexPrice: '10',
         stock: '5000',
         stockThreshold: '200',
         keywords: '美食,面条,格拉条',
@@ -142,6 +153,9 @@ export default {
           {required: true, message: '请输入计件单位', trigger: 'blur'},
         ],
         listPrice: [
+          {required: true, message: '请输入售价', trigger: 'blur'},
+        ],
+        indexPrice: [
           {required: true, message: '请输入售价', trigger: 'blur'},
         ],
         typeNumber: [

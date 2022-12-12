@@ -89,8 +89,12 @@
           prop="description">
       </el-table-column>
       <el-table-column width="80px" align="center"
-                       label="Spu 价格"
+                       label="Spu 原价"
                        prop="listPrice">
+      </el-table-column>
+      <el-table-column width="80px" align="center"
+                       label="Spu 现价"
+                       prop="indexPrice">
       </el-table-column>
       <el-table-column width="80px" align="center"
                        label="Spu 销量"
@@ -163,8 +167,11 @@
         <el-form-item label="Spu描述" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.description" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="商品价格" :label-width="formLabelWidth">
+        <el-form-item label="商品原价" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.listPrice" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="商品现价" :label-width="formLabelWidth">
+          <el-input v-model="ruleForm.indexPrice" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="标签列表" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.tags" autocomplete="off"></el-input>
