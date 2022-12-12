@@ -114,7 +114,7 @@ const routes = [
             {
                 path: '/sys-admin/product/SpuFinishWaitView.vue',
                 component: () => import('../views/sys-admin/product/SpuFinishWaitView.vue')
-            }
+            },
         ]
     },
     {
@@ -128,6 +128,10 @@ const routes = [
     {
         path: '/index',
         component: () => import( '../views/IndexView.vue')
+    },
+    {
+        path: '/index/result',
+        component: () => import( '../views/sys-admin/main/SearchResultView.vue')
     },
 ]
 

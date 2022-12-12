@@ -38,7 +38,7 @@ a:active {
 
 .el-footer {
   height: 60px;
-  background-image: url('../../public/wave.png') !important;
+  background-image: url('../../../../public/wave.png') !important;
 }
 </style>
 
@@ -48,7 +48,7 @@ a:active {
       <!--顶栏部分-->
       <el-header height="150px">
         <div style="width: 1400px;margin: 0 auto">
-          <img src="../../public/LogoToMall.png" style="width: 300px;height: 100px;vertical-align: middle" alt="">
+          <img src="../../../../public/LogoToMall.png" style="width: 300px;height: 100px;vertical-align: middle" alt="">
           <a href="/index">首页</a>
           <el-divider direction="vertical"/>
           <a href="">热点资讯</a>
@@ -61,16 +61,6 @@ a:active {
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
-          <a href="/login">退出登录</a>
-
-          <span style="display: inline;margin-left: 300px;font-size: 20px;font-weight: bold;font-family: 幼圆;color: #952b2b">
-            <a href="">
-              <el-avatar :size="60"
-                         :src="user.avatar"/>
-            </a>
-            {{
-              user.nickname
-            }}欢迎回来!</span>
         </div>
         <!--导航菜单-->
         <div style="background-color: #cd5d2c">
@@ -94,43 +84,12 @@ a:active {
       </el-header>
       <!--中间部分-->
       <el-main style="width: 1200px;margin: 0 auto">
-        <el-row gutter="20">
-          <el-col span="16">
-            <!--轮播图开始-->
-            <el-carousel height="370px">
-              <!--v-for循环遍历所有轮播图对象-->
-              <el-carousel-item v-for="b in bannerArr">
-                <img :src="b.url" width="100%" height="100%" alt="">
-              </el-carousel-item>
-            </el-carousel>
-            <!--轮播图结束-->
-          </el-col>
-          <el-col span="8">
-            <el-card>
-              <h3>
-                <i style="font-weight: bold"
-                   class="el-icon-trophy">销量最高</i>
-              </h3>
-              <el-divider></el-divider>
-              <el-table
-                  :data="topArr"
-                  style="width: 100%">
-                <el-table-column type="index" label="排名">
-                </el-table-column>
-                <el-table-column align="center" prop="title" label="商品标题" width="160">
-                </el-table-column>
-                <el-table-column prop="sales" label="销量">
-                </el-table-column>
-              </el-table>
-            </el-card>
-          </el-col>
-        </el-row>
         <!--Spu商品上架的展示-->
         <el-row gutter="20">
           <el-col style="margin: 10px 0" span="6" v-for="p in productArr">
             <el-card>
               <!--将图片利用超链接进行包裹-->
-              <a :href="'detail.html?id='+p.spuId">
+              <a :href="'detail.html?id='+p.id">
                 <img style="width: 200px;height: 150px;" class="p_img" :src="p.url" width="100%" alt="">
               </a>
               <div>
@@ -169,15 +128,11 @@ export default {
   data() {
     return {
       categoryArr: [],
-      bannerArr: [],
       activeIndex: "",
       wd: "",//文本框双向绑定的变量
-      topArr: [],
       productArr: [],
       username: '',
-      user:{
-        nickname: '',
-      }
+      nickname: '',
     }
   },
   methods: {
@@ -193,7 +148,7 @@ export default {
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         console.log("接收的信息" + response.data);
-        this.user = responseBody.data;
+        this.nickname = responseBody.data.nickname;
       })
     },
     // 处理点击查询功能
@@ -203,26 +158,11 @@ export default {
       location.href = "/index/result?categoryId=" + key;//这里的key代表分类的id(与index相同)
     },
     search() {//搜索的点击事件(搜索后跳转结果会将wd搜索内容在路径上传递过去)
-      //跳转到结果页面把搜索内容传递过去
-      location.href = "/index/result?wd=" + this.wd;//这里的key代表分类的id(与index相同)
-    },
-    loadBannerList() {
-      let url = 'http://localhost:9900/banners/selectListByEnable';
+      let url = 'http://localhost:9900/spu/selectByWd?wd=' + this.wd;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
-          this.bannerArr = responseBody.data;
-        } else {
-          this.$message.error(responseBody.message);
-        }
-      })
-    },
-    loadTopToSalesList() {
-      let url = 'http://localhost:9900/spu/selectSortByTitle';
-      this.axios.get(url).then((response) => {
-        let responseBody = response.data;
-        if (responseBody.state == 20000) {
-          this.topArr = responseBody.data;
+          this.productArr = responseBody.data;
         } else {
           this.$message.error(responseBody.message);
         }
@@ -240,24 +180,38 @@ export default {
       })
     },
     loadProductList() {
-      let url = 'http://localhost:9900/spu/selectIndexList';
-      this.axios.get(url).then((response) => {
-        let responseBody = response.data;
-        if (responseBody.state == 20000) {
-          this.productArr = responseBody.data;
-        } else {
-          this.$message.error(responseBody.message);
-        }
-      })
+      if (location.search.indexOf("wd") != -1) {//包含wd代表路径上传的是搜索结果
+        let url = 'http://localhost:9900/spu/selectByWd' + location.search;
+        this.axios.get(url).then((response) => {
+          let responseBody = response.data;
+          if (responseBody.state == 20000) {
+            this.productArr = responseBody.data;
+          } else {
+            this.$message.error(responseBody.message);
+          }
+        })
+      } else {//不包含wd代表路径上传的是分类信息id
+        let url = 'http://localhost:9900/spu/selectByCategoryId' + location.search
+        this.axios.get(url).then((response) => {
+          console.log("执行了查询结果的功能!")
+          let responseBody = response.data;
+          if (responseBody.state == 20000) {
+            this.productArr = responseBody.data;
+            console.log(this.productArr)
+            //?id=3
+            this.activeIndex = location.search.split("=")[1];
+          } else {
+            this.$message.error(responseBody.message);
+          }
+        })
+      }
     }
   },
   mounted() {
     this.loadCategoryList();
-    this.loadBannerList();
     this.loadLocalRuleForm();
     this.loadUserNickname();
     this.loadProductList();
-    this.loadTopToSalesList();
   }
 }
 </script>

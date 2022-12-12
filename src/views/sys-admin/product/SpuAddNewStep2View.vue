@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 16px;">
-      <el-breadcrumb-item :to="{ path: '/' }">后台管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }">
+        <i class="el-icon-s-promotion"></i>  后台管理</el-breadcrumb-item>
       <el-breadcrumb-item>新增SPU</el-breadcrumb-item>
       <el-steps style="width: 1000px;height: 60px;margin-left: 30px" process-status="wait" :active="active" align-center finish-status="success">
         <el-step title="1.选择类别"></el-step>

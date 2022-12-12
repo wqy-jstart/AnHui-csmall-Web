@@ -7,7 +7,8 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 16px">
-      <el-breadcrumb-item :to="{ path: '/' }">后台管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }">
+        <i class="el-icon-s-promotion"></i>  后台管理</el-breadcrumb-item>
       <el-breadcrumb-item>添加属性</el-breadcrumb-item>
     </el-breadcrumb>
 

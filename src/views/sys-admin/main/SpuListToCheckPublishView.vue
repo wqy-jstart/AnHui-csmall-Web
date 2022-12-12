@@ -15,7 +15,8 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 16px">
-      <el-breadcrumb-item :to="{ path: '/' }">后台管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }">
+        <i class="el-icon-s-promotion"></i>  后台管理</el-breadcrumb-item>
       <el-breadcrumb-item>已上架Spu列表</el-breadcrumb-item>
     </el-breadcrumb>
 
@@ -62,6 +63,9 @@
             </el-form-item>
             <el-form-item label="库存阈警值:">
               <span>{{ props.row.stockThreshold }}</span>
+            </el-form-item>
+            <el-form-item label="浏览量:">
+              <span>{{ props.row.views }}</span>
             </el-form-item>
           </el-form>
         </template>
