@@ -38,7 +38,11 @@ a:active {
 
 .el-footer {
   height: 60px;
-  background-image: url('../../public/wave.png') !important;
+  background-image: url('../../../../public/wave.png') !important;
+}
+
+p {
+  padding: 5px;
 }
 </style>
 
@@ -48,7 +52,7 @@ a:active {
       <!--顶栏部分-->
       <el-header height="150px">
         <div style="width: 1400px;margin: 0 auto">
-          <img src="../../public/LogoToMall.png" style="width: 300px;height: 100px;vertical-align: middle" alt="">
+          <img src="../../../../public/LogoToMall.png" style="width: 300px;height: 100px;vertical-align: middle" alt="">
           <a href="/index">首页</a>
           <el-divider direction="vertical"/>
           <a href="">热点资讯</a>
@@ -61,16 +65,6 @@ a:active {
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
-          <a href="/login">退出登录</a>
-
-          <span style="display: inline;margin-left: 300px;font-size: 20px;font-weight: bold;font-family: 幼圆;color: #952b2b">
-            <a href="">
-              <el-avatar :size="60"
-                         :src="user.avatar"/>
-            </a>
-            {{
-              user.nickname
-            }}欢迎回来!</span>
         </div>
         <!--导航菜单-->
         <div style="background-color: #cd5d2c">
@@ -95,56 +89,56 @@ a:active {
       <!--中间部分-->
       <el-main style="width: 1200px;margin: 0 auto">
         <el-row gutter="20">
-          <el-col span="16">
-            <!--轮播图开始-->
-            <el-carousel height="370px">
-              <!--v-for循环遍历所有轮播图对象-->
-              <el-carousel-item v-for="b in bannerArr">
-                <img :src="b.url" width="100%" height="100%" alt="">
-              </el-carousel-item>
-            </el-carousel>
-            <!--轮播图结束-->
-          </el-col>
-          <el-col span="8">
+          <el-col span="12">
             <el-card>
-              <h3>
-                <i style="font-weight: bold"
-                   class="el-icon-trophy">销量最高</i>
-              </h3>
-              <el-divider></el-divider>
-              <el-table
-                  :data="topArr"
-                  style="width: 100%">
-                <el-table-column type="index" label="排名">
-                </el-table-column>
-                <el-table-column align="center" prop="title" label="商品标题" width="160">
-                </el-table-column>
-                <el-table-column prop="sales" label="销量">
-                </el-table-column>
-              </el-table>
+              <img :src="product.url" width="100%" height="500px" alt="">
+            </el-card>
+            <el-card v-for="img in product.urls">
+              <img :src="img.url" width="80" height="60px" alt="">
             </el-card>
           </el-col>
-        </el-row>
-        <!--Spu商品上架的展示-->
-        <el-row gutter="20">
-          <el-col style="margin: 10px 0" span="6" v-for="p in productArr">
-            <el-card>
-              <!--将图片利用超链接进行包裹-->
-              <a :href="'/product/detail?spuId='+p.spuId">
-                <img style="width: 200px;height: 150px;" class="p_img" :src="p.url" width="100%" alt="">
-              </a>
-              <div>
-                <p style="font-size: 15px;height: 40px;margin-top: 0">
-                  <a style="text-decoration: none;color: #3f3f3f" :href="'detail.html?id='+p.id">
-                    {{ p.title }}
-                  </a>
-                </p>
-                <p style="font-size: 12px;color: #666">
-                  ￥{{ p.listPrice }} &nbsp 浏览量:{{ p.views }}
-                  <span style="float: right">销量:{{ p.sales }}件</span><!--该标签共占一行,需要浮动定位-->
-                </p>
-              </div>
-            </el-card>
+          <el-col span="12">
+            <p style="font-size: 25px">
+              {{ product.title }}
+            </p>
+            <span style="color: #666;font-size: 12px">发布于:{{ product.gmtCreate }}</span>
+            <el-divider></el-divider>
+            <p style="font-size: 15px;color: #666;margin-top: 0;padding-top: 0">
+              品牌: &nbsp{{ product.brandName }}</p>
+            <p style="font-size: 15px;color: #666;margin-top: 0;padding-top: 0">
+              分类: &nbsp{{ product.categoryName }}</p>
+            <p style="font-size: 15px;color: #666">属性:</p>
+            <el-row>
+              <el-col span="3" style="font-size: 15px;color: #666" v-for="p in product.attributeList">
+                <el-tag type="warning">{{ p.valueList }}{{ p.unit }}</el-tag>
+              </el-col>
+            </el-row>
+            <p style="font-size: 15px;color: #666">
+              销量: &nbsp{{ product.sales }}件</p>
+            <p style="font-size: 15px;color: #666">
+              库存: &nbsp{{ product.stock }}</p>
+            <p style="font-size: 15px;color: #666">标签:</p>
+            <el-tag>{{ product.tags }}</el-tag>
+            <p style="font-size: 15px;color: #666">
+              评价: &nbsp{{ product.detail }}</p>
+            <el-rate style="padding: 10px"
+                     v-model="value"
+                     disabled
+                     show-score
+                     text-color="#ff9900"
+                     score-template="{value}">
+            </el-rate>
+            <template>
+              数量: &nbsp<el-input-number v-model="num" size="small" :min="1" :max="10"></el-input-number>
+            </template>
+            <p style="font-size: 25px;font-weight: bold">
+              价格:￥{{ product.indexPrice }}
+              <span style="font-size: 15px;color: #666">原价:<s>{{ product.listPrice }}</s></span>
+            </p>
+            <el-row gutter="20" style="margin-top: 20px;margin-left: 10px">
+              <el-button type="warning" icon="el-icon-circle-plus-outline">立即购买</el-button>
+              <el-button type="primary" icon="el-icon-shopping-cart-2">加入购物车</el-button>
+            </el-row>
           </el-col>
         </el-row>
       </el-main>
@@ -169,15 +163,28 @@ export default {
   data() {
     return {
       categoryArr: [],
-      bannerArr: [],
       activeIndex: "",
       wd: "",//文本框双向绑定的变量
-      topArr: [],
-      productArr: [],
+      product: {
+        title: '', // 标题
+        brandName: '',
+        categoryName: '',
+        listPrice: '', // 原价
+        indexPrice: '', // 现价
+        sales: '', // 销量
+        tags: '',
+        url: '', // 封面
+        urls: [], // 图片集
+        isRecommend: '',
+        detail: '', // 评价
+        attributeList: [],
+        stock: '', // 库存
+        gmtCreate: '' // 发布时间
+      },
+      num: '', // 购买数量
       username: '',
-      user:{
-        nickname: '',
-      }
+      nickname: '',
+      value: '4.7', // 推荐即4.7
     }
   },
   methods: {
@@ -193,7 +200,7 @@ export default {
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         console.log("接收的信息" + response.data);
-        this.user = responseBody.data;
+        this.nickname = responseBody.data.nickname;
       })
     },
     // 处理点击查询功能
@@ -203,30 +210,7 @@ export default {
       location.href = "/index/result?categoryId=" + key;//这里的key代表分类的id(与index相同)
     },
     search() {//搜索的点击事件(搜索后跳转结果会将wd搜索内容在路径上传递过去)
-      //跳转到结果页面把搜索内容传递过去
       location.href = "/index/result?wd=" + this.wd;//这里的key代表分类的id(与index相同)
-    },
-    loadBannerList() {
-      let url = 'http://localhost:9900/banners/selectListByEnable';
-      this.axios.get(url).then((response) => {
-        let responseBody = response.data;
-        if (responseBody.state == 20000) {
-          this.bannerArr = responseBody.data;
-        } else {
-          this.$message.error(responseBody.message);
-        }
-      })
-    },
-    loadTopToSalesList() {
-      let url = 'http://localhost:9900/spu/selectSortByTitle';
-      this.axios.get(url).then((response) => {
-        let responseBody = response.data;
-        if (responseBody.state == 20000) {
-          this.topArr = responseBody.data;
-        } else {
-          this.$message.error(responseBody.message);
-        }
-      })
     },
     loadCategoryList() {
       let url = 'http://localhost:9900/categories/selectByParent';
@@ -239,12 +223,13 @@ export default {
         }
       })
     },
-    loadProductList() {
-      let url = 'http://localhost:9900/spu/selectIndexList';
+    loadProductDetailList() {
+      let url = 'http://localhost:9900/spu/selectToDetail' + location.search;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
-          this.productArr = responseBody.data;
+          this.product = responseBody.data;
+          console.log(this.product)
         } else {
           this.$message.error(responseBody.message);
         }
@@ -253,11 +238,9 @@ export default {
   },
   mounted() {
     this.loadCategoryList();
-    this.loadBannerList();
     this.loadLocalRuleForm();
     this.loadUserNickname();
-    this.loadProductList();
-    this.loadTopToSalesList();
+    this.loadProductDetailList();
   }
 }
 </script>

@@ -57,7 +57,7 @@ a:active {
           <el-divider direction="vertical"/>
           <a href="">社会招聘</a>
           <el-divider direction="vertical"/>
-          <a href="">校园招聘</a>
+          <a href="">购物车</a>
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
@@ -89,7 +89,7 @@ a:active {
           <el-col style="margin: 10px 0" span="6" v-for="p in productArr">
             <el-card>
               <!--将图片利用超链接进行包裹-->
-              <a :href="'detail.html?id='+p.id">
+              <a :href="'/product/detail?spuId='+p.spuId">
                 <img style="width: 200px;height: 150px;" class="p_img" :src="p.url" width="100%" alt="">
               </a>
               <div>

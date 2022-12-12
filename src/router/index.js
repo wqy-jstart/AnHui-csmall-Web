@@ -133,6 +133,10 @@ const routes = [
         path: '/index/result',
         component: () => import( '../views/sys-admin/main/SearchResultView.vue')
     },
+    {
+        path: '/product/detail',
+        component: () => import( '../views/sys-admin/main/ProductDetailView.vue')
+    },
 ]
 
 const router = new VueRouter({
