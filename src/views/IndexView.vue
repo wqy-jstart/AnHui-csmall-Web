@@ -64,7 +64,7 @@ a:active {
           <a href="/login">退出登录</a>
 
           <span style="display: inline;margin-left: 300px;font-size: 20px;font-weight: bold;font-family: 幼圆;color: #952b2b">
-            <a href="">
+            <a href="/user/detail">
               <el-avatar :size="60"
                          :src="user.avatar"/>
             </a>
@@ -73,13 +73,13 @@ a:active {
             }}欢迎回来!</span>
         </div>
         <!--导航菜单-->
-        <div style="background-color: #cd5d2c">
+        <div style="background-color: #cd331f">
           <el-menu style="width: 1200px;height: 60px ;margin: 0 auto"
                    :default-active="activeIndex"
                    class="el-menu-demo"
                    mode="horizontal"
                    @select="handleSelect"
-                   background-color="#cd5d2c"
+                   background-color="#cd331f"
                    text-color="#fff"
                    active-text-color="#fff">
             <!--v-for循环遍历List中的所有查询分类信息对象  一个index下对应一个分类-->

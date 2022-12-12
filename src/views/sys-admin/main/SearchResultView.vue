@@ -63,13 +63,13 @@ a:active {
           <el-divider direction="vertical"/>
         </div>
         <!--导航菜单-->
-        <div style="background-color: #cd5d2c">
+        <div style="background-color: #cd331f">
           <el-menu style="width: 1200px;height: 60px ;margin: 0 auto"
                    :default-active="activeIndex"
                    class="el-menu-demo"
                    mode="horizontal"
                    @select="handleSelect"
-                   background-color="#cd5d2c"
+                   background-color="#cd331f"
                    text-color="#fff"
                    active-text-color="#fff">
             <!--v-for循环遍历List中的所有查询分类信息对象  一个index下对应一个分类-->

@@ -137,6 +137,18 @@ const routes = [
         path: '/product/detail',
         component: () => import( '../views/sys-admin/main/ProductDetailView.vue')
     },
+    {
+        path: '/user/detail',
+        component: () => import( '../views/sys-admin/user/UserDetailView.vue')
+    },
+    {
+        path: '/user/index',
+        component: () => import( '../views/sys-admin/user/UserIndexView.vue')
+    },
+    {
+        path: '/user/address',
+        component: () => import( '../views/sys-admin/user/UserAddressView.vue')
+    },
 ]
 
 const router = new VueRouter({

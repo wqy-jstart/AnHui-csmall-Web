@@ -8,10 +8,14 @@
 
     <el-divider></el-divider>
 
-    <el-table :data="address" border style="width: 60%">
-      <el-table-column prop="id" label="收货地址id" width="120" align="center"></el-table-column>
+    <el-table :data="address" border style="width: 100%">
+      <el-table-column prop="id" label="收货信息id" width="120" align="center"></el-table-column>
       <el-table-column prop="userId" label="用户id" width="180" align="center"></el-table-column>
-      <el-table-column prop="name" label="收货地址" header-align="center"></el-table-column>
+      <el-table-column prop="info" label="收货地址" width="180" align="center"></el-table-column>
+      <el-table-column prop="detailInfo" label="收货详细地址" width="300" align="center"></el-table-column>
+      <el-table-column prop="number" label="收件人手机号" width="180" align="center"></el-table-column>
+      <el-table-column prop="tags" label="收货标签" width="180" align="center"></el-table-column>
+      <el-table-column prop="name" label="收件人姓名" header-align="center" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="success" size="mini"
