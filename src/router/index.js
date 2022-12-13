@@ -94,6 +94,10 @@ const routes = [
                 path: '/sys-admin/main/spu/listToPublish',
                 component: () => import( '../views/sys-admin/main/SpuListToCheckPublishView.vue')
             },
+            {
+                path: '/sys-admin/main/user/logistics',
+                component: () => import( '../views/sys-admin/main/UserOrderView.vue')
+            },
             // --------------------------------------------------------------------
             {
                 path: '/sys-admin/product/spu-add-new',
@@ -138,6 +142,10 @@ const routes = [
         component: () => import( '../views/sys-admin/main/ProductDetailView.vue')
     },
     {
+        path: '/product/order',
+        component: () => import( '../views/sys-admin/main/ProductOrderView.vue')
+    },
+    {
         path: '/user/detail',
         component: () => import( '../views/sys-admin/user/UserDetailView.vue')
     },
@@ -148,6 +156,10 @@ const routes = [
     {
         path: '/user/address',
         component: () => import( '../views/sys-admin/user/UserAddressView.vue')
+    },
+    {
+        path: '/user/shoppingCart',
+        component: () => import( '../views/sys-admin/user/ShoppingCartView.vue')
     },
 ]
 

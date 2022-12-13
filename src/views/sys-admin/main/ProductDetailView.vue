@@ -42,7 +42,7 @@ a:active {
 }
 
 p {
-  padding: 5px;
+  padding: 10px;
 }
 </style>
 
@@ -61,7 +61,7 @@ p {
           <el-divider direction="vertical"/>
           <a href="">社会招聘</a>
           <el-divider direction="vertical"/>
-          <a href="">购物车</a>
+          <a href="/user/shoppingCart">购物车</a>
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
@@ -103,21 +103,21 @@ p {
             </p>
             <span style="color: #666;font-size: 12px">发布于:{{ product.gmtCreate }}</span>
             <el-divider></el-divider>
-            <p style="font-size: 15px;color: #666;margin-top: 0;padding-top: 0">
+            <p style="font-size: 20px;color: #666;margin-top: 0;padding-top: 0">
               品牌: &nbsp{{ product.brandName }}</p>
-            <p style="font-size: 15px;color: #666;margin-top: 0;padding-top: 0">
+            <p style="font-size: 15px;color: #666;margin-top: 0;">
               分类: &nbsp{{ product.categoryName }}</p>
-            <p style="font-size: 15px;color: #666">属性:</p>
+            <p style="font-size: 15px;color: #666;float:left">属性:</p>
             <el-row>
               <el-col span="3" style="font-size: 15px;color: #666" v-for="p in product.attributeList">
-                <el-tag type="warning">{{ p.valueList }}{{ p.unit }}</el-tag>
+                <el-tag type="success" size="medium" style="margin: 0 auto">{{ p.valueList }}{{ p.unit }}</el-tag>
               </el-col>
             </el-row>
             <p style="font-size: 15px;color: #666">
               销量: &nbsp{{ product.sales }}件</p>
             <p style="font-size: 15px;color: #666">
               库存: &nbsp{{ product.stock }}</p>
-            <p style="font-size: 15px;color: #666">标签:</p>
+            <p style="font-size: 15px;color: #666;float: left">标签:</p>
             <el-tag>{{ product.tags }}</el-tag>
             <p style="font-size: 15px;color: #666">
               评价: &nbsp{{ product.detail }}</p>
@@ -132,11 +132,11 @@ p {
               数量: &nbsp<el-input-number v-model="num" size="small" :min="1" :max="10"></el-input-number>
             </template>
             <p style="font-size: 25px;font-weight: bold">
-              价格:￥{{ product.indexPrice }}
+              价格:&nbsp{{ product.indexPrice }}
               <span style="font-size: 15px;color: #666">原价:<s>{{ product.listPrice }}</s></span>
             </p>
             <el-row gutter="20" style="margin-top: 20px;margin-left: 10px">
-              <el-button type="warning" icon="el-icon-circle-plus-outline">立即购买</el-button>
+              <el-button type="warning" icon="el-icon-circle-plus-outline" @click="toPay()">立即购买</el-button>
               <el-button type="primary" icon="el-icon-shopping-cart-2">加入购物车</el-button>
             </el-row>
           </el-col>
@@ -166,6 +166,7 @@ export default {
       activeIndex: "",
       wd: "",//文本框双向绑定的变量
       product: {
+        spuId:'',
         title: '', // 标题
         brandName: '',
         categoryName: '',
@@ -179,12 +180,16 @@ export default {
         detail: '', // 评价
         attributeList: [],
         stock: '', // 库存
-        gmtCreate: '' // 发布时间
+        gmtCreate: '', // 发布时间
+        num:'',// 数量
       },
       num: '', // 购买数量
       username: '',
       nickname: '',
       value: '4.7', // 推荐即4.7
+      user:{
+        id:'',
+      },
     }
   },
   methods: {
@@ -200,8 +205,11 @@ export default {
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         console.log("接收的信息" + response.data);
-        this.nickname = responseBody.data.nickname;
+        this.user = responseBody.data;
       })
+    },
+    toPay(){
+      location.href = '/product/order?userId='+this.user.id+'&spuId='+this.product.spuId+'&num='+this.num;
     },
     // 处理点击查询功能
     handleSelect(key, keyPath) {
@@ -223,7 +231,7 @@ export default {
         }
       })
     },
-    loadProductDetailList() {
+    loadProductDetail() {
       let url = 'http://localhost:9900/spu/selectToDetail' + location.search;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
@@ -240,7 +248,7 @@ export default {
     this.loadCategoryList();
     this.loadLocalRuleForm();
     this.loadUserNickname();
-    this.loadProductDetailList();
+    this.loadProductDetail();
   }
 }
 </script>

@@ -5,13 +5,13 @@ header a {
   font-size: 18px;
 }
 
-a {
-  text-decoration: none;
-  color: #1f1e1e;
-}
-
 .el-table .el-table__cell {
   padding: 0;
+}
+
+.el-descriptions-item__label.is-bordered-label {
+  width: 120px;
+  height: 50px;
 }
 
 /*未访问*/
@@ -70,57 +70,27 @@ a:active {
         <!--导航菜单-->
         <div style="background-color: #cd331f;height: 62px">
           <span
-              style="font-size: 32px;font-weight: bold;font-family: 幼圆;line-height: 62px;color: white;margin-left: 360px">我的商城</span>
+              style="font-size: 32px;font-weight: bold;font-family: 幼圆;line-height: 62px;color: white;margin-left: 360px">购物车</span>
           <!--下标代表当前菜单-->
-          <a href="/user/index">
-            <span style="font-size: 17px;font-family: 微软雅黑;color: white;margin-left: 100px">首页</span>
-          </a>
-          <a href="/user/detail">
-            <span style="font-size: 17px;font-family: 微软雅黑;color: white;margin-left: 100px">账户详情</span>
-          </a>
-          <a href="javascript:void(0)" @click="openAddress()">
-            <span style="font-size: 17px;font-family: 微软雅黑;color: white;margin-left: 100px">我的收货地址</span>
-          </a>
         </div>
       </el-header>
       <!--中间部分-->
       <el-main style="width: 1200px;margin: 0 auto">
+        <el-avatar :size="90"
+                   :src="user.avatar"/>
+        <span style="color: #191a1a;font-weight: bold">{{ user.nickname }}</span>
         <div style="height: 20px"></div>
-        <div style="height: 800px;width: 1100px">
-          <div style="height: 320px;width: 1100px;border: 1px solid #877c7c">
-            <div style="height: 120px;background-color: #e4e6e7;overflow: hidden;border: 1px solid #877c7c">
-              <div style="margin-top: 13px;margin-left: 20px">
-                <el-avatar :size="90"
-                           :src="user.avatar"/>
-                <span style="color: #191a1a;font-weight: bold">{{ user.nickname }}</span>
-              </div>
+        <div style="width: 1100px">
+          <div style="width: 1100px;border: 1px solid #877c7c">
+            <div
+                style="width: 1100px;height: 60px;background-color: #e4e6e7;overflow: hidden;border: 1px solid #877c7c">
+              <h1 style="margin-left: 20px;line-height: 60px">我的购物车</h1>
             </div>
-            <div style="height: 100px;text-align: center;font-size: 25px;font-family: 微软雅黑">
-              <div style="margin-top: 100px">
-                <el-badge style="margin-right: 40px" :value="12" class="item">
-                  <a href="">待付款</a>
-                </el-badge>
-                <el-divider direction="vertical"/>
-                <el-badge style="margin-left: 40px;margin-right: 40px" :value="7" class="item" type="primary">
-                  <a href="">待发货</a>
-                </el-badge>
-                <el-divider direction="vertical"/>
-                <el-badge style="margin-left: 40px;margin-right: 40px" :value="6" class="item" type="primary">
-                  <a href="">待收货</a>
-                </el-badge>
-                <el-divider direction="vertical"/>
-                <el-badge style="margin-left: 40px;margin-right: 40px" :value="4" class="item" type="success">
-                  <a href="">待评价</a>
-                </el-badge>
-                <el-divider direction="vertical"/>
-                <el-badge style="margin-left: 40px" :value="3" class="item">
-                  <a href="">退款</a>
-                </el-badge>
-              </div>
+
+            <div>
+
             </div>
-          </div>
-          <div style="width: 1100px;height: 60px;background-color: #e4e6e7;margin-top: 20px">
-            <h1 style="margin-left: 20px;line-height: 60px">我的物流信息:</h1>
+
           </div>
         </div>
       </el-main>
@@ -143,19 +113,30 @@ a:active {
 export default {
   data() {
     return {
-      user: {
-        avatar: '',
-        nickname: '',
-      },
-      activeIndex: "",
-      size: 'medium',
+      user: {},
       username: '',
+      num:'',
+      address:{
+        info:'',
+        detailInfo:'',
+        name:'',
+        number:''
+      },
+      product: {
+        spuId:'',
+        title: '', // 标题
+        brandName: '',
+        categoryName: '',
+        indexPrice: '', // 现价
+        tags: '',
+        url: '', // 封面
+        detail: '', // 评价
+        attributeList: [],
+        num:'',
+      },
     }
   },
   methods: {
-    openAddress() {
-      location.href = '/user/address?id=' + this.user.id;
-    },
     // 加载本地的表单中的数据,存放到roleForm中去
     loadLocalRuleForm() {
       let localRuleFormString = localStorage.getItem('ruleFormToUser');
@@ -171,11 +152,27 @@ export default {
         this.user = responseBody.data;
       })
     },
+    loadProductDetail() {
+      // ?userId=1&spuId=5&num=2
+      this.num = location.search.split("&")[2].split("=")[1];
+      let spuId = location.search.split("&")[1].split("=")[1];
+      console.log("id为:"+spuId)
+      let url = 'http://localhost:9900/spu/selectToDetail?spuId=' + spuId;
+      this.axios.get(url).then((response) => {
+        let responseBody = response.data;
+        if (responseBody.state == 20000) {
+          this.product = responseBody.data;
+        } else {
+          this.$message.error(responseBody.message);
+        }
+      })
+    }
   },
   // 生命周期方法(挂载)
   mounted() {
     this.loadLocalRuleForm();
     this.loadUserDetail();
+    this.loadProductDetail();
   }
 }
 </script>

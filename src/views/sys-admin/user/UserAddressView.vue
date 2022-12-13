@@ -45,7 +45,7 @@ a:active {
 }
 
 .my-label {
-  background: #92db6d;
+  background: #E1F3D8;
 }
 
 .my-content {
@@ -67,7 +67,7 @@ a:active {
           <el-divider direction="vertical"/>
           <a href="">社会招聘</a>
           <el-divider direction="vertical"/>
-          <a href="">购物车</a>
+          <a href="/user/shoppingCart">购物车</a>
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
@@ -91,6 +91,9 @@ a:active {
       <el-main style="width: 1200px;margin: 0 auto">
         <el-avatar :size="90"
                    :src="user.avatar"/><span style="color: #191a1a;font-weight: bold">{{user.nickname}}</span>
+        <span style="float: right;margin-right: 60px;margin-top: 40px">
+          <el-button @click="addressAdd()">添加收货地址</el-button>
+        </span>
         <div style="height: 20px"></div>
         <div style="width: 1100px;border: 1px solid #877c7c">
           <el-row :gutter="12" style="margin-top: 10px;margin-left: 10px" v-for="add in address">
@@ -105,8 +108,8 @@ a:active {
                                @click="handleEdit(add.id)">修改</el-button>
                 </div>
                 <el-descriptions title="收货信息" :column="3" border>
-                  <el-descriptions-item label-class-name="my-label" content-class-name="my-content" label="收件人姓名:">{{add.name}}</el-descriptions-item>
-                  <el-descriptions-item label="收货手机号:">{{add.number}}</el-descriptions-item>
+                  <el-descriptions-item content-class-name="my-content" label="收件人姓名:">{{add.name}}</el-descriptions-item>
+                  <el-descriptions-item content-class-name="my-label" label="收货手机号:">{{add.number}}</el-descriptions-item>
                   <el-descriptions-item label="收货地址:">{{add.info}}</el-descriptions-item>
                   <el-descriptions-item label="收货详细地址:">{{add.detailInfo}}</el-descriptions-item>
                   <el-descriptions-item label="备注标签:">
@@ -131,8 +134,8 @@ a:active {
       </el-footer>
     </el-container>
 
-    <!-- 弹出的编辑相册的对话框 -->
-    <el-dialog title="修改收货地址" :visible.sync="dialogFormVisible">
+    <!-- 弹出的编辑收货地址的对话框 -->
+    <el-dialog title="修改收货地址" width="40%" :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm">
         <el-form-item label="收件人姓名:" :label-width="formLabelWidth">
           <el-input v-model="ruleForm.name" autocomplete="off"></el-input>
@@ -152,7 +155,32 @@ a:active {
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitEdit()">确 定</el-button>
+        <el-button type="primary" @click="submitEdit()">修 改</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 弹出的添加收货地址的对话框 -->
+    <el-dialog title="添加收货地址"  width="35%" :visible.sync="dialogFormVisibleToAdd">
+      <el-form :model="ruleFormToAdd" :rules="rules" ref="ruleForm">
+        <el-form-item label="收件人姓名:" :label-width="formLabelWidth" prop="name">
+          <el-input v-model="ruleFormToAdd.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="收件人手机号:" :label-width="formLabelWidth" prop="number">
+          <el-input v-model="ruleFormToAdd.number" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="收货地址:" :label-width="formLabelWidth" prop="info">
+          <el-input v-model="ruleFormToAdd.info" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="收货详细地址" :label-width="formLabelWidth" prop="detailInfo">
+          <el-input v-model="ruleFormToAdd.detailInfo" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="收货备注标签:" :label-width="formLabelWidth" prop="tags">
+          <el-input v-model="ruleFormToAdd.tags" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleToAdd = false">取 消</el-button>
+        <el-button type="primary" @click="submitAdd()">添 加</el-button>
       </div>
     </el-dialog>
   </div>
@@ -177,12 +205,61 @@ export default {
         number:'',
         tags:'',
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      ruleFormToAdd:{
+        userId:'',
+      },
+      dialogFormVisibleToAdd:false,
+      rules: {
+        name: [
+          {required: true, message: '请输入收货人姓名:', trigger: 'blur'},
+        ],
+        number: [
+          {required: true, message: '请输入收货人电话:', trigger: 'blur'},
+          {min: 10, max: 11, message: '长度在 10 到 11 位数字', trigger: 'blur'}
+        ],
+        info: [
+          {required: true, message: '请输入收货地址:', trigger: 'blur'},
+        ],
+        detailInfo: [
+          {required: true, message: '请输入收货详细地址:', trigger: 'blur'},
+        ],
+        tags: [
+          {required: true, message: '请输入收货备注标签:', trigger: 'blur'},
+        ],
+      }
     }
   },
   methods: {
     openAddress(){
       location.href = '/user/address?id='+this.user.id;
+    },
+    addressAdd(){
+      this.dialogFormVisibleToAdd = true;
+    },
+    submitAdd(){
+      this.ruleFormToAdd.userId = this.user.id;
+      let url = 'http://localhost:9900/addresses/insert';
+      console.log('url:' + url);
+      let formData = this.qs.stringify(this.ruleFormToAdd);// 将修改的数据转换为formData格式
+      this.axios.post(url, formData).then((response) => {
+        let responseBody = response.data;
+        if (responseBody.state == 20000) {
+          this.$message({
+            type: 'success',
+            message: '添加收货信息成功!'
+          });
+          this.dialogFormVisibleToAdd = false;
+          this.loadAddressInfo();
+          this.ruleFormToAdd = '';
+        } else if (responseBody.state == 40900) {
+          this.$message.error(responseBody.message);
+        } else {
+          this.$message.error(responseBody.message);
+          this.dialogFormVisibleToAdd = false;
+          this.loadAddressInfo()
+        }
+      })
     },
     // 处理提交修改
     submitEdit() {

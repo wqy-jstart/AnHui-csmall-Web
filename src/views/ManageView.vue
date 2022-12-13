@@ -199,6 +199,10 @@
                 <i class="el-icon-s-order"></i>
                 <span>订单管理</span>
               </template>
+              <el-menu-item index="/sys-admin/main/user/logistics">
+                <i class="el-icon-s-claim"></i>
+                <span>用户订单</span>
+              </el-menu-item>
             </el-submenu>
             <!-- 营销管理 -->
             <el-submenu index="5">

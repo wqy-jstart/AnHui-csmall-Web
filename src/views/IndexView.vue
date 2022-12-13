@@ -57,7 +57,7 @@ a:active {
           <el-divider direction="vertical"/>
           <a href="">社会招聘</a>
           <el-divider direction="vertical"/>
-          <a href="">购物车</a>
+          <a href="/user/shoppingCart">购物车</a>
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
@@ -135,7 +135,7 @@ a:active {
               </a>
               <div>
                 <p style="font-size: 15px;height: 40px;margin-top: 0">
-                  <a style="text-decoration: none;color: #3f3f3f" :href="'detail.html?id='+p.id">
+                  <a style="text-decoration: none;color: #3f3f3f" :href="'/product/detail?spuId='+p.spuId">
                     {{ p.title }}
                   </a>
                 </p>
