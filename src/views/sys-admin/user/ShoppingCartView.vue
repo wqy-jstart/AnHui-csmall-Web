@@ -97,7 +97,7 @@ a:active {
               </div>
               <el-row :gutter="12" style="margin-top: 10px;margin-left: 10px" v-for="c in cartArr">
                 <el-col :span="24">
-                  <el-card shadow="hover" style="padding: 10px" >
+                  <el-card shadow="hover" style="padding: 10px">
                     <div style="float: right;margin-bottom: 10px">
                       <el-button type="danger" size="mini"
                                  @click="openDeleteConfirm(c.spuId)">删除
@@ -113,12 +113,6 @@ a:active {
                       <p style="font-size: 15px;color: #666;margin-bottom: 5px">商品分类:&nbsp{{ c.categoryName }}</p>
                     </div>
                     <div style="width: 180px;float: left;margin-left: 50px">
-                      <p style="font-size: 15px;color: #666;float: left">属性:</p>
-                      <el-row :gutter="5" style="height: 30px">
-                        <el-col span="6" style="font-size: 15px;color: #666"  v-for="p in c.attributeList">
-                          <el-tag type="success" size="mini">{{ p.valueList }}{{ p.unit }}</el-tag>
-                        </el-col>
-                      </el-row>
                       <p style="font-size: 15px;color: #666;float: left">标签:</p>
                       <el-tag size="mini">{{ c.tags }}</el-tag>
                       <p style="font-size: 15px;color: #666;margin-top: 10px">
@@ -138,7 +132,7 @@ a:active {
                     </div>
                     <div style="width: 150px;height: 100px;margin-left: 30px;float:left">
                       <template>
-                        <el-input-number v-model="num" size="small" align="center" :disabled="true"></el-input-number>
+                        <el-input-number v-model="num" size="small" @change="handleChange()" :min="1" :max="10"></el-input-number>
                       </template>
                     </div>
                   </el-card>
@@ -169,9 +163,9 @@ export default {
     return {
       user: {},
       username: '',
-      num: '',
-      cartArr:[],
-      value:'4.7',
+      num:'',
+      cartArr: [],
+      value: '4.7',
     }
   },
   methods: {
@@ -180,7 +174,6 @@ export default {
       let localRuleFormString = localStorage.getItem('ruleFormToUser');
       if (localRuleFormString) {
         this.username = JSON.parse(localRuleFormString);
-        console.log(this.username)
       }
     },
     loadUserDetail() {
@@ -190,8 +183,11 @@ export default {
         this.user = responseBody.data;
       })
     },
+    handleChange(){
+      console.log(this.num);
+    },
     loadCartList() {
-      let url = 'http://localhost:9900/carts//selectToCartList'+location.search;
+      let url = 'http://localhost:9900/carts//selectToCartList' + location.search;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
