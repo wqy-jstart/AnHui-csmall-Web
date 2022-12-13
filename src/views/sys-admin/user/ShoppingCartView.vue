@@ -83,14 +83,68 @@ a:active {
         <div style="width: 1100px">
           <div style="width: 1100px;border: 1px solid #877c7c">
             <div
-                style="width: 1100px;height: 60px;background-color: #e4e6e7;overflow: hidden;border: 1px solid #877c7c">
+                style="width: 1100px;height: 60px;background-color: #e4e6e7;overflow: hidden">
               <h1 style="margin-left: 20px;line-height: 60px">我的购物车</h1>
             </div>
-
-            <div>
-
+            <div style="width: 1100px;border: 1px solid #877c7c">
+              <div style="width: 1100px;height: 40px;margin-top: 24px;margin-left: 25px">
+                <span style="margin-left: 50px;font-weight: bold">商品图片</span>
+                <span style="margin-left: 90px;font-weight: bold">店铺宝贝</span>
+                <span style="margin-left: 130px;font-weight: bold">商品属性</span>
+                <span style="margin-left: 140px;font-weight: bold">价格</span>
+                <span style="margin-left: 120px;font-weight: bold">数量</span>
+                <span style="margin-left: 180px;font-weight: bold">操作</span>
+              </div>
+              <el-row :gutter="12" style="margin-top: 10px;margin-left: 10px" v-for="c in cartArr">
+                <el-col :span="24">
+                  <el-card shadow="hover" style="padding: 10px" >
+                    <div style="float: right;margin-bottom: 10px">
+                      <el-button type="danger" size="mini"
+                                 @click="openDeleteConfirm(c.spuId)">删除
+                      </el-button>
+                    </div>
+                    <el-image
+                        style="width: 120px; height: 120px;float: left"
+                        :src="c.url"
+                        fit="fill"></el-image>
+                    <div style="width: 180px;height: 120px;margin-left: 10px;float:left">
+                      <p style="font-size: 15px;color: #666;margin-bottom: 5px">商品标题:&nbsp{{ c.title }}</p>
+                      <p style="font-size: 15px;color: #666;margin-bottom: 5px">商品品牌:&nbsp{{ c.brandName }}</p>
+                      <p style="font-size: 15px;color: #666;margin-bottom: 5px">商品分类:&nbsp{{ c.categoryName }}</p>
+                    </div>
+                    <div style="width: 180px;float: left;margin-left: 50px">
+                      <p style="font-size: 15px;color: #666;float: left">属性:</p>
+                      <el-row :gutter="5" style="height: 30px">
+                        <el-col span="6" style="font-size: 15px;color: #666"  v-for="p in c.attributeList">
+                          <el-tag type="success" size="mini">{{ p.valueList }}{{ p.unit }}</el-tag>
+                        </el-col>
+                      </el-row>
+                      <p style="font-size: 15px;color: #666;float: left">标签:</p>
+                      <el-tag size="mini">{{ c.tags }}</el-tag>
+                      <p style="font-size: 15px;color: #666;margin-top: 10px">
+                        评价: &nbsp{{ c.detail }}</p>
+                      <el-rate style="padding: 10px"
+                               v-model="value"
+                               disabled
+                               show-score
+                               text-color="#ff9900"
+                               score-template="{value}">
+                      </el-rate>
+                    </div>
+                    <div style="width: 90px;height: 100px;margin-left: 26px;float:left">
+                      <p style="font-size: 20px;font-weight: bold">
+                        ￥{{ c.indexPrice }}
+                      </p>
+                    </div>
+                    <div style="width: 150px;height: 100px;margin-left: 30px;float:left">
+                      <template>
+                        <el-input-number v-model="num" size="small" align="center" :disabled="true"></el-input-number>
+                      </template>
+                    </div>
+                  </el-card>
+                </el-col>
+              </el-row>
             </div>
-
           </div>
         </div>
       </el-main>
@@ -115,25 +169,9 @@ export default {
     return {
       user: {},
       username: '',
-      num:'',
-      address:{
-        info:'',
-        detailInfo:'',
-        name:'',
-        number:''
-      },
-      product: {
-        spuId:'',
-        title: '', // 标题
-        brandName: '',
-        categoryName: '',
-        indexPrice: '', // 现价
-        tags: '',
-        url: '', // 封面
-        detail: '', // 评价
-        attributeList: [],
-        num:'',
-      },
+      num: '',
+      cartArr:[],
+      value:'4.7',
     }
   },
   methods: {
@@ -152,16 +190,12 @@ export default {
         this.user = responseBody.data;
       })
     },
-    loadProductDetail() {
-      // ?userId=1&spuId=5&num=2
-      this.num = location.search.split("&")[2].split("=")[1];
-      let spuId = location.search.split("&")[1].split("=")[1];
-      console.log("id为:"+spuId)
-      let url = 'http://localhost:9900/spu/selectToDetail?spuId=' + spuId;
+    loadCartList() {
+      let url = 'http://localhost:9900/carts//selectToCartList'+location.search;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
-          this.product = responseBody.data;
+          this.cartArr = responseBody.data;
         } else {
           this.$message.error(responseBody.message);
         }
@@ -172,7 +206,7 @@ export default {
   mounted() {
     this.loadLocalRuleForm();
     this.loadUserDetail();
-    this.loadProductDetail();
+    this.loadCartList();
   }
 }
 </script>

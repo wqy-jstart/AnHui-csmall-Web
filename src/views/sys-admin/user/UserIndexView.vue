@@ -61,7 +61,7 @@ a:active {
           <el-divider direction="vertical"/>
           <a href="">社会招聘</a>
           <el-divider direction="vertical"/>
-          <a href="/user/shoppingCart">购物车</a>
+          <a href="javascript:void(0)" @click="toCart()">购物车</a>
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
@@ -144,6 +144,7 @@ export default {
   data() {
     return {
       user: {
+        id:'',
         avatar: '',
         nickname: '',
       },
@@ -163,6 +164,9 @@ export default {
         this.username = JSON.parse(localRuleFormString);
         console.log(this.username)
       }
+    },
+    toCart(){
+      location.href = '/user/shoppingCart?id='+this.user.id;
     },
     loadUserDetail() {
       let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;

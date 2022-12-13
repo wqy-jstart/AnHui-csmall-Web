@@ -61,7 +61,7 @@ p {
           <el-divider direction="vertical"/>
           <a href="">社会招聘</a>
           <el-divider direction="vertical"/>
-          <a href="/user/shoppingCart">购物车</a>
+          <a href="javascript:void(0)" @click="toCart()">购物车</a>
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
@@ -137,7 +137,7 @@ p {
             </p>
             <el-row gutter="20" style="margin-top: 20px;margin-left: 10px">
               <el-button type="warning" icon="el-icon-circle-plus-outline" @click="toPay()">立即购买</el-button>
-              <el-button type="primary" icon="el-icon-shopping-cart-2">加入购物车</el-button>
+              <el-button type="primary" icon="el-icon-shopping-cart-2" @click="addCart()">加入购物车</el-button>
             </el-row>
           </el-col>
         </el-row>
@@ -208,6 +208,21 @@ export default {
         this.user = responseBody.data;
       })
     },
+    // 添加购物车的事件
+    addCart(){
+      let obj = {userId:this.user.id,spuId:this.product.spuId};
+      let url = 'http://localhost:9900/carts/insert';
+      let ruleFormJSON  = this.qs.stringify(obj);
+      this.axios.post(url,ruleFormJSON).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.$message.success("添加购物车成功!")
+        }else {
+          this.$message.error(responseBody.message);
+        }
+      })
+    },
+    // 生成支付订单事件
     toPay(){
       location.href = '/product/order?userId='+this.user.id+'&spuId='+this.product.spuId+'&num='+this.num;
     },
@@ -216,6 +231,9 @@ export default {
       console.log(key, keyPath);
       //跳转到结果页面 把分类id传递过去
       location.href = "/index/result?categoryId=" + key;//这里的key代表分类的id(与index相同)
+    },
+    toCart(){
+      location.href = '/user/shoppingCart?id='+this.user.id;
     },
     search() {//搜索的点击事件(搜索后跳转结果会将wd搜索内容在路径上传递过去)
       location.href = "/index/result?wd=" + this.wd;//这里的key代表分类的id(与index相同)

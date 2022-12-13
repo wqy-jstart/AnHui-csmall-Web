@@ -57,7 +57,7 @@ a:active {
           <el-divider direction="vertical"/>
           <a href="">社会招聘</a>
           <el-divider direction="vertical"/>
-          <a href="/user/shoppingCart">购物车</a>
+          <a href="javascript:void(0)" @click="toCart()">购物车</a>
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
@@ -132,7 +132,10 @@ export default {
       wd: "",//文本框双向绑定的变量
       productArr: [],
       username: '',
-      nickname: '',
+      user:{
+        id:'',
+        nickname:'',
+      },
     }
   },
   methods: {
@@ -148,8 +151,11 @@ export default {
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         console.log("接收的信息" + response.data);
-        this.nickname = responseBody.data.nickname;
+        this.user = responseBody.data;
       })
+    },
+    toCart(){
+      location.href = '/user/shoppingCart?id='+this.user.id;
     },
     // 处理点击查询功能
     handleSelect(key, keyPath) {

@@ -57,7 +57,7 @@ a:active {
           <el-divider direction="vertical"/>
           <a href="">社会招聘</a>
           <el-divider direction="vertical"/>
-          <a href="/user/shoppingCart">购物车</a>
+          <a href="javascript:void(0)" @click="toCart()">购物车</a>
           <el-divider direction="vertical"/>
           <a href="">帮助</a>
           <el-divider direction="vertical"/>
@@ -176,6 +176,7 @@ export default {
       productArr: [],
       username: '',
       user:{
+        id:'',
         nickname: '',
       }
     }
@@ -195,6 +196,9 @@ export default {
         console.log("接收的信息" + response.data);
         this.user = responseBody.data;
       })
+    },
+    toCart(){
+      location.href = '/user/shoppingCart?id='+this.user.id;
     },
     // 处理点击查询功能
     handleSelect(key, keyPath) {
