@@ -179,7 +179,12 @@ export default {
     },
     loadUserDetail() {
       let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         this.user = responseBody.data;
       })
@@ -190,7 +195,12 @@ export default {
     handleDelete(id) {
       let url = 'http://localhost:9900/carts/' + this.user.id + '/'+id+'/deleteById';
       console.log('url=' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
@@ -219,7 +229,12 @@ export default {
     },
     loadCartList() {
       let url = 'http://localhost:9900/carts/selectToCartList' + location.search;
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.cartArr = responseBody.data;
@@ -230,7 +245,12 @@ export default {
     },
     loadSUMPrice(){
       let url = 'http://localhost:9900/carts/selectSUMPrice'+location.search;
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.sumPrice = responseBody.data;

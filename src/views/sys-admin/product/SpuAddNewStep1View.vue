@@ -56,7 +56,12 @@ export default {
         if (valid) {
           let url = 'http://localhost:9900/categories/'+this.ruleForm.categoryId+'/selectById';
           console.log('url='+url);
-          this.axios.get(url).then((response)=>{
+          this.axios
+              .create({
+                'headers':{
+                  'Authorization':localStorage.getItem('jwtToAdmin')
+                }
+              }).get(url).then((response)=>{
             let responseBody = response.data;
             console.log(responseBody.data)
             if (responseBody.state == 20000){ // 如果成功

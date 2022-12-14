@@ -74,6 +74,12 @@ a:active {
         <el-avatar :size="90"
                    :src="user.avatar"/>
         <span style="color: #191a1a;font-weight: bold">{{ user.nickname }}</span>
+        <el-steps style="width: 600px;height: 60px;margin-right: 30px;float: right;margin-top: 20px" process-status="wait"  :active="active" align-center finish-status="success">
+          <el-step title="1.确认订单信息"></el-step>
+          <el-step title="2.付款到支付宝"></el-step>
+          <el-step title="3.确认收货"></el-step>
+          <el-step title="4.双方互评"></el-step>
+        </el-steps>
         <div style="height: 20px"></div>
         <div style="width: 1100px">
           <div style="width: 1100px;border: 1px solid #877c7c">
@@ -185,6 +191,7 @@ a:active {
 export default {
   data() {
     return {
+      active:'1',
       user: {},
       username: '',
       radio: '', // 绑定的选中的收货地址id
@@ -229,14 +236,24 @@ export default {
     },
     loadUserDetail() {
       let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         this.user = responseBody.data;
       })
     },
     selectAddressById(radio){
       let url = 'http://localhost:9900/addresses/'+radio+'/selectById';
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         this.address = responseBody.data;
       })
@@ -245,7 +262,12 @@ export default {
       // ?userId=1&spuId=5
       let userId = location.search.split("&")[0].split("=")[1];
       let url = 'http://localhost:9900/addresses/selectByUserId?id=' + userId;
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.addressArr = responseBody.data;
@@ -260,7 +282,12 @@ export default {
       let spuId = location.search.split("&")[1].split("=")[1];
       console.log("id为:"+spuId)
       let url = 'http://localhost:9900/spu/selectToDetail?spuId=' + spuId;
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.product = responseBody.data;

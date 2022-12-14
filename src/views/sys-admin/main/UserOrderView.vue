@@ -147,7 +147,7 @@ export default {
       this.axios
           .create({
             'headers':{
-              'Authorization':localStorage.getItem('jwt')
+              'Authorization':localStorage.getItem('jwtToAdmin')
             }
           })
           .post(url).then((response) => {
@@ -176,7 +176,7 @@ export default {
       this.axios
           .create({
             'headers':{
-              'Authorization':localStorage.getItem('jwt')
+              'Authorization':localStorage.getItem('jwtToAdmin')
             }
           })
           .get(url).then((response) => {// 发送异步请求

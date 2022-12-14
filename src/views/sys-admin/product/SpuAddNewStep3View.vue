@@ -72,7 +72,12 @@ export default {
       console.log('准备从服务器端加载【相册列表】……');
       let url = 'http://localhost:9900/albums';
       console.log('请求路径：' + url);
-      this.axios.get(url)
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url)
           .then((response) => {
             let responseBody = response.data;
             console.log('接收到服务器端响应的结果：');
@@ -85,7 +90,12 @@ export default {
         if (valid) {
           let url = 'http://localhost:9900/albums/'+this.ruleForm.albumId+'/selectById';
           console.log('url='+url);
-          this.axios.get(url).then((response) => {
+          this.axios
+              .create({
+                'headers':{
+                  'Authorization':localStorage.getItem('jwtToAdmin')
+                }
+              }).get(url).then((response) => {
             let responseBody = response.data;
             if (responseBody.state == 20000) {
               this.ruleForm.albumName = responseBody.data.name;

@@ -95,7 +95,12 @@ export default {
       let url = 'http://localhost:9900/brands/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
-      this.axios.post(url, formData).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url, formData).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.$message({
@@ -121,7 +126,12 @@ export default {
       // this.ruleForm = album;
       let url = 'http://localhost:9900/brands/' + brand.id + '/selectById';
       console.log(url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.ruleForm = responseBody.data;
@@ -147,7 +157,12 @@ export default {
         url += '/disable';
       }
       console.log('url=' + url)
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state === 20000) {
           let message = '将品牌[' + brand.name + ']的状态改为[' + enableText[brand.enable] + ']成功!';
@@ -166,7 +181,12 @@ export default {
     handleDelete(brand) {
       let url = 'http://localhost:9900/brands/' + brand.id + '/deleteById';
       console.log('url=' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
@@ -196,7 +216,12 @@ export default {
     loadBrandList() {
       let url = "http://localhost:9900/brands/" // 请求路径
       console.log('url=' + url);
-      this.axios.get(url).then((response) => {// 发送异步请求
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response) => {// 发送异步请求
         let responseBody = response.data;
         this.tableData = responseBody.data;//将获取响应的数据中的data数据赋值给tableData
       })

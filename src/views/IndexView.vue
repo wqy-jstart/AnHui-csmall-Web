@@ -207,7 +207,12 @@ export default {
     },
     loadBannerList() {
       let url = 'http://localhost:9900/banners/selectListByEnable';
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.bannerArr = responseBody.data;
@@ -218,7 +223,12 @@ export default {
     },
     loadTopToSalesList() {
       let url = 'http://localhost:9900/spu/selectSortByTitle';
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.topArr = responseBody.data;
@@ -229,7 +239,12 @@ export default {
     },
     loadCategoryList() {
       let url = 'http://localhost:9900/categories/selectByParent';
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.categoryArr = responseBody.data;
@@ -240,7 +255,12 @@ export default {
     },
     loadProductList() {
       let url = 'http://localhost:9900/spu/selectIndexList';
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.productArr = responseBody.data;

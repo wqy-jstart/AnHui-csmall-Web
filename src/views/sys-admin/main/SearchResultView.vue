@@ -160,7 +160,12 @@ export default {
     },
     search() {//搜索的点击事件(搜索后跳转结果会将wd搜索内容在路径上传递过去)
       let url = 'http://localhost:9900/spu/selectByWd?wd=' + this.wd;
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.productArr = responseBody.data;
@@ -171,7 +176,12 @@ export default {
     },
     loadCategoryList() {
       let url = 'http://localhost:9900/categories/selectByParent';
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.categoryArr = responseBody.data;
@@ -183,7 +193,12 @@ export default {
     loadProductList() {
       if (location.search.indexOf("wd") != -1) {//包含wd代表路径上传的是搜索结果
         let url = 'http://localhost:9900/spu/selectByWd' + location.search;
-        this.axios.get(url).then((response) => {
+        this.axios
+            .create({
+              'headers':{
+                'Authorization':localStorage.getItem('jwtToUser')
+              }
+            }).get(url).then((response) => {
           let responseBody = response.data;
           if (responseBody.state == 20000) {
             this.productArr = responseBody.data;
@@ -193,7 +208,12 @@ export default {
         })
       } else {//不包含wd代表路径上传的是分类信息id
         let url = 'http://localhost:9900/spu/selectByCategoryId' + location.search
-        this.axios.get(url).then((response) => {
+        this.axios
+            .create({
+              'headers':{
+                'Authorization':localStorage.getItem('jwtToUser')
+              }
+            }).get(url).then((response) => {
           console.log("执行了查询结果的功能!")
           let responseBody = response.data;
           if (responseBody.state == 20000) {

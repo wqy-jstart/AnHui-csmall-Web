@@ -199,7 +199,12 @@ export default {
     // 加载品牌列表
     loadBrandList(){
       let url ='http://localhost:9900/brands';
-      this.axios.get(url).then((response)=>{
+      this.axios
+          .create({
+        'headers':{
+          'Authorization':localStorage.getItem('jwtToAdmin')
+        }
+      }).get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.brandListOptions = responseBody.data;
@@ -211,7 +216,12 @@ export default {
     // 加载属性模板列表
     loadAttributeTemplateList(){
       let url = 'http://localhost:9900/attributeTemplates';
-      this.axios.get(url).then((response)=>{
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.attributeTemplateListOptions = responseBody.data;
@@ -225,7 +235,12 @@ export default {
         if (valid) {
           let urlToBrand = 'http://localhost:9900/brands/'+this.ruleForm.brandId+'/selectById';
           console.log('urlToBrand = ' + urlToBrand);
-          this.axios.get(urlToBrand).then((response) => {
+          this.axios
+              .create({
+                'headers':{
+                  'Authorization':localStorage.getItem('jwtToAdmin')
+                }
+              }).get(urlToBrand).then((response) => {
             let responseBody = response.data;
             if (responseBody.state == 20000) {
               this.ruleForm.brandName = responseBody.data.name;
@@ -235,7 +250,12 @@ export default {
           });
           let urlToAT = 'http://localhost:9900/attributeTemplates/'+this.ruleForm.attributeTemplateId+'/selectById';
           console.log('urlToAT = ' + urlToAT);
-          this.axios.get(urlToAT).then((response) => {
+          this.axios
+              .create({
+                'headers':{
+                  'Authorization':localStorage.getItem('jwtToAdmin')
+                }
+              }).get(urlToAT).then((response) => {
             let responseBody = response.data;
             if (responseBody.state == 20000) {
               this.ruleForm.attributeTemplateName = responseBody.data.name;

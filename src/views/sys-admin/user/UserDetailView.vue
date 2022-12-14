@@ -219,7 +219,12 @@ export default {
       let url = 'http://localhost:9900/users/update';
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
-      this.axios.post(url, formData).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).post(url, formData).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.$message({
@@ -244,7 +249,12 @@ export default {
       // this.ruleForm = album;
       let url = 'http://localhost:9900/users/' + this.ruleForm.id + '/selectById';
       console.log(url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.ruleForm = responseBody.data;

@@ -208,7 +208,12 @@ export default {
       let obj = {userId:this.user.id,spuId:this.product.spuId};
       let url = 'http://localhost:9900/carts/insert';
       let ruleFormJSON  = this.qs.stringify(obj);
-      this.axios.post(url,ruleFormJSON).then((response)=>{
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).post(url,ruleFormJSON).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000){
           this.$message.success("添加购物车成功!")
@@ -235,7 +240,12 @@ export default {
     },
     loadCategoryList() {
       let url = 'http://localhost:9900/categories/selectByParent';
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.categoryArr = responseBody.data;
@@ -246,7 +256,12 @@ export default {
     },
     loadProductDetail() {
       let url = 'http://localhost:9900/spu/selectToDetail' + location.search;
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.product = responseBody.data;

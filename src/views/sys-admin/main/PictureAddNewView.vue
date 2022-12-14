@@ -85,7 +85,12 @@ export default {
           console.log('url = ' + url);
           let formData = this.qs.stringify(this.ruleForm);//将formData对象转换成FormData格式,当后端不添加@RequestBody注解时接收
           console.log('formData=' + formData);
-          this.axios.post(url, formData).then((response)=>{//箭头函数
+          this.axios
+              .create({
+                'headers':{
+                  'Authorization':localStorage.getItem('jwtToAdmin')
+                }
+              }).post(url, formData).then((response)=>{//箭头函数
             let responseBody = response.data;
             if (responseBody.state == 20000){
               this.$message({
@@ -108,7 +113,12 @@ export default {
     },
     loadAlbumList(){
       let url = 'http://localhost:9900/albums';
-      this.axios.get(url).then((response)=>{
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000){
           this.albumListOptions = responseBody.data;

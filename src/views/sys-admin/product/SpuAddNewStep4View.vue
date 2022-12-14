@@ -85,7 +85,12 @@ export default {
           let formData = this.qs.stringify(this.ruleForm);
           console.log('formData='+formData);
 
-          this.axios.post(url,formData).then((response)=>{
+          this.axios
+              .create({
+                'headers':{
+                  'Authorization':localStorage.getItem('jwtToAdmin')
+                }
+              }).post(url,formData).then((response)=>{
             let responseBody = response.data;
             if (responseBody.state == 20000){
               this.$alert('添加SPU成功!', '操作成功', {

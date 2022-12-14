@@ -97,7 +97,12 @@ export default {
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
-      this.axios.post(url, formData).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url, formData).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.$message({
@@ -123,7 +128,12 @@ export default {
       // this.ruleForm = album;
       let url = 'http://localhost:9900/attributes/' + attribute.id + '/selectById';
       console.log(url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.ruleForm = responseBody.data;
@@ -137,7 +147,12 @@ export default {
     // 根据属性模板的id查询属性列表
     loadAttributeListByATId(){
       let url = 'http://localhost:9900/attributes/'+this.template.templateId+'/listByTemplate';
-      this.axios.get(url).then((response)=>{
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.isDisplay = true;
@@ -150,7 +165,12 @@ export default {
     handleDelete(attribute) {
       let url = 'http://localhost:9900/attributes/' + attribute.id + '/deleteById';
       console.log('url=' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
@@ -178,7 +198,12 @@ export default {
     },
     loadAttributeTemplateList() {
       let url = 'http://localhost:9900/attributeTemplates';
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           let attributeTemplateList = responseBody.data;
@@ -196,7 +221,12 @@ export default {
     },
     loadAttributeList(){
       let url = 'http://localhost:9900/attributes';
-      this.axios.get(url).then((response)=>{
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000){
           this.tableData = responseBody.data;

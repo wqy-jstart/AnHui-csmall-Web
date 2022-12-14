@@ -240,7 +240,12 @@ export default {
       let url = 'http://localhost:9900/addresses/insert';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleFormToAdd);// 将修改的数据转换为formData格式
-      this.axios.post(url, formData).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).post(url, formData).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.$message({
@@ -264,7 +269,12 @@ export default {
       let url = 'http://localhost:9900/addresses/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
-      this.axios.post(url, formData).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).post(url, formData).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.$message({
@@ -288,7 +298,12 @@ export default {
       this.ruleForm.id = id;
       let url = 'http://localhost:9900/addresses/' + id + '/selectById';
       console.log(url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.ruleForm = responseBody.data;
@@ -302,7 +317,12 @@ export default {
     handleDelete(id) {
       let url = 'http://localhost:9900/addresses/' + id + '/deleteById';
       console.log('url=' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
@@ -344,7 +364,12 @@ export default {
     },
     loadAddressInfo(){
       let url = 'http://localhost:9900/addresses/selectByUserId'+location.search;
-      this.axios.get(url).then((response)=>{
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000){
           this.address = responseBody.data;

@@ -48,7 +48,12 @@ export default {
     handleDelete(user) {
       let url = 'http://localhost:9900/users/' + user.id + '/deleteById';
       console.log('url=' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
@@ -78,7 +83,12 @@ export default {
     loadAlbumList() {
       let url = "http://localhost:9900/users" // 请求路径
       console.log('url=' + url);
-      this.axios.get(url).then((response) => {// 发送异步请求
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response) => {// 发送异步请求
         let responseBody = response.data;
         this.user = responseBody.data;//将获取响应的数据中的data数据赋值给tableData
       })

@@ -96,10 +96,10 @@ export default {
               let ruleFormString = JSON.stringify(this.ruleForm.username);
                 localStorage.setItem('ruleFormToUser', ruleFormString);
                 location.href = "/index";
-              // let jwt = responseBody.data;
-              // console.log('登陆成功,服务器响应JWT:'+jwt);
-              // localStorage.setItem('jwt',jwt);
-              // console.log('已经将JWT保存到localStorage中')
+              let jwt = responseBody.data;
+              console.log('登陆成功,服务器响应JWT:'+jwt);
+              localStorage.setItem('jwtToUser',jwt);
+              console.log('已经将JWT保存到localStorage中')
               this.$message({
                 message: '登录成功,欢迎回来!',
                 type: 'success'

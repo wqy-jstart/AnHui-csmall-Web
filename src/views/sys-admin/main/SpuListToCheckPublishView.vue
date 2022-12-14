@@ -209,7 +209,12 @@ export default {
       let url = 'http://localhost:9900/spu/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
-      this.axios.post(url, formData).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url, formData).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.$message({
@@ -235,7 +240,12 @@ export default {
       // this.ruleForm = album;
       let url = 'http://localhost:9900/spu/' + spu.id + '/selectById';
       console.log(url);
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.ruleForm = responseBody.data;
@@ -256,7 +266,12 @@ export default {
         url += '/notPublish';
       }
       console.log('url=' + url)
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state === 20000) {
           let message = '将SPU[' + spu.name + ']的状态改为[' + enableText[spu.isPublished] + ']成功!';
@@ -283,7 +298,12 @@ export default {
         url += '/notRecommend';
       }
       console.log('url=' + url)
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state === 20000) {
           let message = '将SPU[' + spu.name + ']的状态改为[' + enableText[spu.isRecommend] + ']成功!';
@@ -310,7 +330,12 @@ export default {
         url += '/notCheck';
       }
       console.log('url=' + url)
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state === 20000) {
           let message = '将SPU[' + spu.name + ']的状态改为[' + enableText[spu.isChecked] + ']成功!';
@@ -330,7 +355,12 @@ export default {
     handleDelete(spu) {
       let url = 'http://localhost:9900/spu/' + spu.id + '/deleteById';
       console.log('url=' + url);
-      this.axios.post(url).then((response) => {
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).post(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state != 20000) {
           this.$message.error(responseBody.message);
@@ -358,7 +388,12 @@ export default {
     },
     loadSpuListToCheck(){
       let url = 'http://localhost:9900/spu/selectByPC';
-      this.axios.get(url).then((response)=>{
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000){
           this.tableData = responseBody.data;
