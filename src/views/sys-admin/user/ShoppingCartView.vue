@@ -92,8 +92,8 @@ a:active {
                 <span style="margin-left: 90px;font-weight: bold">店铺宝贝</span>
                 <span style="margin-left: 130px;font-weight: bold">商品属性</span>
                 <span style="margin-left: 140px;font-weight: bold">价格</span>
-                <span style="margin-left: 120px;font-weight: bold">好评</span>
-                <span style="margin-left: 180px;font-weight: bold">操作</span>
+                <span style="margin-left: 140px;font-weight: bold">好评</span>
+                <span style="margin-left: 160px;font-weight: bold">操作</span>
               </div>
               <el-row :gutter="12" style="margin-top: 10px;margin-left: 10px" v-for="c in cartArr">
                 <el-col :span="24">
