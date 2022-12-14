@@ -126,6 +126,10 @@ const routes = [
         component: () => import( '../views/LoginView.vue')
     },
     {
+        path: '/adminLogin',
+        component: () => import( '../views/AdminLoginView')
+    },
+    {
         path: '/register',
         component: () => import( '../views/RegisterView.vue')
     },

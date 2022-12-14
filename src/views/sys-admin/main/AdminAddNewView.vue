@@ -81,7 +81,7 @@ export default {
         ],
         password: [
           {required: true, message: '请输入密码', trigger: 'blur'},
-          {min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur'}
+          {min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur'}
         ],
         nickname: [
           {required: true, message: '请输入昵称', trigger: 'blur'},
@@ -101,7 +101,7 @@ export default {
         ],
         //"blur"丢失焦点事件
         roleIds: [
-          {required: true, message: '请至少输入一个角色', trigger: 'blur'}
+          {required: true, message: '请至少选择一个角色', trigger: 'blur'}
         ]
       }
     };
@@ -110,12 +110,12 @@ export default {
     // 获取角色列表
     loadRoleList() {
       console.log('loadRoleList');
-      let url = "http://localhost:9081/roles" // 请求路径
+      let url = "http://localhost:9901/roles" // 请求路径
       console.log('url=' + url);
       this.axios
           .create({
             'headers':{
-              'Authorization':localStorage.getItem('jwt')
+              'Authorization':localStorage.getItem('jwtToAdmin')
             }
           })
           .get(url).then((response) => {// 发送异步请求
@@ -128,7 +128,7 @@ export default {
       // 对表单进行检查
       this.$refs[formName].validate((valid) => {
         if (valid) { // 满足条件则通过验证
-          let url = 'http://localhost:9081/admins/add-new'
+          let url = 'http://localhost:9901/admins/add-new'
           console.log('url = ' + url);
           //将formData对象转换成FormData格式,当后端不添加@RequestBody注解时接收    {indices、brackets、repeat}数组格式
           let formData = this.qs.stringify(this.ruleForm,{arrayFormat:'repeat'});
@@ -136,7 +136,7 @@ export default {
           this.axios
               .create({
                 'headers':{
-                  'Authorization':localStorage.getItem('jwt')
+                  'Authorization':localStorage.getItem('jwtToAdmin')
                 }
               })
               .post(url, formData).then((response) => {//箭头函数

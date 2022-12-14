@@ -27,8 +27,7 @@ a {
         <div class="block">
           <h1 style="color: black;font-size: 35px">皖派土特产网络超市
             <span style="float: right">
-              <a style="font-size: 20px" href="/adminLogin">Admin Login</a>&nbsp/
-              <a style="font-size: 20px" href="/register">Sign Up</a>
+              <a href="/login">User Login</a>
           </span>
           </h1>
         </div>
@@ -37,7 +36,7 @@ a {
         <el-card style="width: 500px;height: 360px;margin: 300px auto;
                 background-color: rgba(255,255,255,0.3)">
           <!--label-width设置用户名这一列所占的宽度,如果不设置会显示在上面-->
-          <h1>User Login</h1>
+          <h1>Admin Login</h1>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px"
                    style="width: 400px;margin: 40px auto">
             <el-form-item label="用户名" prop="username">
@@ -88,20 +87,20 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9900/users/login';
+          let url = 'http://localhost:9901/admins/login';
           let formData = this.qs.stringify(this.ruleForm)
           this.axios.post(url, formData).then((response) => {
             let responseBody = response.data;
-            if (responseBody.state == 20000){
+            if (responseBody.state == 20000) {
               let ruleFormString = JSON.stringify(this.ruleForm.username);
-                localStorage.setItem('ruleFormToUser', ruleFormString);
-                location.href = "/index";
-              // let jwt = responseBody.data;
-              // console.log('登陆成功,服务器响应JWT:'+jwt);
-              // localStorage.setItem('jwt',jwt);
-              // console.log('已经将JWT保存到localStorage中')
+              localStorage.setItem('ruleFormToAdmin', ruleFormString);
+              location.href = "/";
+              let jwt = responseBody.data;
+              console.log('登陆成功,服务器响应JWT:' + jwt);
+              localStorage.setItem('jwtToAdmin', jwt);
+              console.log('已经将JWT保存到localStorage中')
               this.$message({
-                message: '登录成功,欢迎回来!',
+                message: '登录成功,欢迎管理员回来!',
                 type: 'success'
               });
             } else {
