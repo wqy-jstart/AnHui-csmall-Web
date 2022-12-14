@@ -9,11 +9,6 @@ header a {
   padding: 0;
 }
 
-/*未访问*/
-a:link {
-  color: blue
-}
-
 /*悬停*/
 a:hover {
   color: purple
@@ -218,7 +213,7 @@ export default {
         if (responseBody.state == 20000){
           this.$message.success("添加购物车成功!")
         }else {
-          this.$message.error(responseBody.message);
+          this.$message.warning(responseBody.message);
         }
       })
     },

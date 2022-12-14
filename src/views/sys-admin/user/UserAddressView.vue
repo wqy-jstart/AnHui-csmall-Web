@@ -12,11 +12,6 @@ a{
   padding: 0;
 }
 
-/*未访问*/
-a:link {
-  color: blue
-}
-
 /*悬停*/
 a:hover {
   color: purple

@@ -14,10 +14,7 @@ header a {
   height: 50px;
 }
 
-/*未访问*/
-a:link {
-  color: blue
-}
+
 
 /*悬停*/
 a:hover {
@@ -84,7 +81,10 @@ a:active {
           <div style="width: 1100px;border: 1px solid #877c7c">
             <div
                 style="width: 1100px;height: 60px;background-color: #e4e6e7;overflow: hidden">
-              <h1 style="margin-left: 20px;line-height: 60px">我的购物车</h1>
+              <h1 style="margin-left: 20px;line-height: 60px">我的购物车:
+                <span style="font-weight: bold;font-size: 35px;color: #de5e38;font-family: 幼圆;float: right;margin-right: 20px">￥{{ sumPrice }}</span>
+                <span style="float: right;margin-right: 5px;font-size: 19px">合计:</span>
+              </h1>
             </div>
             <div style="width: 1100px;border: 1px solid #877c7c">
               <div style="width: 1100px;height: 40px;margin-top: 24px;margin-left: 25px">
@@ -92,13 +92,16 @@ a:active {
                 <span style="margin-left: 90px;font-weight: bold">店铺宝贝</span>
                 <span style="margin-left: 130px;font-weight: bold">商品属性</span>
                 <span style="margin-left: 140px;font-weight: bold">价格</span>
-                <span style="margin-left: 120px;font-weight: bold">数量</span>
+                <span style="margin-left: 120px;font-weight: bold">好评</span>
                 <span style="margin-left: 180px;font-weight: bold">操作</span>
               </div>
               <el-row :gutter="12" style="margin-top: 10px;margin-left: 10px" v-for="c in cartArr">
                 <el-col :span="24">
                   <el-card shadow="hover" style="padding: 10px">
                     <div style="float: right;margin-bottom: 10px">
+                      <el-button type="primary" size="mini"
+                                 @click="ToPay(c.spuId)">去购买
+                      </el-button>
                       <el-button type="danger" size="mini"
                                  @click="openDeleteConfirm(c.spuId)">删除
                       </el-button>
@@ -113,10 +116,18 @@ a:active {
                       <p style="font-size: 15px;color: #666;margin-bottom: 5px">商品分类:&nbsp{{ c.categoryName }}</p>
                     </div>
                     <div style="width: 180px;float: left;margin-left: 50px">
+                      <p style="font-size: 18px;color: #2f2c2a;font-weight: bold">{{c.name}}</p>
                       <p style="font-size: 15px;color: #666;float: left">标签:</p>
                       <el-tag size="mini">{{ c.tags }}</el-tag>
                       <p style="font-size: 15px;color: #666;margin-top: 10px">
                         评价: &nbsp{{ c.detail }}</p>
+                    </div>
+                    <div style="width: 90px;height: 100px;margin-left: 26px;float:left">
+                      <p style="font-size: 20px;font-weight: bold">
+                        ￥{{ c.indexPrice }}
+                      </p>
+                    </div>
+                    <div style="width: 180px;height: 100px;margin-left: 30px;float:left">
                       <el-rate style="padding: 10px"
                                v-model="value"
                                disabled
@@ -124,16 +135,6 @@ a:active {
                                text-color="#ff9900"
                                score-template="{value}">
                       </el-rate>
-                    </div>
-                    <div style="width: 90px;height: 100px;margin-left: 26px;float:left">
-                      <p style="font-size: 20px;font-weight: bold">
-                        ￥{{ c.indexPrice }}
-                      </p>
-                    </div>
-                    <div style="width: 150px;height: 100px;margin-left: 30px;float:left">
-                      <template>
-                        <el-input-number v-model="num" size="small" @change="handleChange()" :min="1" :max="10"></el-input-number>
-                      </template>
                     </div>
                   </el-card>
                 </el-col>
@@ -163,8 +164,8 @@ export default {
     return {
       user: {},
       username: '',
-      num:'',
       cartArr: [],
+      sumPrice:'',
       value: '4.7',
     }
   },
@@ -183,15 +184,56 @@ export default {
         this.user = responseBody.data;
       })
     },
-    handleChange(){
-      console.log(this.num);
+    ToPay(id){
+      location.href = '/product/detail?spuId='+id;
+    },
+    handleDelete(id) {
+      let url = 'http://localhost:9900/carts/' + this.user.id + '/'+id+'/deleteById';
+      console.log('url=' + url);
+      this.axios.post(url).then((response) => {
+        let responseBody = response.data;
+        if (responseBody.state != 20000) {
+          this.$message.error(responseBody.message);
+        }
+        if (responseBody.state == 20000 || responseBody.state == 40400) {
+          this.$message.success("删除成功！")
+          this.loadCartList();
+          this.loadSUMPrice();
+        }
+      });
+    },
+    openDeleteConfirm(id) {
+      let message = '此操作将删除该条购物车内容, 是否继续?'
+      this.$confirm(message, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.handleDelete(id);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     loadCartList() {
-      let url = 'http://localhost:9900/carts//selectToCartList' + location.search;
+      let url = 'http://localhost:9900/carts/selectToCartList' + location.search;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
           this.cartArr = responseBody.data;
+        } else {
+          this.$message.error(responseBody.message);
+        }
+      })
+    },
+    loadSUMPrice(){
+      let url = 'http://localhost:9900/carts/selectSUMPrice'+location.search;
+      this.axios.get(url).then((response) => {
+        let responseBody = response.data;
+        if (responseBody.state == 20000) {
+          this.sumPrice = responseBody.data;
         } else {
           this.$message.error(responseBody.message);
         }
@@ -203,6 +245,7 @@ export default {
     this.loadLocalRuleForm();
     this.loadUserDetail();
     this.loadCartList();
+    this.loadSUMPrice();
   }
 }
 </script>
