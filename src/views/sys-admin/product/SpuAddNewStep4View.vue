@@ -84,7 +84,6 @@ export default {
           this.ruleForm.detail = this.editor.txt.html();
           let formData = this.qs.stringify(this.ruleForm);
           console.log('formData='+formData);
-
           this.axios
               .create({
                 'headers':{
@@ -97,7 +96,7 @@ export default {
                 confirmButtonText: '确定',
                 callback: action => {
                   localStorage.removeItem('ruleForm');
-                  this.$router.push('SpuFinishWaitView.vue');
+                  this.$router.push('spuFinish');
                 }
               });
             }else {

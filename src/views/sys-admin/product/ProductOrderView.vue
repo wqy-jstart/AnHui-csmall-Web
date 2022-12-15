@@ -74,7 +74,8 @@ a:active {
         <el-avatar :size="90"
                    :src="user.avatar"/>
         <span style="color: #191a1a;font-weight: bold">{{ user.nickname }}</span>
-        <el-steps style="width: 600px;height: 60px;margin-right: 30px;float: right;margin-top: 20px" process-status="wait"  :active="active" align-center finish-status="success">
+        <el-steps style="width: 600px;height: 60px;margin-right: 30px;float: right;margin-top: 20px"
+                  process-status="wait" :active="active" align-center finish-status="success">
           <el-step title="1.确认订单信息"></el-step>
           <el-step title="2.付款到支付宝"></el-step>
           <el-step title="3.确认收货"></el-step>
@@ -124,6 +125,7 @@ a:active {
                     :src="product.url"
                     fit="fill"></el-image>
                 <div style="width: 180px;height: 100px;margin-left: 10px;float:left">
+                  <p style="font-size: 15px;color: #666;margin-bottom: 5px">商品标题:&nbsp{{ product.name }}</p>
                   <p style="font-size: 15px;color: #666;margin-bottom: 5px">商品标题:&nbsp{{ product.title }}</p>
                   <p style="font-size: 15px;color: #666;margin-bottom: 5px">商品品牌:&nbsp{{ product.brandName }}</p>
                   <p style="font-size: 15px;color: #666;margin-bottom: 5px">商品分类:&nbsp{{ product.categoryName }}</p>
@@ -132,7 +134,7 @@ a:active {
                 <div style="width: 220px;float: left;margin-left: 50px">
                   <p style="font-size: 15px;color: #666;float: left">属性:</p>
                   <el-row :gutter="5" style="height: 30px">
-                    <el-col span="6" style="font-size: 15px;color: #666"  v-for="p in product.attributeList">
+                    <el-col span="6" style="font-size: 15px;color: #666" v-for="p in product.attributeList">
                       <el-tag type="success" size="mini">{{ p.valueList }}{{ p.unit }}</el-tag>
                     </el-col>
                   </el-row>
@@ -150,7 +152,7 @@ a:active {
                 </div>
                 <div style="width: 180px;height: 100px;margin-left: 10px;float:left">
                   <p style="font-size: 20px;font-weight: bold;text-align: center">
-                     ￥{{ product.indexPrice }}
+                    ￥{{ product.indexPrice }}
                   </p>
                 </div>
                 <div style="width: 150px;height: 100px;margin-left: 35px;float:left">
@@ -162,11 +164,21 @@ a:active {
               <div style="margin-top: 120px;margin-left: 860px">
                 <div style="border: 2px solid darkred;width: 200px;height: 120px;text-align: right">
                   <p style="font-size: 15px;color: #2d2d2d;font-weight: bold">实付款:
-                    <span style="font-weight: bold;font-size: 35px;color: #de5e38;font-family: 幼圆">￥{{this.payPrice}}</span></p>
-                  <p style="font-size: 13px;color: #2d2d2d;margin-top: 10px;text-align: right">寄送至: &nbsp{{ address.info }} &nbsp {{ address.detailInfo }}</p>
-                  <p style="font-size: 13px;color: #2d2d2d;margin-top: 10px;text-align: right">收货人: &nbsp{{ address.name }}</p>
+                    <span
+                        style="font-weight: bold;font-size: 35px;color: #de5e38;font-family: 幼圆">￥{{
+                        this.payPrice
+                      }}</span>
+                  </p>
+                  <p style="font-size: 13px;color: #2d2d2d;margin-top: 10px;text-align: right">寄送至: &nbsp{{
+                      address.info
+                    }} &nbsp {{ address.detailInfo }}</p>
+                  <p style="font-size: 13px;color: #2d2d2d;margin-top: 10px;text-align: right">收货人: &nbsp{{
+                      address.name
+                    }}</p>
                 </div>
-                <el-button style="background-color: #e7643a;color: white;margin-top: 10px;margin-left: 50px">提交订单</el-button>
+                <el-button style="background-color: #e7643a;color: white;margin-top: 10px;margin-left: 50px"
+                           @click="submitOrder()">提交订单
+                </el-button>
               </div>
             </el-card>
           </div>
@@ -191,22 +203,24 @@ a:active {
 export default {
   data() {
     return {
-      active:'1',
+      active: '1',
       user: {},
       username: '',
       radio: '', // 绑定的选中的收货地址id
       addressArr: [],
-      value:'4.7',
-      num:'',
-      payPrice:'',
-      address:{
-        info:'',
-        detailInfo:'',
-        name:'',
-        number:''
+      value: '4.7',
+      num: '',
+      payPrice: '',
+      address: {
+        id:'',
+        info: '',
+        detailInfo: '',
+        name: '',
+        number: ''
       },
       product: {
-        spuId:'',
+        spuId: '',
+        name: '',
         title: '', // 标题
         brandName: '',
         categoryName: '',
@@ -215,7 +229,7 @@ export default {
         url: '', // 封面
         detail: '', // 评价
         attributeList: [],
-        num:'',
+        num: '',
       },
     }
   },
@@ -228,30 +242,55 @@ export default {
         console.log(this.username)
       }
     },
-    toCart(){
-      location.href = '/user/shoppingCart?id='+this.user.id;
+    submitOrder() {
+      if (this.address.name == "") {
+        this.$message.warning("亲!收货地址不能为空哦~")
+      } else {
+        // ?userId=1&spuId=2&num=1
+        let num = location.search.split("&")[2].split("=")[1];
+        if (num != 1) {
+          this.product.indexPrice = this.payPrice
+          this.product.name = this.product.name + "*" + num;
+          console.log(this.product.name)
+        }
+        let userId = JSON.stringify(this.user.id);
+        localStorage.setItem("userId",userId);
+        let spuId = JSON.stringify(this.product.spuId);
+        localStorage.setItem("spuId",spuId);
+        let addressId = JSON.stringify(this.address.id);
+        localStorage.setItem("addressId",addressId);
+        let num1 = JSON.stringify(location.search.split("&")[2].split("=")[1]);
+        localStorage.setItem("num",num1);
+        let productName = JSON.stringify(this.product.name);
+        localStorage.setItem("pname",productName)
+        let typeNumber = parseInt(Math.random() * 10000 + 1);
+        location.href = 'http://localhost:9900/pay/alipay?dona_money=' + this.product.indexPrice + '&dona_id=' + typeNumber + '&dona_name=' + this.product.name;
+      }
     },
-    input(){
+    toCart() {
+      location.href = '/user/shoppingCart?id=' + this.user.id;
+    },
+    input() {
       this.selectAddressById(this.radio);
     },
     loadUserDetail() {
       let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
       this.axios
           .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToUser')
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToUser')
             }
           }).get(url).then((response) => {
         let responseBody = response.data;
         this.user = responseBody.data;
       })
     },
-    selectAddressById(radio){
-      let url = 'http://localhost:9900/addresses/'+radio+'/selectById';
+    selectAddressById(radio) {
+      let url = 'http://localhost:9900/addresses/' + radio + '/selectById';
       this.axios
           .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToUser')
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToUser')
             }
           }).get(url).then((response) => {
         let responseBody = response.data;
@@ -264,8 +303,8 @@ export default {
       let url = 'http://localhost:9900/addresses/selectByUserId?id=' + userId;
       this.axios
           .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToUser')
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToUser')
             }
           }).get(url).then((response) => {
         let responseBody = response.data;
@@ -280,12 +319,12 @@ export default {
       // ?userId=1&spuId=5&num=2
       this.num = location.search.split("&")[2].split("=")[1];
       let spuId = location.search.split("&")[1].split("=")[1];
-      console.log("id为:"+spuId)
+      console.log("id为:" + spuId)
       let url = 'http://localhost:9900/spu/selectToDetail?spuId=' + spuId;
       this.axios
           .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToUser')
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToUser')
             }
           }).get(url).then((response) => {
         let responseBody = response.data;

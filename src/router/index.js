@@ -95,7 +95,7 @@ const routes = [
                 component: () => import( '../views/sys-admin/main/SpuListToCheckPublishView.vue')
             },
             {
-                path: '/sys-admin/main/user/logistics',
+                path: '/sys-admin/main/user/order',
                 component: () => import( '../views/sys-admin/main/UserOrderView.vue')
             },
             // --------------------------------------------------------------------
@@ -116,7 +116,7 @@ const routes = [
                 component: () => import('../views/sys-admin/product/SpuAddNewStep4View.vue')
             },
             {
-                path: '/sys-admin/product/SpuFinishWaitView.vue',
+                path: '/sys-admin/product/spuFinish',
                 component: () => import('../views/sys-admin/product/SpuFinishWaitView.vue')
             },
         ]
@@ -143,11 +143,15 @@ const routes = [
     },
     {
         path: '/product/detail',
-        component: () => import( '../views/sys-admin/main/ProductDetailView.vue')
+        component: () => import( '../views/sys-admin/product/ProductDetailView.vue')
     },
     {
         path: '/product/order',
-        component: () => import( '../views/sys-admin/main/ProductOrderView.vue')
+        component: () => import( '../views/sys-admin/product/ProductOrderView.vue')
+    },
+    {
+        path: '/product/paySuccess',
+        component: () => import( '../views/sys-admin/product/PaySuccessView.vue')
     },
     {
         path: '/user/detail',

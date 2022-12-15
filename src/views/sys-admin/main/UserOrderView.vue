@@ -14,19 +14,19 @@
       <el-table-column type="expand" align="center">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="商品ID:">
-              <span>{{ props.row.spuId }}</span>
+            <el-form-item label="订单号:">
+              <span>{{ props.row.outTradeNo }}</span>
             </el-form-item>
-            <el-form-item label="商品品牌:">
-              <span>{{ props.row.brandName }}</span>
+            <el-form-item label="流水号:">
+              <span>{{ props.row.tradeNo }}</span>
             </el-form-item>
-            <el-form-item label="商品分类:">
-              <span>{{ props.row.categoryName }}</span>
+            <el-form-item label="付款时间:">
+              <span>{{ props.row.time }}</span>
             </el-form-item>
             <el-form-item label="商品属性:">
               <el-row>
-                <el-col span="3" style="font-size: 15px;color: #666" v-for="p in order.attributeList">
-                  <el-tag type="success">{{props.row.valueList }}{{ props.row.unit }}</el-tag>
+                <el-col span="3" style="font-size: 15px;color: #666" v-for="p in tableData.attributeList">
+                  <el-tag type="success">{{p.valueList }}{{ p.row.unit }}</el-tag>
                 </el-col>
               </el-row>
             </el-form-item>
@@ -35,36 +35,37 @@
       </el-table-column>
       <el-table-column width="80px" align="center"
                        label="用户 ID"
-                       prop="id">
+                       prop="userId">
       </el-table-column>
       <el-table-column width="120px"
-                       label="商品 编号"
-                       prop="typeNumber">
+                       label="商品 ID"
+                       prop="spuId">
+      </el-table-column>
+      <el-table-column width="120px"
+                       label="商品 名称"
+                       prop="spuName">
       </el-table-column>
       <el-table-column width="120px"
                        label="商品 封面"
                        prop="url">
       </el-table-column>
       <el-table-column width="120px"
-                       label="商品 金额"
-                       prop="indexPrice">
+                       label="物流"
+                       prop="logisticsName">
+      </el-table-column>
+      <el-table-column width="120px"
+                       label="交易 金额"
+                       prop="totalAmount">
       </el-table-column>
       <el-table-column width="120px"
                        label="数量"
                        prop="number">
       </el-table-column>
       <el-table-column label="是否支付" width="80" align="center">
-        <template slot-scope="scope">
-          <!-- 1开 0关 -->
-          <el-switch
-              @change="changePay(scope.row)"
-              v-model="scope.row.isPay"
-              :active-value="1"
-              :inactive-value="0"
-              active-color="#13ce66"
-              inactive-color="#aaaaaa">
-          </el-switch>
-        </template>
+        <el-switch
+            v-model="isPay"
+            disabled>
+        </el-switch>
       </el-table-column>
       <el-table-column label="是否发货" width="80" align="center">
         <template slot-scope="scope">
@@ -80,43 +81,22 @@
         </template>
       </el-table-column>
       <el-table-column label="是否收货" width="80" align="center">
-        <template slot-scope="scope">
-          <!-- 1开 0关 -->
-          <el-switch
-              @change="changeTake(scope.row)"
-              v-model="scope.row.isTake"
-              :active-value="1"
-              :inactive-value="0"
-              active-color="#13ce66"
-              inactive-color="#aaaaaa">
-          </el-switch>
-        </template>
+        <el-switch
+            v-model="isTake"
+            disabled>
+        </el-switch>
       </el-table-column>
       <el-table-column label="是否评价" width="80" align="center">
-        <template slot-scope="scope">
-          <!-- 1开 0关 -->
-          <el-switch
-              @change="changeComment(scope.row)"
-              v-model="scope.row.isComment"
-              :active-value="1"
-              :inactive-value="0"
-              active-color="#13ce66"
-              inactive-color="#aaaaaa">
-          </el-switch>
-        </template>
+        <el-switch
+            v-model="isComment"
+            disabled>
+        </el-switch>
       </el-table-column>
       <el-table-column label="是否退货" width="80" align="center">
-        <template slot-scope="scope">
-          <!-- 1开 0关 -->
-          <el-switch
-              @change="changeBack(scope.row)"
-              v-model="scope.row.isBack"
-              :active-value="1"
-              :inactive-value="0"
-              active-color="#13ce66"
-              inactive-color="#aaaaaa">
-          </el-switch>
-        </template>
+        <el-switch
+            v-model="isBack"
+            disabled>
+        </el-switch>
       </el-table-column>
     </el-table>
   </div>
@@ -125,7 +105,9 @@
 export default {
   data() {
     return {
-      tableData: [],
+      tableData: [
+
+      ],
     }
   },
   methods: {
