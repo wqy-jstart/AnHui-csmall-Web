@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 16px">
       <el-breadcrumb-item :to="{ path: '/' }">
         <i class="el-icon-s-promotion"></i>  后台管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户订单列表</el-breadcrumb-item>
+      <el-breadcrumb-item>用户未发货订单列表</el-breadcrumb-item>
     </el-breadcrumb>
 
     <el-divider></el-divider>
@@ -111,47 +111,8 @@ export default {
     }
   },
   methods: {
-    // 改变管理员状态
-    changeEnable(admin) {
-      console.log('admin id=' + admin.id);
-      //点击后获取的enable值
-      console.log('admin enable=' + admin.enable);
-      let enableText = ['禁用', '启用'];
-      let url = 'http://localhost:9081/admins/' + admin.id;
-      if (admin.enable == 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
-        console.log("启用管理员")
-        url += '/enable';
-      } else {
-        console.log("禁用管理员")
-        url += '/disable';
-      }
-      console.log('url=' + url)
-      this.axios
-          .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToAdmin')
-            }
-          })
-          .post(url).then((response) => {
-        let responseBody = response.data;
-        if (responseBody.state == 20000) {
-          let message = '将管理员[' + admin.username + ']的启用状态改为[' + enableText[admin.enable] + ']成功!';
-          this.$message({
-            message: message,
-            type: 'success'
-          });
-        } else { // 否则输出错误信息
-          this.$message.error(responseBody.message);
-        }
-        if (responseBody.state == 40400) { // 数据不存在的时候才刷新
-          this.loadAlbumList();
-        }
-      })
-    },
     // 该方法用来请求订单的列表数据
-    loadAdminList() {
-      console.log('loadAdminList');
-      console.log('在localStorage中的JWT数据:' + localStorage.getItem('jwt'))
+    loadOrderList() {
       let url = "http://localhost:9081/admins" // 请求路径
       console.log('url=' + url);
       // .create方法会返回一个axios对象,可在其中配置请求头
@@ -169,7 +130,7 @@ export default {
   },
   // 生命周期方法(挂载)
   mounted() {
-    this.loadAdminList();
+    this.loadOrderList();
   }
 }
 </script>

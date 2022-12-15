@@ -195,9 +195,13 @@
                 <i class="el-icon-s-order"></i>
                 <span>订单管理</span>
               </template>
-              <el-menu-item index="/sys-admin/main/user/order">
+              <el-menu-item index="/sys-admin/order/notDistribute">
                 <i class="el-icon-s-claim"></i>
-                <span>用户订单</span>
+                <span>用户订单-未发货</span>
+              </el-menu-item>
+              <el-menu-item index="/sys-admin/order/distribute">
+                <i class="el-icon-s-claim"></i>
+                <span>用户订单-已发货</span>
               </el-menu-item>
             </el-submenu>
             <!-- 营销管理 -->
