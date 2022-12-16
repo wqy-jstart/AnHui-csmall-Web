@@ -82,7 +82,7 @@ a:active {
       <el-main style="width: 1200px;margin: 0 auto">
         <div style="height: 20px"></div>
         <div style="height: 800px;width: 1100px">
-          <div style="height: 320px;width: 1100px;border: 1px solid #877c7c">
+          <div style="width: 1100px;border: 1px solid #877c7c">
             <div style="height: 120px;background-color: #e4e6e7;overflow: hidden;border: 1px solid #877c7c">
               <div style="margin-top: 13px;margin-left: 20px">
                 <el-avatar :size="90"
@@ -90,18 +90,18 @@ a:active {
                 <span style="color: #191a1a;font-weight: bold">{{ user.nickname }}</span>
               </div>
             </div>
-            <div style="height: 100px;text-align: center;font-size: 25px;font-family: 微软雅黑">
-              <div style="margin-top: 100px">
-                <el-badge style="margin-right: 40px" :value="12" class="item">
-                  <a href="">待付款</a>
+            <div style="height: 50px;text-align: center;font-size: 25px;font-family: 微软雅黑">
+              <div style="margin-top: 30px">
+                <el-badge style="margin-right: 40px" :value="valueToPay" class="item">
+                  <a href="javascript:void(0)" @click="toPay()">待付款</a>
                 </el-badge>
                 <el-divider direction="vertical"/>
-                <el-badge style="margin-left: 40px;margin-right: 40px" :value="7" class="item" type="primary">
-                  <a href="">待发货</a>
+                <el-badge style="margin-left: 40px;margin-right: 40px" :value="valueToDistribute" class="item" type="primary">
+                  <a href="javascript:void(0)" @click="toDistribute()">待发货</a>
                 </el-badge>
                 <el-divider direction="vertical"/>
-                <el-badge style="margin-left: 40px;margin-right: 40px" :value="6" class="item" type="primary">
-                  <a href="">待收货</a>
+                <el-badge style="margin-left: 40px;margin-right: 40px" :value="valueToTake" class="item" type="primary">
+                  <a href="javascript:void(0)" @click="toTake()">待收货</a>
                 </el-badge>
                 <el-divider direction="vertical"/>
                 <el-badge style="margin-left: 40px;margin-right: 40px" :value="4" class="item" type="success">
@@ -113,9 +113,6 @@ a:active {
                 </el-badge>
               </div>
             </div>
-          </div>
-          <div style="width: 1100px;height: 60px;background-color: #e4e6e7;margin-top: 20px">
-            <h1 style="margin-left: 20px;line-height: 60px">我的物流信息:</h1>
           </div>
         </div>
       </el-main>
@@ -138,6 +135,9 @@ a:active {
 export default {
   data() {
     return {
+      valueToPay:'',
+      valueToDistribute:'',
+      valueToTake:'',
       user: {
         id:'',
         avatar: '',
@@ -149,6 +149,15 @@ export default {
     }
   },
   methods: {
+    toPay(){
+      location.href = "/user/waitToPay?id="+this.user.id;
+    },
+    toDistribute(){
+      location.href = "/user/waitToDistribute?id="+this.user.id;
+    },
+    toTake(){
+      location.href = "/user/waitToTake?id="+this.user.id;
+    },
     openAddress() {
       location.href = '/user/address?id=' + this.user.id;
     },
@@ -170,11 +179,65 @@ export default {
         this.user = responseBody.data;
       })
     },
+    loadOrderCount(){
+      let id = location.search.split("=")[1];
+      let url = 'http://localhost:9900/carts/'+id+'/selectCount';
+      this.axios
+          .create({
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.valueToPay = responseBody.data;
+        }else {
+          this.$message.error(responseBody.message);
+        }
+      })
+    },
+    loadOrderCountToNotDib(){
+      let id = location.search.split("=")[1];
+      let url = 'http://localhost:9900/orders/'+id+'/selectCountToNotDib';
+      this.axios
+          .create({
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.valueToDistribute = responseBody.data;
+        }else {
+          this.$message.error(responseBody.message);
+        }
+      })
+    },
+    loadOrderCountToDib(){
+      let id = location.search.split("=")[1];
+      let url = 'http://localhost:9900/orders/'+id+'/selectCountToDib';
+      this.axios
+          .create({
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.valueToTake = responseBody.data;
+        }else {
+          this.$message.error(responseBody.message);
+        }
+      })
+    }
   },
   // 生命周期方法(挂载)
   mounted() {
     this.loadLocalRuleForm();
     this.loadUserDetail();
+    this.loadOrderCount();
+    this.loadOrderCountToNotDib();
+    this.loadOrderCountToDib();
   }
 }
 </script>

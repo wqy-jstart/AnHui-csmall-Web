@@ -173,6 +173,18 @@ const routes = [
         path: '/user/shoppingCart',
         component: () => import( '../views/sys-admin/user/ShoppingCartView.vue')
     },
+    {
+        path: '/user/waitToDistribute',
+        component: () => import( '../views/sys-admin/user/WaitToDistribute.vue')
+    },
+    {
+        path: '/user/waitToPay',
+        component: () => import( '../views/sys-admin/user/WaitToPay.vue')
+    },
+    {
+        path: '/user/waitToTake',
+        component: () => import( '../views/sys-admin/user/WaitToTake.vue')
+    },
 ]
 
 const router = new VueRouter({

@@ -59,7 +59,7 @@ a:active {
           <a href="/login">退出登录</a>
 
           <span style="display: inline;margin-left: 300px;font-size: 20px;font-weight: bold;font-family: 幼圆;color: #952b2b">
-            <a href="/user/detail">
+            <a href="javascript:void (0)" @click="toUser()">
               <el-avatar :size="60"
                          :src="user.avatar"/>
             </a>
@@ -191,6 +191,9 @@ export default {
         console.log("接收的信息" + response.data);
         this.user = responseBody.data;
       })
+    },
+    toUser(){
+      location.href = '/user/index?id='+this.user.id;
     },
     toCart(){
       location.href = '/user/shoppingCart?id='+this.user.id;
