@@ -109,7 +109,7 @@ a:active {
                 </el-badge>
                 <el-divider direction="vertical"/>
                 <el-badge style="margin-left: 40px" :value="valueToBack" class="item">
-                  <a href="javascript:void(0)" @click="toBack1()">退货</a>
+                  <a href="javascript:void(0)" @click="toBack()">退货</a>
                 </el-badge>
               </div>
             </div>
@@ -122,11 +122,6 @@ a:active {
               <el-row :gutter="12" style="margin-top: 10px;margin-left: 10px" v-for="c in orderArr">
                 <el-col :span="24">
                   <el-card shadow="hover" style="padding: 10px;height: 180px">
-                    <div style="float: right;margin-bottom: 10px">
-                      <el-button type="danger" size="mini"
-                                 @click="toBack(c.spuId)">退货
-                      </el-button>
-                    </div>
                     <el-image
                         style="width: 120px; height: 120px;float: left"
                         :src="c.url"
@@ -177,42 +172,6 @@ a:active {
         </div>
       </el-footer>
     </el-container>
-
-    <!-- 弹出的编辑订单的对话框 -->
-    <el-dialog title="提交退货信息" :visible.sync="dialogFormVisible">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-        <el-form-item label="商品名称:" :label-width="formLabelWidth">
-          <span>{{ ruleForm.spuName }}</span>
-        </el-form-item>
-        <el-form-item label="收件人姓名:" :label-width="formLabelWidth">
-          <span>{{ ruleForm.addressName }}</span>
-        </el-form-item>
-        <el-form-item label="收货地址:" :label-width="formLabelWidth">
-          <span>{{ ruleForm.info }}</span>
-        </el-form-item>
-        <el-form-item label="电话号码:" :label-width="formLabelWidth">
-          <span>{{ ruleForm.pnumber }}</span>
-        </el-form-item>
-        <el-form-item label="商品数量:" :label-width="formLabelWidth">
-          <span>{{ ruleForm.number }}</span>
-        </el-form-item>
-        <el-form-item label="订单号:" :label-width="formLabelWidth">
-          <span>{{ ruleForm.outTradeNo }}</span>
-        </el-form-item>
-        <el-form-item label="退货理由:" :label-width="formLabelWidth" prop="backText">
-          <el-input
-              type="textarea"
-              :rows="2"
-              placeholder="请输入内容:"
-              v-model="ruleForm.backText">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitEdit()">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -252,73 +211,10 @@ export default {
     }
   },
   methods: {
-    // 处理提交
-    submitEdit() {
-      if (this.ruleForm.backText == null){
-        this.$message.warning("请输入退货理由!")
-      }else {
-        let url = 'http://localhost:9900/orders/updateToBack';
-        console.log('url:' + url);
-        let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
-        console.log('formData=' + formData);
-        this.axios.create({
-          'headers': {
-            'Authorization': localStorage.getItem('jwtToAdmin')
-          }
-        }).post(url, formData).then((response) => {
-          let responseBody = response.data;
-          if (responseBody.state == 20000) {
-            this.$message({
-              type: 'success',
-              message: '退货成功!'
-            });
-            this.dialogFormVisible = false;
-            this.loadOrderList();
-          } else if (responseBody.state == 40900) {
-            this.$message.error(responseBody.message);
-          } else {
-            this.$message.error(responseBody.message);
-            this.dialogFormVisible = false;
-            this.loadOrderList();
-          }
-        })
-      }
-    },
-    toBack(spuId) {
-      let message = '您确定要对id为[{'+spuId+'}]的商品进行退货处理吗?'
-      this.$confirm(message, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.dialogFormVisible = true;
-        let url = 'http://localhost:9900/orders/' + this.user.id + '/' + spuId + '/selectByIdToDib';
-        this.axios
-            .create({
-              'headers': {
-                'Authorization': localStorage.getItem('jwtToAdmin')
-              }
-            }).get(url).then((response) => {
-          let responseBody = response.data;
-          if (responseBody.state == 20000) {
-            this.ruleForm = responseBody.data;
-            this.dialogFormVisible = true;
-          } else {
-            this.$message.error(responseBody.message);
-            this.loadOrderList();
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消退货'
-        });
-      })
-    },
     toIndex(){
       location.href = "/user/index?id=" + this.user.id;
     },
-    toBack1(){
+    toBack(){
       location.href = "/user/waitToBack?id=" + this.user.id;
     },
     toPay() {
@@ -353,7 +249,7 @@ export default {
     },
     loadOrderList() {
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/' + id + '/selectByUserIdToDib';
+      let url = 'http://localhost:9900/orders/' + id + '/selectListToBackById';
       this.axios
           .create({
             'headers': {

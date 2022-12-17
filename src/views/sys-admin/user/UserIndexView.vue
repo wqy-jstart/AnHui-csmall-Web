@@ -67,7 +67,7 @@ a:active {
           <span
               style="font-size: 32px;font-weight: bold;font-family: 幼圆;line-height: 62px;color: white;margin-left: 360px">我的商城</span>
           <!--下标代表当前菜单-->
-          <a href="/user/index">
+          <a href="javascript:void (0)" @click="toIndex()">
             <span style="font-size: 17px;font-family: 微软雅黑;color: white;margin-left: 100px">首页</span>
           </a>
           <a href="/user/detail">
@@ -108,8 +108,8 @@ a:active {
                   <a href="">待评价</a>
                 </el-badge>
                 <el-divider direction="vertical"/>
-                <el-badge style="margin-left: 40px" :value="3" class="item">
-                  <a href="">退款</a>
+                <el-badge style="margin-left: 40px" :value="valueToBack" class="item">
+                  <a href="javascript:void(0)" @click="toBack()">退货</a>
                 </el-badge>
               </div>
             </div>
@@ -138,6 +138,7 @@ export default {
       valueToPay:'',
       valueToDistribute:'',
       valueToTake:'',
+      valueToBack:'',
       user: {
         id:'',
         avatar: '',
@@ -149,6 +150,12 @@ export default {
     }
   },
   methods: {
+    toIndex(){
+      location.href = "/user/index?id=" + this.user.id;
+    },
+    toBack(){
+      location.href = "/user/waitToBack?id=" + this.user.id;
+    },
     toPay(){
       location.href = "/user/waitToPay?id="+this.user.id;
     },
@@ -229,6 +236,23 @@ export default {
           this.$message.error(responseBody.message);
         }
       })
+    },
+    loadOrderCountToBack(){
+      let id = location.search.split("=")[1];
+      let url = 'http://localhost:9900/orders/'+id+'/selectCountToBack';
+      this.axios
+          .create({
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.valueToBack = responseBody.data;
+        }else {
+          this.$message.error(responseBody.message);
+        }
+      })
     }
   },
   // 生命周期方法(挂载)
@@ -238,6 +262,7 @@ export default {
     this.loadOrderCount();
     this.loadOrderCountToNotDib();
     this.loadOrderCountToDib();
+    this.loadOrderCountToBack();
   }
 }
 </script>

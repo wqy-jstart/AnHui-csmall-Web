@@ -123,6 +123,10 @@ const routes = [
                 path: '/sys-admin/order/notDistribute',
                 component: () => import('../views/sys-admin/main/OrderListToNotDistribute.vue')
             },
+            {
+                path: '/sys-admin/order/back',
+                component: () => import('../views/sys-admin/main/OrderListToBack.vue')
+            },
         ]
     },
     {
@@ -184,6 +188,10 @@ const routes = [
     {
         path: '/user/waitToTake',
         component: () => import( '../views/sys-admin/user/WaitToTake.vue')
+    },
+    {
+        path: '/user/waitToBack',
+        component: () => import( '../views/sys-admin/user/WaitToBack.vue')
     },
 ]
 

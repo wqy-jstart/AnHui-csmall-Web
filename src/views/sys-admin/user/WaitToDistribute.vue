@@ -67,7 +67,7 @@ a:active {
           <span
               style="font-size: 32px;font-weight: bold;font-family: 幼圆;line-height: 62px;color: white;margin-left: 360px">我的商城</span>
           <!--下标代表当前菜单-->
-          <a href="/user/index">
+          <a href="javascript:void (0)" @click="toIndex()">
             <span style="font-size: 17px;font-family: 微软雅黑;color: white;margin-left: 100px">首页</span>
           </a>
           <a href="/user/detail">
@@ -96,7 +96,8 @@ a:active {
                   <a href="javascript:void(0)" @click="toPay()">待付款</a>
                 </el-badge>
                 <el-divider direction="vertical"/>
-                <el-badge style="margin-left: 40px;margin-right: 40px" :value="valueToDistribute" class="item" type="primary">
+                <el-badge style="margin-left: 40px;margin-right: 40px" :value="valueToDistribute" class="item"
+                          type="primary">
                   <a href="javascript:void(0)" @click="toDistribute()">待发货</a>
                 </el-badge>
                 <el-divider direction="vertical"/>
@@ -108,8 +109,8 @@ a:active {
                   <a href="">待评价</a>
                 </el-badge>
                 <el-divider direction="vertical"/>
-                <el-badge style="margin-left: 40px" :value="3" class="item">
-                  <a href="">退款</a>
+                <el-badge style="margin-left: 40px" :value="valueToBack" class="item">
+                  <a href="javascript:void(0)" @click="toBack1()">退货</a>
                 </el-badge>
               </div>
             </div>
@@ -122,17 +123,24 @@ a:active {
               <el-row :gutter="12" style="margin-top: 10px;margin-left: 10px" v-for="c in orderArr">
                 <el-col :span="23">
                   <el-card shadow="hover" style="padding: 10px;height: 180px">
+                    <div style="float: right;margin-bottom: 10px">
+                      <el-button type="danger" size="mini"
+                                 @click="toBack(c.spuId)">退货
+                      </el-button>
+                    </div>
                     <el-image
                         style="width: 120px; height: 120px;float: left"
                         :src="c.url"
                         fit="fill"></el-image>
                     <div style="width: 180px;height: 120px;margin-left: 10px;float:left">
-                      <p style="font-size: 18px;color: #2f2c2a;font-weight: bold;margin-bottom: 5px">商品名称:&nbsp{{ c.spuName }}</p>
+                      <p style="font-size: 18px;color: #2f2c2a;font-weight: bold;margin-bottom: 5px">
+                        商品名称:&nbsp{{ c.spuName }}</p>
                       <p style="font-size: 15px;color: #666;margin-bottom: 5px">物流名称:&nbsp 暂无</p>
                       <p style="font-size: 15px;color: #666;margin-bottom: 5px">数量:&nbsp{{ c.number }}</p>
                     </div>
                     <div style="width: 180px;float: left;margin-left: 50px">
-                      <p style="font-size: 15px;color: #2f2c2a;margin-bottom: 5px;font-weight: bold">收件人:{{ c.addressName }}</p>
+                      <p style="font-size: 15px;color: #2f2c2a;margin-bottom: 5px;font-weight: bold">
+                        收件人:{{ c.addressName }}</p>
                       <p style="font-size: 15px;color: #666;margin-bottom: 5px">收货地址:{{ c.info }}</p>
                       <p style="font-size: 15px;color: #666;margin-bottom: 5px">电话:{{ c.pnumber }}</p>
                       <p style="font-size: 15px;color: #666;float: left">标签:</p>
@@ -172,6 +180,42 @@ a:active {
         </div>
       </el-footer>
     </el-container>
+
+    <!-- 弹出的编辑订单的对话框 -->
+    <el-dialog title="提交退货信息" :visible.sync="dialogFormVisible">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+        <el-form-item label="商品名称:" :label-width="formLabelWidth">
+          <span>{{ ruleForm.spuName }}</span>
+        </el-form-item>
+        <el-form-item label="收件人姓名:" :label-width="formLabelWidth">
+          <span>{{ ruleForm.addressName }}</span>
+        </el-form-item>
+        <el-form-item label="收货地址:" :label-width="formLabelWidth">
+          <span>{{ ruleForm.info }}</span>
+        </el-form-item>
+        <el-form-item label="电话号码:" :label-width="formLabelWidth">
+          <span>{{ ruleForm.pnumber }}</span>
+        </el-form-item>
+        <el-form-item label="商品数量:" :label-width="formLabelWidth">
+          <span>{{ ruleForm.number }}</span>
+        </el-form-item>
+        <el-form-item label="订单号:" :label-width="formLabelWidth">
+          <span>{{ ruleForm.outTradeNo }}</span>
+        </el-form-item>
+        <el-form-item label="退货理由:" :label-width="formLabelWidth"  prop="backText">
+          <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容:"
+              v-model="ruleForm.backText">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitEdit()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -180,9 +224,10 @@ export default {
   data() {
     return {
       orderArr: [],
-      valueToPay:'',
-      valueToDistribute:'',
-      valueToTake:'',
+      valueToPay: '',
+      valueToDistribute: '',
+      valueToTake: '',
+      valueToBack:'',
       user: {
         id: '',
         avatar: '',
@@ -191,18 +236,102 @@ export default {
       activeIndex: "",
       size: 'medium',
       username: '',
-      value: '4.7',
+      ruleForm: {
+        spuName: '',
+        addressName: '',
+        info: '',
+        pnumber: '',
+        number: '',
+        outTradeNo: '',
+        backText: ''
+      },
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+      rules: {
+        backText: [
+          {required: true, message: '请输入退货理由:', trigger: 'blur'},
+        ],
+      }
     }
   },
   methods: {
+    // 处理提交
+    submitEdit() {
+      if (this.ruleForm.backText == null){
+        this.$message.warning("请输入退货理由!")
+      }else {
+        let url = 'http://localhost:9900/orders/updateToBack';
+        console.log('url:' + url);
+        let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
+        console.log('formData=' + formData);
+        this.axios.create({
+          'headers': {
+            'Authorization': localStorage.getItem('jwtToAdmin')
+          }
+        }).post(url, formData).then((response) => {
+          let responseBody = response.data;
+          if (responseBody.state == 20000) {
+            this.$message({
+              type: 'success',
+              message: '退货成功!'
+            });
+            this.dialogFormVisible = false;
+            this.loadOrderList();
+          } else if (responseBody.state == 40900) {
+            this.$message.error(responseBody.message);
+          } else {
+            this.$message.error(responseBody.message);
+            this.dialogFormVisible = false;
+            this.loadOrderList();
+          }
+        })
+      }
+    },
+    toBack(spuId) {
+      let message = '您确定要对id为[{'+spuId+'}]的商品进行退货处理吗?'
+      this.$confirm(message, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.dialogFormVisible = true;
+        let url = 'http://localhost:9900/orders/' + this.user.id + '/' + spuId + '/selectById';
+        this.axios
+            .create({
+              'headers': {
+                'Authorization': localStorage.getItem('jwtToAdmin')
+              }
+            }).get(url).then((response) => {
+          let responseBody = response.data;
+          if (responseBody.state == 20000) {
+            this.ruleForm = responseBody.data;
+            this.dialogFormVisible = true;
+          } else {
+            this.$message.error(responseBody.message);
+            this.loadOrderList();
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退货'
+        });
+      })
+    },
+    toIndex(){
+      location.href = "/user/index?id=" + this.user.id;
+    },
+    toBack1(){
+      location.href = "/user/waitToBack?id=" + this.user.id;
+    },
     toPay() {
       location.href = "/user/waitToPay?id=" + this.user.id;
     },
     toDistribute() {
       location.href = "/user/waitToDistribute?id=" + this.user.id;
     },
-    toTake(){
-      location.href = "/user/waitToTake?id="+this.user.id;
+    toTake() {
+      location.href = "/user/waitToTake?id=" + this.user.id;
     },
     openAddress() {
       location.href = '/user/address?id=' + this.user.id;
@@ -233,52 +362,69 @@ export default {
             'headers': {
               'Authorization': localStorage.getItem('jwtToUser')
             }
-          }).get(url).then((response)=>{
+          }).get(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state == 20000){
+        if (responseBody.state == 20000) {
           this.orderArr = responseBody.data;
-        }else {
+        } else {
           this.$message.error(responseBody.message);
         }
       })
     },
-    loadOrderCount(){
+    loadOrderCount() {
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/carts/'+id+'/selectCount';
+      let url = 'http://localhost:9900/carts/' + id + '/selectCount';
       this.axios
           .create({
             'headers': {
               'Authorization': localStorage.getItem('jwtToUser')
             }
-          }).get(url).then((response)=>{
+          }).get(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state == 20000){
+        if (responseBody.state == 20000) {
           this.valueToPay = responseBody.data;
-        }else {
+        } else {
           this.$message.error(responseBody.message);
         }
       })
     },
-    loadOrderCountToNotDib(){
+    loadOrderCountToNotDib() {
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/'+id+'/selectCountToNotDib';
+      let url = 'http://localhost:9900/orders/' + id + '/selectCountToNotDib';
       this.axios
           .create({
             'headers': {
               'Authorization': localStorage.getItem('jwtToUser')
             }
-          }).get(url).then((response)=>{
+          }).get(url).then((response) => {
         let responseBody = response.data;
-        if (responseBody.state == 20000){
+        if (responseBody.state == 20000) {
           this.valueToDistribute = responseBody.data;
-        }else {
+        } else {
           this.$message.error(responseBody.message);
         }
       })
     },
-    loadOrderCountToDib(){
+    loadOrderCountToDib() {
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/'+id+'/selectCountToDib';
+      let url = 'http://localhost:9900/orders/' + id + '/selectCountToDib';
+      this.axios
+          .create({
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToUser')
+            }
+          }).get(url).then((response) => {
+        let responseBody = response.data;
+        if (responseBody.state == 20000) {
+          this.valueToTake = responseBody.data;
+        } else {
+          this.$message.error(responseBody.message);
+        }
+      })
+    },
+    loadOrderCountToBack(){
+      let id = location.search.split("=")[1];
+      let url = 'http://localhost:9900/orders/'+id+'/selectCountToBack';
       this.axios
           .create({
             'headers': {
@@ -287,7 +433,7 @@ export default {
           }).get(url).then((response)=>{
         let responseBody = response.data;
         if (responseBody.state == 20000){
-          this.valueToTake = responseBody.data;
+          this.valueToBack = responseBody.data;
         }else {
           this.$message.error(responseBody.message);
         }
@@ -302,6 +448,7 @@ export default {
     this.loadOrderCount();
     this.loadOrderCountToNotDib();
     this.loadOrderCountToDib();
+    this.loadOrderCountToBack();
   }
 }
 </script>

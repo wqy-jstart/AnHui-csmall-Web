@@ -203,6 +203,10 @@
                 <i class="el-icon-s-claim"></i>
                 <span>用户订单-已发货</span>
               </el-menu-item>
+              <el-menu-item index="/sys-admin/order/back">
+                <i class="el-icon-s-claim"></i>
+                <span>用户订单-已退货</span>
+              </el-menu-item>
             </el-submenu>
             <!-- 营销管理 -->
             <el-submenu index="5">
