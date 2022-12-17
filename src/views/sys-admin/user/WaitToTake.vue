@@ -121,14 +121,14 @@ a:active {
             <div>
               <el-row :gutter="12" style="margin-top: 10px;margin-left: 10px" v-for="c in orderArr">
                 <el-col :span="24">
-                  <el-card shadow="hover" style="padding: 10px">
+                  <el-card shadow="hover" style="padding: 10px;height: 180px">
                     <el-image
                         style="width: 120px; height: 120px;float: left"
                         :src="c.url"
                         fit="fill"></el-image>
                     <div style="width: 180px;height: 120px;margin-left: 10px;float:left">
                       <p style="font-size: 18px;color: #2f2c2a;font-weight: bold;margin-bottom: 5px">商品名称:&nbsp{{ c.spuName }}</p>
-                      <p style="font-size: 15px;color: #666;margin-bottom: 5px">物流名称:&nbsp 暂无</p>
+                      <p style="font-size: 15px;color: #666;margin-bottom: 5px">物流名称:&nbsp {{c.logisticsName}}</p>
                       <p style="font-size: 15px;color: #666;margin-bottom: 5px">数量:&nbsp{{ c.number }}</p>
                     </div>
                     <div style="width: 180px;float: left;margin-left: 50px">
@@ -144,8 +144,12 @@ a:active {
                       </p>
                     </div>
                     <div style="width: 180px;height: 100px;margin-left: 30px;float:left">
-                      <p style="font-size: 15px;color: #2f2c2a;font-weight: bold;margin-bottom: 5px">订单号:{{ c.outTradeNo }}</p>
-                      <p style="font-size: 15px;color: #666;margin-bottom: 5px">流水号:{{ c.tradeNo }}</p>
+                      <p style="font-size: 15px;color: #2f2c2a;font-weight: bold;margin-bottom: 5px">订单号:</p>
+                      <div style="word-break: break-all;overflow: hidden">
+                        <span style="font-size: 15px;color: #2f2c2a;margin-bottom: 5px">{{ c.outTradeNo }}</span>
+                      </div>
+                      <p style="font-size: 15px;color: #666;margin-bottom: 5px">流水号:</p>
+                      <p style="font-size: 15px;color: #666;margin-bottom: 5px">{{ c.tradeNo }}</p>
                       <p style="font-size: 15px;color: #666;margin-bottom: 5px">付款时间:</p>
                       <p style="font-size: 15px;color: #666;margin-bottom: 5px">{{ c.time }}</p>
                     </div>
