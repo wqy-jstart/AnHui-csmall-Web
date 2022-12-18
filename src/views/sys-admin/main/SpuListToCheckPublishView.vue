@@ -290,7 +290,7 @@ export default {
     },
     // 修改是否推荐
     changeRecommend(spu){
-      let enableText = ['推荐', '不推荐'];
+      let enableText = ['不推荐', '推荐'];
       let url = 'http://localhost:9900/spu/' + spu.id;
       if (spu.isRecommend === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         url += '/recommend';
