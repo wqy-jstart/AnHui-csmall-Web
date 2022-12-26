@@ -7,7 +7,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
 import qs from 'qs';
 import wangEditor from "wangeditor";
+import global from '../src/components/Global'; // 导入设置的全局变量
 
+Vue.prototype.GLOBAL = global; // 赋值给Vue
 Vue.prototype.wangEditor = wangEditor;// 红色的wangEditor是this打点调用的名字
 Vue.use(ElementUI);
 Vue.config.productionTip = false
