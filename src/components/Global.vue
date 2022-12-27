@@ -4,8 +4,8 @@
 
 <script>
 
-const passportUrl = 'http://125.74.199.190:9901/';
-const productUrl = 'http://125.74.199.190:9900/';
+const passportUrl = 'http://125.74.199.190:9901/'; // 管理员管理
+const productUrl = 'http://125.74.199.190:9900/'; // 商品管理
 
 export default {
   name: "Global.vue",

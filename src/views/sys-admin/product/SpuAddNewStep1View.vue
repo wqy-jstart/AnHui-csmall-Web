@@ -54,7 +54,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9900/categories/'+this.ruleForm.categoryId+'/selectById';
+          let url = this.GLOBAL.productUrl+'categories/'+this.ruleForm.categoryId+'/selectById';
           console.log('url='+url);
           this.axios
               .create({

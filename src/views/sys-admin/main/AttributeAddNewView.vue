@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     loadAttributeTemplateList() {
-      let url = 'http://localhost:9900/attributeTemplates';
+      let url = this.GLOBAL.productUrl+'attributeTemplates';
       console.log('url='+url);
       this.axios.get(url).then((response)=>{
         let responseBody = response.data;
@@ -89,7 +89,7 @@ export default {
       // 对表单进行检查
       this.$refs[formName].validate((valid) => {
         if (valid) { // 满足条件则通过验证
-          let url = 'http://localhost:9900/attributes/insert'
+          let url = this.GLOBAL.productUrl+'attributes/insert'
           console.log('url = ' + url);
           let formData = this.qs.stringify(this.ruleForm);//将formData对象转换成FormData格式,当后端不添加@RequestBody注解时接收
           console.log('formData=' + formData);

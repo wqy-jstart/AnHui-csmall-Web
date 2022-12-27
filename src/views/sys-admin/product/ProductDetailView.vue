@@ -196,7 +196,7 @@ export default {
       }
     },
     loadUserNickname() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         console.log("接收的信息" + response.data);
@@ -206,7 +206,7 @@ export default {
     // 添加购物车的事件
     addCart(){
       let obj = {userId:this.user.id,spuId:this.product.spuId};
-      let url = 'http://localhost:9900/carts/insert';
+      let url = this.GLOBAL.productUrl+'carts/insert';
       let ruleFormJSON  = this.qs.stringify(obj);
       this.axios
           .create({
@@ -239,7 +239,7 @@ export default {
       location.href = "/index/result?wd=" + this.wd;//这里的key代表分类的id(与index相同)
     },
     loadCategoryList() {
-      let url = 'http://localhost:9900/categories/selectByParent';
+      let url = this.GLOBAL.productUrl+'categories/selectByParent';
       this.axios
           .create({
             'headers':{
@@ -255,7 +255,7 @@ export default {
       })
     },
     loadProductDetail() {
-      let url = 'http://localhost:9900/spu/selectToDetail' + location.search;
+      let url = this.GLOBAL.productUrl+'spu/selectToDetail' + location.search;
       this.axios
           .create({
             'headers':{

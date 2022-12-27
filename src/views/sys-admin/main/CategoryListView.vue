@@ -127,7 +127,7 @@ export default {
       console.log('category id=' + category.id);
       //点击后获取的enable值
       console.log('category isDisplay=' + category.isDisplay);
-      let url = 'http://localhost:9900/categories/' + category.id;
+      let url =this.GLOBAL.productUrl+'categories/' + category.id;
       if (category.isDisplay == 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         console.log("显示类别")
         url += '/display';
@@ -161,7 +161,7 @@ export default {
       console.log('category id=' + category.id);
       //点击后获取的enable值
       console.log('category enable=' + category.enable);
-      let url = 'http://localhost:9900/categories/' + category.id;
+      let url = this.GLOBAL.productUrl+'categories/' + category.id;
       if (category.enable == 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         console.log("启用类别")
         url += '/enable';
@@ -193,7 +193,7 @@ export default {
     },
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9900/categories/update';
+      let url = this.GLOBAL.productUrl+'categories/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
@@ -226,7 +226,7 @@ export default {
       console.log(message);
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9900/categories/' + category.id + '/selectById';
+      let url = this.GLOBAL.productUrl+'categories/' + category.id + '/selectById';
       console.log(url);
       this.axios
           .create({
@@ -245,7 +245,7 @@ export default {
       })
     },
     handleDelete(category) {
-      let url = 'http://localhost:9900/categories/' + category.id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'categories/' + category.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -280,7 +280,7 @@ export default {
     },
     // 该方法用来请求相册的列表数据
     loadCategoryList() {
-      let url = "http://localhost:9900/categories/listByParent?parentId=" + this.currentParentId // 请求路径
+      let url = this.GLOBAL.productUrl+'categories/listByParent?parentId=' + this.currentParentId // 请求路径
       console.log('url=' + url);
       this.axios
           .create({

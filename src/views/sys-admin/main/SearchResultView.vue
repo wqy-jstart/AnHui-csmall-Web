@@ -142,7 +142,7 @@ export default {
       }
     },
     loadUserNickname() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         console.log("接收的信息" + response.data);
@@ -159,7 +159,7 @@ export default {
       location.href = "/index/result?categoryId=" + key;//这里的key代表分类的id(与index相同)
     },
     search() {//搜索的点击事件(搜索后跳转结果会将wd搜索内容在路径上传递过去)
-      let url = 'http://localhost:9900/spu/selectByWd?wd=' + this.wd;
+      let url = this.GLOBAL.productUrl+'spu/selectByWd?wd=' + this.wd;
       this.axios
           .create({
             'headers':{
@@ -175,7 +175,7 @@ export default {
       })
     },
     loadCategoryList() {
-      let url = 'http://localhost:9900/categories/selectByParent';
+      let url = this.GLOBAL.productUrl+'categories/selectByParent';
       this.axios
           .create({
             'headers':{
@@ -192,7 +192,7 @@ export default {
     },
     loadProductList() {
       if (location.search.indexOf("wd") != -1) {//包含wd代表路径上传的是搜索结果
-        let url = 'http://localhost:9900/spu/selectByWd' + location.search;
+        let url = this.GLOBAL.productUrl+'spu/selectByWd' + location.search;
         this.axios
             .create({
               'headers':{
@@ -207,7 +207,7 @@ export default {
           }
         })
       } else {//不包含wd代表路径上传的是分类信息id
-        let url = 'http://localhost:9900/spu/selectByCategoryId' + location.search
+        let url = this.GLOBAL.productUrl+'spu/selectByCategoryId' + location.search
         this.axios
             .create({
               'headers':{

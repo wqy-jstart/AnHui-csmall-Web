@@ -225,14 +225,14 @@ export default {
       location.href = '/user/shoppingCart?id=' + this.user.id;
     },
     loadUserDetail() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         this.user = responseBody.data;
       })
     },
     loadOrderList() {
-      let url = 'http://localhost:9900/carts/selectToCartList' + location.search;
+      let url = this.GLOBAL.productUrl+'carts/selectToCartList' + location.search;
       this.axios
           .create({
             'headers': {
@@ -249,7 +249,7 @@ export default {
     },
     loadOrderCount(){
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/carts/'+id+'/selectCount';
+      let url = this.GLOBAL.productUrl+'carts/'+id+'/selectCount';
       this.axios
           .create({
             'headers': {
@@ -266,7 +266,7 @@ export default {
     },
     loadOrderCountToNotDib(){
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/'+id+'/selectCountToNotDib';
+      let url =this.GLOBAL.productUrl+'orders/'+id+'/selectCountToNotDib';
       this.axios
           .create({
             'headers': {
@@ -283,7 +283,7 @@ export default {
     },
     loadOrderCountToDib(){
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/'+id+'/selectCountToDib';
+      let url = this.GLOBAL.productUrl+'orders/'+id+'/selectCountToDib';
       this.axios
           .create({
             'headers': {
@@ -300,7 +300,7 @@ export default {
     },
     loadOrderCountToBack(){
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/'+id+'/selectCountToBack';
+      let url = this.GLOBAL.productUrl+'orders/'+id+'/selectCountToBack';
       this.axios
           .create({
             'headers': {

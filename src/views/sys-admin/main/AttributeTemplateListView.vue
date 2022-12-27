@@ -65,7 +65,7 @@ export default {
   methods: {
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9900/attributeTemplates/update';
+      let url = this.GLOBAL.productUrl+'attributeTemplates/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
@@ -98,7 +98,7 @@ export default {
       console.log(message);
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9900/attributeTemplates/' + attributeTemplate.id + '/selectById';
+      let url = this.GLOBAL.productUrl+'attributeTemplates/' + attributeTemplate.id + '/selectById';
       console.log(url);
       this.axios
           .create({
@@ -117,7 +117,7 @@ export default {
       })
     },
     handleDelete(AttributeTemplate) {
-      let url = 'http://localhost:9900/attributeTemplates/' + AttributeTemplate.id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'attributeTemplates/' + AttributeTemplate.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -152,7 +152,7 @@ export default {
     },
     // 该方法用来请求相册的列表数据
     loadAttributeTemplateList() {
-      let url = "http://localhost:9900/attributeTemplates" // 请求路径
+      let url = this.GLOBAL.productUrl+'attributeTemplates' // 请求路径
       console.log('url=' + url);
       this.axios
           .create({

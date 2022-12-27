@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     handleDelete(address) {
-      let url = 'http://localhost:9900/addresses/' + address.id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'addresses/' + address.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -73,7 +73,7 @@ export default {
     // 该方法用来请求收货地址的列表数据
     loadAlbumList() {
       console.log('loadAlbumList');
-      let url = "http://localhost:9900/addresses" // 请求路径
+      let url = this.GLOBAL.productUrl+'addresses' // 请求路径
       console.log('url=' + url);
       this.axios
           .create({

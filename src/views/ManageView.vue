@@ -267,7 +267,7 @@ export default {
       }
     },
     loadUserNickname() {
-      let url = 'http://localhost:9901/admins/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.passportUrl+'admins/selectByUsername?username=' + this.username;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         console.log("接收的信息" + response.data);

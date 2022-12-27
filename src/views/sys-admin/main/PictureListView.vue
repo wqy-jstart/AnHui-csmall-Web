@@ -132,7 +132,7 @@ export default {
   methods: {
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9900/pictures/update';
+      let url = this.GLOBAL.productUrl+'pictures/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
@@ -165,7 +165,7 @@ export default {
       //点击后获取的enable值
       console.log('picture enable=' + picture.isCover);
       let enableText = ['禁用', '启用'];
-      let url = 'http://localhost:9900/pictures/' + picture.id;
+      let url = this.GLOBAL.productUrl+'pictures/' + picture.id;
       if (picture.isCover === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         console.log("设置封面")
         url += '/isCover';
@@ -200,7 +200,7 @@ export default {
     handleEdit(picture) {
       this.loadAlbumList();// 加载相册信息
       this.dialogFormVisible = true;
-      let url = 'http://localhost:9900/pictures/' + picture.id + '/selectById';
+      let url = this.GLOBAL.productUrl+'pictures/' + picture.id + '/selectById';
       console.log(url);
       this.axios
           .create({
@@ -220,7 +220,7 @@ export default {
       })
     },
     handleDelete(picture) {
-      let url = 'http://localhost:9900/pictures/' + picture.id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'pictures/' + picture.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -255,7 +255,7 @@ export default {
     },
     // 根据相册id查询图片列表
     loadPictureListByAlbum(){
-      let url = 'http://localhost:9900/pictures/selectListToAlbumId?albumId='+this.album.id;
+      let url = this.GLOBAL.productUrl+'pictures/selectListToAlbumId?albumId='+this.album.id;
       this.axios
           .create({
             'headers':{
@@ -279,7 +279,7 @@ export default {
     },
     // 加载相册的数据
     loadAlbumList(){
-      let url = 'http://localhost:9900/albums';
+      let url = this.GLOBAL.productUrl+'albums';
       this.axios
           .create({
             'headers':{
@@ -296,7 +296,7 @@ export default {
     },
     // 该方法用来请求相册的列表数据
     loadPictureList() {
-      let url = "http://localhost:9900/pictures" // 请求路径
+      let url = this.GLOBAL.productUrl+'pictures' // 请求路径
       console.log('url=' + url);
       this.axios
           .create({

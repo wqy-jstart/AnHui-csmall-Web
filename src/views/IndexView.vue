@@ -185,7 +185,7 @@ export default {
       }
     },
     loadUserNickname() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         console.log("接收的信息" + response.data);
@@ -209,7 +209,7 @@ export default {
       location.href = "/index/result?wd=" + this.wd;//这里的key代表分类的id(与index相同)
     },
     loadBannerList() {
-      let url = 'http://localhost:9900/banners/selectListByEnable';
+      let url = this.GLOBAL.productUrl+'banners/selectListByEnable';
       this.axios
           .create({
             'headers':{
@@ -225,7 +225,7 @@ export default {
       })
     },
     loadTopToSalesList() {
-      let url = 'http://localhost:9900/spu/selectSortByTitle';
+      let url = this.GLOBAL.productUrl+'spu/selectSortByTitle';
       this.axios
           .create({
             'headers':{
@@ -241,7 +241,7 @@ export default {
       })
     },
     loadCategoryList() {
-      let url = 'http://localhost:9900/categories/selectByParent';
+      let url = this.GLOBAL.productUrl+'categories/selectByParent';
       this.axios
           .create({
             'headers':{
@@ -257,7 +257,7 @@ export default {
       })
     },
     loadProductList() {
-      let url = 'http://localhost:9900/spu/selectIndexList';
+      let url = this.GLOBAL.productUrl+'spu/selectIndexList';
       this.axios
           .create({
             'headers':{

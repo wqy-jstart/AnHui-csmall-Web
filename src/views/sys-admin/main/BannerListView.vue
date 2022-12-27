@@ -88,7 +88,7 @@ export default {
   methods: {
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9900/banners/update';
+      let url = this.GLOBAL.productUrl+'banners/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
@@ -119,7 +119,7 @@ export default {
     handleEdit(banner) {
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9900/banners/' + banner.id + '/selectById';
+      let url = this.GLOBAL.productUrl+'banners/' + banner.id + '/selectById';
       console.log(url);
       this.axios
           .create({
@@ -143,7 +143,7 @@ export default {
       //点击后获取的enable值
       console.log('banner enable=' + banner.enable);
       let enableText = ['禁用', '启用'];
-      let url = 'http://localhost:9900/banners/' + banner.id;
+      let url = this.GLOBAL.productUrl+'banners/' + banner.id;
       if (banner.enable === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         console.log("设置启用")
         url += '/enable';
@@ -175,7 +175,7 @@ export default {
       })
     },
     handleDelete(banner) {
-      let url = 'http://localhost:9900/banners/' +banner.id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'banners/' +banner.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -210,7 +210,7 @@ export default {
     },
     // 该方法用来请求轮播图的列表数据
     loadBannerList() {
-      let url = "http://localhost:9900/banners/" // 请求路径
+      let url = this.GLOBAL.productUrl+'banners/' // 请求路径
       console.log('url=' + url);
       this.axios
           .create({

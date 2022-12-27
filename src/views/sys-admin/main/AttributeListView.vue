@@ -93,7 +93,7 @@ export default {
   methods: {
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9900/attributes/update';
+      let url = this.GLOBAL.productUrl+'attributes/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
@@ -126,7 +126,7 @@ export default {
       console.log(message);
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9900/attributes/' + attribute.id + '/selectById';
+      let url = this.GLOBAL.productUrl+'attributes/' + attribute.id + '/selectById';
       console.log(url);
       this.axios
           .create({
@@ -146,7 +146,7 @@ export default {
     },
     // 根据属性模板的id查询属性列表
     loadAttributeListByATId(){
-      let url = 'http://localhost:9900/attributes/'+this.template.templateId+'/listByTemplate';
+      let url = this.GLOBAL.productUrl+'attributes/'+this.template.templateId+'/listByTemplate';
       this.axios
           .create({
             'headers':{
@@ -163,7 +163,7 @@ export default {
       })
     },
     handleDelete(attribute) {
-      let url = 'http://localhost:9900/attributes/' + attribute.id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'attributes/' + attribute.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -197,7 +197,7 @@ export default {
       });
     },
     loadAttributeTemplateList() {
-      let url = 'http://localhost:9900/attributeTemplates';
+      let url = this.GLOBAL.productUrl+'attributeTemplates';
       this.axios
           .create({
             'headers':{
@@ -220,7 +220,7 @@ export default {
       this.isDisplay = false;
     },
     loadAttributeList(){
-      let url = 'http://localhost:9900/attributes';
+      let url = this.GLOBAL.productUrl+'attributes';
       this.axios
           .create({
             'headers':{

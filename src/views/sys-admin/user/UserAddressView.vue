@@ -237,7 +237,7 @@ export default {
     },
     submitAdd(){
       this.ruleFormToAdd.userId = this.user.id;
-      let url = 'http://localhost:9900/addresses/insert';
+      let url = this.GLOBAL.productUrl+'addresses/insert';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleFormToAdd);// 将修改的数据转换为formData格式
       this.axios
@@ -266,7 +266,7 @@ export default {
     },
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9900/addresses/update';
+      let url = this.GLOBAL.productUrl+'addresses/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       this.axios
@@ -296,7 +296,7 @@ export default {
     handleEdit(id) {
       this.dialogFormVisible = true;
       this.ruleForm.id = id;
-      let url = 'http://localhost:9900/addresses/' + id + '/selectById';
+      let url = this.GLOBAL.productUrl+'addresses/' + id + '/selectById';
       console.log(url);
       this.axios
           .create({
@@ -315,7 +315,7 @@ export default {
       })
     },
     handleDelete(id) {
-      let url = 'http://localhost:9900/addresses/' + id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'addresses/' + id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -356,14 +356,14 @@ export default {
       }
     },
     loadUserDetail() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         this.user = responseBody.data;
       })
     },
     loadAddressInfo(){
-      let url = 'http://localhost:9900/addresses/selectByUserId'+location.search;
+      let url = this.GLOBAL.productUrl+'addresses/selectByUserId'+location.search;
       this.axios
           .create({
             'headers':{

@@ -110,7 +110,7 @@ export default {
     // 获取角色列表
     loadRoleList() {
       console.log('loadRoleList');
-      let url = "http://localhost:9901/roles" // 请求路径
+      let url = this.GLOBAL.passportUrl+'roles' // 请求路径
       console.log('url=' + url);
       this.axios
           .create({
@@ -128,7 +128,7 @@ export default {
       // 对表单进行检查
       this.$refs[formName].validate((valid) => {
         if (valid) { // 满足条件则通过验证
-          let url = 'http://localhost:9901/admins/add-new'
+          let url = this.GLOBAL.passportUrl+'admins/add-new'
           console.log('url = ' + url);
           //将formData对象转换成FormData格式,当后端不添加@RequestBody注解时接收    {indices、brackets、repeat}数组格式
           let formData = this.qs.stringify(this.ruleForm,{arrayFormat:'repeat'});

@@ -80,7 +80,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9900/spu/insert';
+          let url = this.GLOBAL.productUrl+'spu/insert';
           this.ruleForm.detail = this.editor.txt.html();
           let formData = this.qs.stringify(this.ruleForm);
           console.log('formData='+formData);

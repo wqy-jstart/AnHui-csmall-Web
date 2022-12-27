@@ -46,7 +46,7 @@ export default {
     handleEdit(album) {
     },
     handleDelete(user) {
-      let url = 'http://localhost:9900/users/' + user.id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'users/' + user.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -81,7 +81,7 @@ export default {
     },
     // 该方法用来请求用户的列表数据
     loadAlbumList() {
-      let url = "http://localhost:9900/users" // 请求路径
+      let url = this.GLOBAL.productUrl+'users' // 请求路径
       console.log('url=' + url);
       this.axios
           .create({

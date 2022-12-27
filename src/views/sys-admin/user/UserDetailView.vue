@@ -216,7 +216,7 @@ export default {
     // 处理提交修改
     submitEdit() {
       this.ruleForm.id = this.user.id;
-      let url = 'http://localhost:9900/users/update';
+      let url = this.GLOBAL.productUrl+'users/update';
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
       this.axios
@@ -247,7 +247,7 @@ export default {
       this.ruleForm.id = this.user.id;
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9900/users/' + this.ruleForm.id + '/selectById';
+      let url = this.GLOBAL.productUrl+'users/' + this.ruleForm.id + '/selectById';
       console.log(url);
       this.axios
           .create({
@@ -266,7 +266,7 @@ export default {
       })
     },
     loadUserDetail() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         this.user = responseBody.data;

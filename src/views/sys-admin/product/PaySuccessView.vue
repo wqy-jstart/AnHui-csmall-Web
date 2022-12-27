@@ -203,7 +203,7 @@ export default {
       location.href = "/index";
     },
     loadUserDetail() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios
           .create({
             'headers': {
@@ -239,7 +239,7 @@ export default {
         tradeNo: this.tradeNo
       }
       console.log("对象:" + obj);
-      let url = 'http://localhost:9900/orders/insert';
+      let url = this.GLOBAL.productUrl+'orders/insert';
       let objToString = this.qs.stringify(obj);
       this.axios.post(url, objToString).then((response) => {
         let responseBody = response.data;

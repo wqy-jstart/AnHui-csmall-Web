@@ -87,7 +87,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9901/admins/login';
+          let url = this.GLOBAL.passportUrl+'admins/login';
           let formData = this.qs.stringify(this.ruleForm)
           this.axios.post(url, formData).then((response) => {
             let responseBody = response.data;

@@ -70,7 +70,7 @@ export default {
     },
     loadAlbumList() {
       console.log('准备从服务器端加载【相册列表】……');
-      let url = 'http://localhost:9900/albums';
+      let url = this.GLOBAL.productUrl+'albums';
       console.log('请求路径：' + url);
       this.axios
           .create({
@@ -88,7 +88,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9900/albums/'+this.ruleForm.albumId+'/selectById';
+          let url = this.GLOBAL.productUrl+'albums/'+this.ruleForm.albumId+'/selectById';
           console.log('url='+url);
           this.axios
               .create({

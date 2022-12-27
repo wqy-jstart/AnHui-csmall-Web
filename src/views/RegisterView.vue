@@ -71,7 +71,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = 'http://localhost:9900/users/register';
+          let url = this.GLOBAL.productUrl+'users/register';
           console.log('url='+url);
           let formData = this.qs.stringify(this.ruleForm);
           this.axios.post(url,formData).then((response)=>{

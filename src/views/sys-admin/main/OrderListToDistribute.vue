@@ -153,7 +153,7 @@ export default {
   methods: {
     // 该方法用来请求订单的列表数据
     loadOrderList() {
-      let url = "http://localhost:9900/orders/selectToDistribute" // 请求路径
+      let url = this.GLOBAL.productUrl+'orders/selectToDistribute' // 请求路径
       console.log('url=' + url);
       // .create方法会返回一个axios对象,可在其中配置请求头
       this.axios

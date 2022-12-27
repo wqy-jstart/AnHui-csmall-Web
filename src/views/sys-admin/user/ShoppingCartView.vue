@@ -178,7 +178,7 @@ export default {
       }
     },
     loadUserDetail() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios
           .create({
             'headers':{
@@ -193,7 +193,7 @@ export default {
       location.href = '/product/detail?spuId='+id;
     },
     handleDelete(id) {
-      let url = 'http://localhost:9900/carts/' + this.user.id + '/'+id+'/deleteById';
+      let url = this.GLOBAL.productUrl+'carts/' + this.user.id + '/'+id+'/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -228,7 +228,7 @@ export default {
       });
     },
     loadCartList() {
-      let url = 'http://localhost:9900/carts/selectToCartList' + location.search;
+      let url = this.GLOBAL.productUrl+'carts/selectToCartList' + location.search;
       this.axios
           .create({
             'headers':{
@@ -244,7 +244,7 @@ export default {
       })
     },
     loadSUMPrice(){
-      let url = 'http://localhost:9900/carts/selectSUMPrice'+location.search;
+      let url = this.GLOBAL.productUrl+'carts/selectSUMPrice'+location.search;
       this.axios
           .create({
             'headers':{

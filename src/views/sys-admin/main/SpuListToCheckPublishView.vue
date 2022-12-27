@@ -206,7 +206,7 @@ export default {
 
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9900/spu/update';
+      let url = this.GLOBAL.productUrl+'spu/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       this.axios
@@ -238,7 +238,7 @@ export default {
       console.log(message);
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9900/spu/' + spu.id + '/selectById';
+      let url = this.GLOBAL.productUrl+'spu/' + spu.id + '/selectById';
       console.log(url);
       this.axios
           .create({
@@ -259,7 +259,7 @@ export default {
     // 修改是否上架
     changePublished(spu){
       let enableText = ['下架', '上架'];
-      let url = 'http://localhost:9900/spu/' + spu.id;
+      let url = this.GLOBAL.productUrl+'spu/' + spu.id;
       if (spu.isPublished === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         url += '/publish';
       } else {
@@ -291,7 +291,7 @@ export default {
     // 修改是否推荐
     changeRecommend(spu){
       let enableText = ['不推荐', '推荐'];
-      let url = 'http://localhost:9900/spu/' + spu.id;
+      let url = this.GLOBAL.productUrl+'spu/' + spu.id;
       if (spu.isRecommend === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         url += '/recommend';
       } else {
@@ -323,7 +323,7 @@ export default {
     // 修改是否审核
     changeChecked(spu){
       let enableText = ['已审核', '未审核'];
-      let url = 'http://localhost:9900/spu/' + spu.id;
+      let url = this.GLOBAL.productUrl+'spu/' + spu.id;
       if (spu.isChecked === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         url += '/check';
       } else {
@@ -353,7 +353,7 @@ export default {
       })
     },
     handleDelete(spu) {
-      let url = 'http://localhost:9900/spu/' + spu.id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'spu/' + spu.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -387,7 +387,7 @@ export default {
       });
     },
     loadSpuListToCheck(){
-      let url = 'http://localhost:9900/spu/selectByPC';
+      let url = this.GLOBAL.productUrl+'spu/selectByPC';
       this.axios
           .create({
             'headers':{

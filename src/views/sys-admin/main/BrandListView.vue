@@ -92,7 +92,7 @@ export default {
   methods: {
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9900/brands/update';
+      let url = this.GLOBAL.productUrl+'brands/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       this.axios
@@ -124,7 +124,7 @@ export default {
       console.log(message);
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9900/brands/' + brand.id + '/selectById';
+      let url = this.GLOBAL.productUrl+'brands/' + brand.id + '/selectById';
       console.log(url);
       this.axios
           .create({
@@ -148,7 +148,7 @@ export default {
       //点击后获取的enable值
       console.log('brand enable=' + brand.enable);
       let enableText = ['禁用', '启用'];
-      let url = 'http://localhost:9900/brands/' + brand.id;
+      let url = this.GLOBAL.productUrl+'brands/' + brand.id;
       if (brand.enable === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         console.log("启用品牌")
         url += '/enable';
@@ -179,7 +179,7 @@ export default {
       })
     },
     handleDelete(brand) {
-      let url = 'http://localhost:9900/brands/' + brand.id + '/deleteById';
+      let url = this.GLOBAL.productUrl+'brands/' + brand.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -214,7 +214,7 @@ export default {
     },
     // 该方法用来请求品牌的列表数据
     loadBrandList() {
-      let url = "http://localhost:9900/brands/" // 请求路径
+      let url = this.GLOBAL.productUrl+'brands/' // 请求路径
       console.log('url=' + url);
       this.axios
           .create({

@@ -264,7 +264,7 @@ export default {
         let productName = JSON.stringify(this.product.name);
         localStorage.setItem("pname",productName)
         let typeNumber = parseInt(Math.random() * 10000 + 1);
-        location.href = 'http://localhost:9900/pay/alipay?dona_money=' + this.product.indexPrice + '&dona_id=' + typeNumber + '&dona_name=' + this.product.name;
+        location.href = this.GLOBAL.productUrl+'pay/alipay?dona_money=' + this.product.indexPrice + '&dona_id=' + typeNumber + '&dona_name=' + this.product.name;
       }
     },
     toCart() {
@@ -274,7 +274,7 @@ export default {
       this.selectAddressById(this.radio);
     },
     loadUserDetail() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios
           .create({
             'headers': {
@@ -286,7 +286,7 @@ export default {
       })
     },
     selectAddressById(radio) {
-      let url = 'http://localhost:9900/addresses/' + radio + '/selectById';
+      let url = this.GLOBAL.productUrl+'addresses/' + radio + '/selectById';
       this.axios
           .create({
             'headers': {
@@ -300,7 +300,7 @@ export default {
     loadAddressList() {
       // ?userId=1&spuId=5
       let userId = location.search.split("&")[0].split("=")[1];
-      let url = 'http://localhost:9900/addresses/selectByUserId?id=' + userId;
+      let url = this.GLOBAL.productUrl+'addresses/selectByUserId?id=' + userId;
       this.axios
           .create({
             'headers': {
@@ -320,7 +320,7 @@ export default {
       this.num = location.search.split("&")[2].split("=")[1];
       let spuId = location.search.split("&")[1].split("=")[1];
       console.log("id为:" + spuId)
-      let url = 'http://localhost:9900/spu/selectToDetail?spuId=' + spuId;
+      let url = this.GLOBAL.productUrl+'spu/selectToDetail?spuId=' + spuId;
       this.axios
           .create({
             'headers': {

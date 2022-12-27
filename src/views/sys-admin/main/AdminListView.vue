@@ -101,7 +101,7 @@ export default {
       //点击后获取的enable值
       console.log('admin enable=' + admin.enable);
       let enableText = ['禁用', '启用'];
-      let url = 'http://localhost:9901/admins/' + admin.id;
+      let url = this.GLOBAL.passportUrl+'admins/' + admin.id;
       if (admin.enable == 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         console.log("启用管理员")
         url += '/enable';
@@ -134,7 +134,7 @@ export default {
     },
     // 处理提交修改
     submitEdit() {
-      let url = 'http://localhost:9901/admins/update';
+      let url = this.GLOBAL.passportUrl+'admins/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       console.log('formData=' + formData);
@@ -166,7 +166,7 @@ export default {
       console.log(message);
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = 'http://localhost:9901/admins/' + admin.id + '/selectById';
+      let url = this.GLOBAL.passportUrl+'admins/' + admin.id + '/selectById';
       this.axios
           .create({
             'headers': {
@@ -185,7 +185,7 @@ export default {
     },
     // 根据id删除管理员
     handleDelete(admin) {
-      let url = 'http://localhost:9901/admins/' + admin.id + '/deleteById';
+      let url = this.GLOBAL.passportUrl+'admins/' + admin.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
@@ -223,7 +223,7 @@ export default {
     loadAdminList() {
       console.log('loadAdminList');
       console.log('在localStorage中的JWT数据:' + localStorage.getItem('jwt'))
-      let url = "http://localhost:9901/admins" // 请求路径
+      let url = this.GLOBAL.passportUrl+'admins' // 请求路径
       console.log('url=' + url);
       // .create方法会返回一个axios对象,可在其中配置请求头
       this.axios

@@ -260,7 +260,7 @@ export default {
       if (this.ruleForm.backText == null){
         this.$message.warning("请输入退货理由!")
       }else {
-        let url = 'http://localhost:9900/orders/updateToBack';
+        let url = this.GLOBAL.productUrl+'orders/updateToBack';
         console.log('url:' + url);
         let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
         console.log('formData=' + formData);
@@ -295,7 +295,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.dialogFormVisible = true;
-        let url = 'http://localhost:9900/orders/' + this.user.id + '/' + spuId + '/selectById';
+        let url = this.GLOBAL.productUrl+'orders/' + this.user.id + '/' + spuId + '/selectById';
         this.axios
             .create({
               'headers': {
@@ -348,7 +348,7 @@ export default {
       location.href = '/user/shoppingCart?id=' + this.user.id;
     },
     loadUserDetail() {
-      let url = 'http://localhost:9900/users/selectByUsername?username=' + this.username;
+      let url = this.GLOBAL.productUrl+'users/selectByUsername?username=' + this.username;
       this.axios.get(url).then((response) => {
         let responseBody = response.data;
         this.user = responseBody.data;
@@ -356,7 +356,7 @@ export default {
     },
     loadOrderList() {
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/' + id + '/selectByUserIdToNoDib';
+      let url = this.GLOBAL.productUrl+'orders/' + id + '/selectByUserIdToNoDib';
       this.axios
           .create({
             'headers': {
@@ -373,7 +373,7 @@ export default {
     },
     loadOrderCount() {
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/carts/' + id + '/selectCount';
+      let url = this.GLOBAL.productUrl+'carts/' + id + '/selectCount';
       this.axios
           .create({
             'headers': {
@@ -390,7 +390,7 @@ export default {
     },
     loadOrderCountToNotDib() {
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/' + id + '/selectCountToNotDib';
+      let url = this.GLOBAL.productUrl+'orders/' + id + '/selectCountToNotDib';
       this.axios
           .create({
             'headers': {
@@ -407,7 +407,7 @@ export default {
     },
     loadOrderCountToDib() {
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/' + id + '/selectCountToDib';
+      let url = this.GLOBAL.productUrl+'orders/' + id + '/selectCountToDib';
       this.axios
           .create({
             'headers': {
@@ -424,7 +424,7 @@ export default {
     },
     loadOrderCountToBack(){
       let id = location.search.split("=")[1];
-      let url = 'http://localhost:9900/orders/'+id+'/selectCountToBack';
+      let url = this.GLOBAL.productUrl+'orders/'+id+'/selectCountToBack';
       this.axios
           .create({
             'headers': {

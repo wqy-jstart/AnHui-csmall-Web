@@ -198,7 +198,7 @@ export default {
     },
     // 加载品牌列表
     loadBrandList(){
-      let url ='http://localhost:9900/brands';
+      let url =this.GLOBAL.productUrl+'brands';
       this.axios
           .create({
         'headers':{
@@ -215,7 +215,7 @@ export default {
     },
     // 加载属性模板列表
     loadAttributeTemplateList(){
-      let url = 'http://localhost:9900/attributeTemplates';
+      let url = this.GLOBAL.productUrl+'attributeTemplates';
       this.axios
           .create({
             'headers':{
@@ -233,7 +233,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let urlToBrand = 'http://localhost:9900/brands/'+this.ruleForm.brandId+'/selectById';
+          let urlToBrand = this.GLOBAL.productUrl+'brands/'+this.ruleForm.brandId+'/selectById';
           console.log('urlToBrand = ' + urlToBrand);
           this.axios
               .create({
@@ -248,7 +248,7 @@ export default {
               this.$message.error(responseBody.message);
             }
           });
-          let urlToAT = 'http://localhost:9900/attributeTemplates/'+this.ruleForm.attributeTemplateId+'/selectById';
+          let urlToAT = this.GLOBAL.productUrl+'attributeTemplates/'+this.ruleForm.attributeTemplateId+'/selectById';
           console.log('urlToAT = ' + urlToAT);
           this.axios
               .create({
