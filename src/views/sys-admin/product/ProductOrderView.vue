@@ -242,15 +242,16 @@ export default {
         console.log(this.username)
       }
     },
+    // 提交订单触发
     submitOrder() {
       if (this.address.name == "") {
         this.$message.warning("亲!收货地址不能为空哦~")
       } else {
         // ?userId=1&spuId=2&num=1
-        let num = location.search.split("&")[2].split("=")[1];
-        if (num != 1) {
-          this.product.indexPrice = this.payPrice
-          this.product.name = this.product.name + "*" + num;
+        let num = location.search.split("&")[2].split("=")[1]; // 获取购买商品的数量
+        if (num != 1) { // 如果不为1
+          this.product.indexPrice = this.payPrice // 商品价格为当前展示的最终价格
+          this.product.name = this.product.name + "*" + num;// 商品名称后拼接数量
           console.log(this.product.name)
         }
         let userId = JSON.stringify(this.user.id);
@@ -263,7 +264,8 @@ export default {
         localStorage.setItem("num",num1);
         let productName = JSON.stringify(this.product.name);
         localStorage.setItem("pname",productName)
-        let typeNumber = parseInt(Math.random() * 10000 + 1);
+        let typeNumber = parseInt(Math.random() * 10000 + 1); // 随机获取一个编号
+        // 跳转路径Get传递商品价格、编号、名称，触发后端调用支付宝API接口
         location.href = this.GLOBAL.productUrl+'pay/alipay?dona_money=' + this.product.indexPrice + '&dona_id=' + typeNumber + '&dona_name=' + this.product.name;
       }
     },
@@ -315,12 +317,13 @@ export default {
         }
       })
     },
+    // 加载订单中商品详情信息
     loadProductDetail() {
       // ?userId=1&spuId=5&num=2
-      this.num = location.search.split("&")[2].split("=")[1];
-      let spuId = location.search.split("&")[1].split("=")[1];
+      this.num = location.search.split("&")[2].split("=")[1]; // 获取购买的商品数量
+      let spuId = location.search.split("&")[1].split("=")[1];// 获取商品spuId
       console.log("id为:" + spuId)
-      let url = this.GLOBAL.productUrl+'spu/selectToDetail?spuId=' + spuId;
+      let url = this.GLOBAL.productUrl+'spu/selectToDetail?spuId=' + spuId; // 定义url发送异步请求
       this.axios
           .create({
             'headers': {
@@ -329,8 +332,8 @@ export default {
           }).get(url).then((response) => {
         let responseBody = response.data;
         if (responseBody.state == 20000) {
-          this.product = responseBody.data;
-          this.payPrice = this.product.indexPrice * this.num;
+          this.product = responseBody.data; // 获取商品信息
+          this.payPrice = this.product.indexPrice * this.num; // 将显示的商品价格乘以数量
         } else {
           this.$message.error(responseBody.message);
         }
