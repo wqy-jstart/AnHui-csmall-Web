@@ -2,7 +2,8 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 16px">
       <el-breadcrumb-item :to="{ path: '/' }">
-        <i class="el-icon-s-promotion"></i>  后台管理</el-breadcrumb-item>
+        <i class="el-icon-s-promotion"></i> 后台管理
+      </el-breadcrumb-item>
       <el-breadcrumb-item>品牌列表</el-breadcrumb-item>
     </el-breadcrumb>
 
@@ -33,16 +34,23 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini"
-                     @click="handleEdit(scope.row)">修改</el-button>
+                     @click="handleEdit(scope.row)">修改
+          </el-button>
           <el-button type="danger" size="mini"
-                     @click="openDeleteConfirm(scope.row)">删除</el-button>
+                     @click="openDeleteConfirm(scope.row)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
         background
-        layout="prev, pager, next"
-        :total="1000">
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="size"
+        layout="total,sizes,prev, pager, next, jumper"
+        :total="total">
     </el-pagination>
 
     <!-- 弹出的编辑相册的对话框 -->
@@ -81,24 +89,44 @@
 export default {
   data() {
     return {
+      currentPage: 1, // 当前页
+      total: '', // 数据总数
+      size: 10, // 每页的数据量(可选择)
       tableData: [],
       dialogFormVisible: false,
-      ruleForm:{
-
-      },
+      ruleForm: {},
       formLabelWidth: '120px'
     }
   },
   methods: {
+    handleSizeChange(val) { // 该方法配合page-size属性，由其监控，方法回调
+      this.size = val;
+    },
+    handleCurrentChange(val) { // 该方法配合current-page属性，由属性监控，方法回调
+      this.currentPage = val; // 将当前页赋值给变量
+      // 向后端发送请求
+      let url = this.GLOBAL.productUrl+'brands/'+this.currentPage+'/'+this.size+'/selectToPage';
+      this.axios
+          .create({
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.tableData = responseBody.data;
+        }
+      })
+    },
     // 处理提交修改
     submitEdit() {
-      let url = this.GLOBAL.productUrl+'brands/update';
+      let url = this.GLOBAL.productUrl + 'brands/update';
       console.log('url:' + url);
       let formData = this.qs.stringify(this.ruleForm);// 将修改的数据转换为formData格式
       this.axios
           .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToAdmin')
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToAdmin')
             }
           }).post(url, formData).then((response) => {
         let responseBody = response.data;
@@ -124,12 +152,12 @@ export default {
       console.log(message);
       this.dialogFormVisible = true;
       // this.ruleForm = album;
-      let url = this.GLOBAL.productUrl+'brands/' + brand.id + '/selectById';
+      let url = this.GLOBAL.productUrl + 'brands/' + brand.id + '/selectById';
       console.log(url);
       this.axios
           .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToAdmin')
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToAdmin')
             }
           }).get(url).then((response) => {
         let responseBody = response.data;
@@ -148,7 +176,7 @@ export default {
       //点击后获取的enable值
       console.log('brand enable=' + brand.enable);
       let enableText = ['禁用', '启用'];
-      let url = this.GLOBAL.productUrl+'brands/' + brand.id;
+      let url = this.GLOBAL.productUrl + 'brands/' + brand.id;
       if (brand.enable === 1) { // 如果点击后enable为1,说明是启用操作,则请求路径应为处理启用的路径
         console.log("启用品牌")
         url += '/enable';
@@ -159,8 +187,8 @@ export default {
       console.log('url=' + url)
       this.axios
           .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToAdmin')
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToAdmin')
             }
           }).post(url).then((response) => {
         let responseBody = response.data;
@@ -179,12 +207,12 @@ export default {
       })
     },
     handleDelete(brand) {
-      let url = this.GLOBAL.productUrl+'brands/' + brand.id + '/deleteById';
+      let url = this.GLOBAL.productUrl + 'brands/' + brand.id + '/deleteById';
       console.log('url=' + url);
       this.axios
           .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToAdmin')
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToAdmin')
             }
           }).post(url).then((response) => {
         let responseBody = response.data;
@@ -214,22 +242,38 @@ export default {
     },
     // 该方法用来请求品牌的列表数据
     loadBrandList() {
-      let url = this.GLOBAL.productUrl+'brands/' // 请求路径
+      let url = this.GLOBAL.productUrl + 'brands/' // 请求路径
       console.log('url=' + url);
       this.axios
           .create({
-            'headers':{
-              'Authorization':localStorage.getItem('jwtToAdmin')
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToAdmin')
             }
           }).get(url).then((response) => {// 发送异步请求
         let responseBody = response.data;
         this.tableData = responseBody.data;//将获取响应的数据中的data数据赋值给tableData
+      })
+    },
+    loadBrandCount(){
+      let url = this.GLOBAL.productUrl+'brands/selectCount';
+      this.axios
+          .create({
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.total = responseBody.data;
+
+        }
       })
     }
   },
   // 生命周期方法(挂载)
   mounted() {
     this.loadBrandList();
+    this.loadBrandCount();
   }
 }
 </script>
