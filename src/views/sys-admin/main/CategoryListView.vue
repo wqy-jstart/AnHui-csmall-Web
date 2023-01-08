@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="sort" label="排序" width="120" align="center"></el-table-column>
-      <el-table-column label="查看子级" width="100" align="center">
+      <el-table-column label="查看子级" width="140" align="center">
         <template slot-scope="scope">
           <el-button size="mini" :disabled="scope.row.isParent == 0 "
                      @click="showSubCategories(scope.row)">查看子级

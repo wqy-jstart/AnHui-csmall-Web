@@ -101,6 +101,19 @@ export default {
   methods: {
     handleSizeChange(val) { // 该方法配合page-size属性，由其监控，方法回调
       this.size = val;
+      // 向后端发送请求
+      let url = this.GLOBAL.productUrl+'brands/'+this.currentPage+'/'+this.size+'/selectToPage';
+      this.axios
+          .create({
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.tableData = responseBody.data;
+        }
+      })
     },
     handleCurrentChange(val) { // 该方法配合current-page属性，由属性监控，方法回调
       this.currentPage = val; // 将当前页赋值给变量

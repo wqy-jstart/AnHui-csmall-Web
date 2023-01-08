@@ -23,6 +23,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="size"
+        layout="total,sizes,prev, pager, next, jumper"
+        :total="total">
+    </el-pagination>
 
     <!-- 弹出的编辑相册的对话框 -->
     <el-dialog title="修改属性模板" :visible.sync="dialogFormVisible">
@@ -51,6 +61,9 @@
 export default {
   data() {
     return {
+      currentPage: 1, // 当前页
+      total: '', // 数据总数
+      size: 10, // 每页的数据量(可选择)
       dialogFormVisible: false,
       tableData: [],
       ruleForm: {
@@ -63,6 +76,36 @@ export default {
     }
   },
   methods: {
+    handleSizeChange(val) { // 该方法配合page-size属性，由其监控，方法回调
+      this.size = val;
+      let url = this.GLOBAL.productUrl+'attributeTemplates/'+this.currentPage+'/'+this.size+'/selectToPage';
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.tableData = responseBody.data;
+        }
+      })
+    },
+    handleCurrentChange(val) { // 该方法配合current-page属性，由属性监控，方法回调
+      this.currentPage = val; // 将当前页赋值给变量
+      let url = this.GLOBAL.productUrl+'attributeTemplates/'+this.currentPage+'/'+this.size+'/selectToPage';
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
+        let responseBody = response.data;
+        if (responseBody.state == 20000){
+          this.tableData = responseBody.data;
+        }
+      })
+    },
     // 处理提交修改
     submitEdit() {
       let url = this.GLOBAL.productUrl+'attributeTemplates/update';
@@ -163,11 +206,26 @@ export default {
         let responseBody = response.data;
         this.tableData = responseBody.data;//将获取响应的数据中的data数据赋值给tableData
       })
+    },
+    loadAttributeTemplateCount(){
+      let url = this.GLOBAL.productUrl+'attributeTemplates/selectCount';
+      this.axios
+          .create({
+            'headers':{
+              'Authorization':localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response)=>{
+        let responseBoay = response.data;
+        if (responseBoay.state == 20000){
+          this.total = responseBoay.data;
+        }
+      })
     }
   },
   // 生命周期方法(挂载)
   mounted() {
     this.loadAttributeTemplateList();
+    this.loadAttributeTemplateCount();
   }
 }
 </script>
