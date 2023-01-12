@@ -268,7 +268,12 @@ export default {
     },
     loadUserNickname() {
       let url = this.GLOBAL.passportUrl+'admins/selectByUsername?username=' + this.username;
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({
+            'headers': {
+              'Authorization': localStorage.getItem('jwtToAdmin')
+            }
+          }).get(url).then((response) => {
         let responseBody = response.data;
         console.log("接收的信息" + response.data);
         this.nickname = responseBody.data.nickname;
